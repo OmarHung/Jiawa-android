@@ -1,3 +1,74 @@
 <resources>
     <string name="app_name">JiaWa</string>
+
+    <!-- bottombar_-->
+    <string name="bottombar_title_forum">論壇</string>
+    <string name="bottombar_title_map">夾點地圖</string>
+    <string name="bottombar_title_person">個人中心</string>
+
+    <!-- 表單Hint -->
+    <string name="prompt_name">名稱</string>
+    <string name="prompt_email">帳號 (請輸入電子信箱)</string>
+    <string name="prompt_find_password_email">請輸入註冊時使用的電子信箱</string>
+    <string name="prompt_password">密碼</string>
+    <string name="prompt_re_enter_password">再次輸入密碼</string>
+    <string name="prompt_birthday">生日</string>
+    <string name="prompt_mobile">手機號碼</string>
+
+    <!-- Button文字 -->
+    <string name="btn_login">登入</string>
+    <string name="btn_next">下一步</string>
+    <string name="btn_done">完成</string>
+    <string name="btn_show_ads">觀看廣告</string>
+    <string name="btn_send_email">將密碼寄到信箱</string>
+    <string name="btn_ads_is_loading">廣告載入中</string>
+    <string name="btn_adstimes_is_zero">觀看次數已達今日上限</string>
+    <string name="btn_ok">確定</string>
+
+    <!-- 表單錯誤提醒 -->
+    <string name="error_invalid_email">此電子信箱無效</string>
+    <string name="error_invalid_password">密碼太短</string>
+    <string name="error_invalid_mobile">手機號碼錯誤</string>
+    <string name="error_incorrect_password">密碼錯誤</string>
+    <string name="error_field_required">請輸入</string>
+    <string name="error_field_email_repeat">此電子信箱已使用</string>
+
+    <!-- 文字超連結 -->
+    <string name="link_signup">還沒有帳號嗎?  點我創建</string>
+    <string name="link_login">已經有帳號了嗎?  點我登入</string>
+    <string name="link_findpassword">忘記密碼了?</string>
+    <string name="title_activity_maps">Map</string>
+
+    <!--城市下拉選單-->
+    <string-array name="city">
+        <item>不分縣市</item>
+        <item>臺北市</item>
+        <item>新北市</item>
+        <item>桃園市</item>
+        <item>臺中市</item>
+        <item>臺南市</item>
+        <item>高雄市</item>
+        <item>基隆市</item>
+        <item>新竹市</item>
+        <item>嘉義市</item>
+        <item>新竹縣</item>
+        <item>苗栗縣</item>
+        <item>彰化縣</item>
+        <item>南投縣</item>
+        <item>雲林縣</item>
+        <item>嘉義縣</item>
+        <item>屏東縣</item>
+        <item>宜蘭縣</item>
+        <item>花蓮縣</item>
+        <item>臺東縣</item>
+        <item>澎湖縣</item>
+    </string-array>
+
+    <!--類型下拉選單-->
+    <string-array name="type">
+        <item>不分類型</item>
+        <item>有人店</item>
+        <item>無人店</item>
+    </string-array>
+
 </resources>

@@ -1,0 +1,14 @@
+<tabs>
+    <tab
+        id="@+id/bottombar_forum"
+        icon="@drawable/ic_forum"
+        title="@string/bottombar_title_forum" />
+    <tab
+        id="@+id/bottombar_map"
+        icon="@drawable/ic_map"
+        title="@string/bottombar_title_map" />
+    <tab
+        id="@+id/bottombar_person"
+        icon="@drawable/ic_person"
+        title="@string/bottombar_title_person" />
+</tabs>
