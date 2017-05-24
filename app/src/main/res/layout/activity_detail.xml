@@ -10,14 +10,14 @@
     <RelativeLayout
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:layout_alignParentTop="true"
         android:background="@color/primaryDark"
-        android:elevation="1dp">
+        android:elevation="6dp">
         <Button
             android:id="@+id/btn_back"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="false"
             android:layout_marginBottom="5dp"
@@ -30,9 +30,11 @@
     </RelativeLayout>
 
     <ScrollView
-        android:layout_below="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_below="@+id/toolBar">
 
         <RelativeLayout
             android:layout_width="match_parent"

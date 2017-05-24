@@ -26,8 +26,17 @@ public class ForumModelCompl implements IForumModel {
 
     @Override
     public void getForum() {
+        //  7
         DBConnector mDBConnector = new DBConnector(context);
         mDBConnector.setCallBack(callBack);
         mDBConnector.executeGetForum();
+    }
+
+    @Override
+    public void getArticle(String fid) {
+        //  8
+        DBConnector mDBConnector = new DBConnector(context);
+        mDBConnector.setCallBack(callBack);
+        mDBConnector.executeGetArticle(fid);
     }
 }

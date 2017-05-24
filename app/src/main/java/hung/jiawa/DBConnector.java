@@ -34,7 +34,7 @@ public class DBConnector {
     public int MODE_GET_MARKER=5;
     public int MODE_GET_DETAIL=6;
     public int MODE_GET_FORUM=7;
-    public int MODE_GET_MEMBER=17;
+    public int MODE_GET_ARTICLE=8;
 
     private static DBConnector mInstance;
     private RequestQueue mRequestQueue;
@@ -128,7 +128,7 @@ public class DBConnector {
         DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
     }
 
-    //取得剩餘時間、獎勵點數、剩餘觀看次數
+    //取得論壇板清單
     public void executeGetForum() {
         String url =website+"Get_forum.php";
         // Formulate the request and handle the response.
@@ -145,6 +145,32 @@ public class DBConnector {
                 ErrorList(error);
             }
         });
+        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
+    }
+
+    //取得論壇文章清單
+    public void executeGetArticle(final String fid) {
+        String url =website+"Get_article.php";
+        // Formulate the request and handle the response.
+        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        mAsyncTaskCallBack.onResult(MODE_GET_ARTICLE, response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                ErrorList(error);
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("fid", fid);
+                return map;
+            }
+        };
         DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
     }
 

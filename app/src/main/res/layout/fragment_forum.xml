@@ -10,7 +10,7 @@
         android:layout_height="40dp"
         android:layout_alignParentTop="true"
         android:background="@color/primaryDark"
-        android:elevation="1dp">
+        android:elevation="6dp">
 
         <Spinner
             android:id="@+id/spinner_forum"
@@ -19,22 +19,83 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="5dp" />
 
-        <Button
-            android:id="@+id/button_post"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
+        <ImageButton
+            android:id="@+id/btn_search"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@+id/btn_notification"
+            android:background="@color/transparent"
+            android:src="@mipmap/ic_search" />
+
+        <ImageButton
+            android:id="@+id/btn_notification"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@+id/btn_post"
+            android:background="@color/transparent"
+            android:src="@mipmap/ic_notifications" />
+
+        <ImageButton
+            android:id="@+id/btn_post"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/primary"
-            android:text="發表文章" />
+            android:layout_marginRight="8dp"
+            android:background="@color/transparent"
+            android:src="@mipmap/ic_post" />
+
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/linear_cate"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/toolBar"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/side_line"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/btn_hot"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/seleted_hot">
+
+            <TextView
+                android:id="@+id/tv_hot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="熱門"
+                android:textColor="@color/accent" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btn_new"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="最新"
+                android:textColor="@color/primary" />
+        </RelativeLayout>
+
+    </LinearLayout>
     <include
         layout="@layout/article_list"
+        android:layout_below="@+id/linear_cate"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="40dp" />
+        android:layout_marginTop="5dp" />
 
 </RelativeLayout>

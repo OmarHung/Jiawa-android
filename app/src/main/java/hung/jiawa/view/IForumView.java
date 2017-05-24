@@ -1,5 +1,6 @@
 package hung.jiawa.view;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,4 +11,6 @@ import java.util.Map;
 public interface IForumView {
     void toast(String msg);
     void setForumList(List<Map<String, Object>> list);
+    void setArticleList(List<Map<String, Object>> article);
+    void setNoArticle();
 }
