@@ -44,8 +44,9 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".view.activity.DetailActivity"></activity>
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".view.activity.DetailActivity" />
+        <activity android:name=".view.activity.PostArticleActivity"></activity>
     </application>
 
 </manifest>

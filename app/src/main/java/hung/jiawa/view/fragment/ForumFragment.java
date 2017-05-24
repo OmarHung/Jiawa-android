@@ -1,15 +1,23 @@
 package hung.jiawa.view.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,15 +29,20 @@ import hung.jiawa.R;
 import hung.jiawa.presenter.ForumPresenterCompl;
 import hung.jiawa.presenter.IForumPresenter;
 import hung.jiawa.view.IForumView;
+import hung.jiawa.view.activity.PostArticleActivity;
 import hung.jiawa.view.adapter.ArticleAdapter;
+import hung.jiawa.widget.XCDropDownListView;
 
-public class ForumFragment extends Fragment implements IForumView, View.OnClickListener, AdapterView.OnItemSelectedListener{
+public class ForumFragment extends Fragment implements IForumView, View.OnClickListener, AdapterView.OnItemSelectedListener, PopupMenu.OnMenuItemClickListener{
+    public final String TAG = "JiaWa";
+    public final String NAME = "ForumFragment - ";
     private ImageButton btn_post, btn_search, btn_notification;
     private RelativeLayout btn_new, btn_hot;
     private TextView tv_new, tv_hot;
     private Spinner spinner_forum;
     private RecyclerView article_list;
     private ArticleAdapter articleAdapter;
+    private PopupMenu popupmenu;
     IForumPresenter forumPresenter;
     public static ForumFragment newInstance() {
         ForumFragment fragmentFirst = new ForumFragment();
@@ -50,6 +63,7 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
         tv_hot = (TextView) view.findViewById(R.id.tv_hot);
         spinner_forum = (Spinner) view.findViewById(R.id.spinner_forum);
         article_list = (RecyclerView) view.findViewById(R.id.article_list);
+        popupmenu = new PopupMenu(getActivity(), btn_post);
 
         //set listener
         btn_post.setOnClickListener(this);
@@ -58,6 +72,7 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
         btn_new.setOnClickListener(this);
         btn_hot.setOnClickListener(this);
         spinner_forum.setOnItemSelectedListener(this);
+        popupmenu.setOnMenuItemClickListener(this);
 
         //init
         articleAdapter = new ArticleAdapter(getActivity());
@@ -80,6 +95,7 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
         String[] forum = new String[list.size()+1];
         forum[0] = "全部";
         for(int i=0;i<list.size();i++) {
+            popupmenu.getMenu().add(0, i+1, 0, list.get(i).get("fName").toString());//.getMenu().add(list.get(i).get("fName").toString());
             forum[i+1] = list.get(i).get("fName").toString();
         }
         ArrayAdapter<String> forumList = new ArrayAdapter<>(getActivity(),
@@ -106,6 +122,7 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_post:
+                showPopupMenu();
                 break;
             case R.id.btn_search:
                 break;
@@ -134,5 +151,20 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    private void showPopupMenu() {
+        popupmenu.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        Log.d(TAG, NAME+"onMenuItemClick :" + item.getItemId());
+        switch (item.getItemId()) {
+
+        }
+        //Intent intent = new Intent(getActivity(), PostArticleActivity.class);
+        //startActivity(intent);
+        return false;
     }
 }

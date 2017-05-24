@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/behavior_coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/primaryDark"
+        android:elevation="6dp">
+
+        <TextView
+            android:id="@+id/btn_cancel"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="8dp"
+            android:text="取消"
+            android:textSize="18dp"
+            android:textColor="@color/accent"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/title_post"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:text="發文"
+            android:textSize="18dp"
+            android:textColor="@color/accent"
+            android:gravity="center"/>
+
+        <ImageButton
+            android:id="@+id/btn_send"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:background="@color/transparent"
+            android:src="@mipmap/ic_send" />
+
+    </RelativeLayout>
+    <include
+        android:id="@+id/include_post"
+        layout="@layout/post_article_view_none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolBar"/>
+</RelativeLayout>
