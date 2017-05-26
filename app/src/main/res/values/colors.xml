@@ -16,6 +16,8 @@
     <color name="aluminum">#999999</color>
     <color name="base">#AAAAAA</color>
     <color name="iron">#CCCCCC</color>
+    <color name="iron_2">#EEEEEE</color>
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00000000</color>
+    <color name="transparency_pleca">#af2e2e2e</color>
 </resources>

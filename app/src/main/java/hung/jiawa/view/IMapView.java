@@ -15,4 +15,6 @@ public interface IMapView {
     void clearMark();
     void doFilter(List<Map<String, Object>> latLngTitle, float zoom, LatLng city);
     void showDetail(String tag);
+    void showLoadingDialog();
+    void dismissLoadingDialog();
 }

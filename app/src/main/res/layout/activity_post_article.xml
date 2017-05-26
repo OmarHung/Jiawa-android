@@ -24,8 +24,8 @@
 
         <TextView
             android:id="@+id/title_post"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:text="發文"
             android:textSize="18dp"

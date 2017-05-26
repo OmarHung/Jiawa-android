@@ -13,12 +13,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -38,20 +42,25 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 import java.util.Map;
 
+import hung.jiawa.CustomProgressDialog;
 import hung.jiawa.FragmentCallBack;
+import hung.jiawa.LoadingDialog;
 import hung.jiawa.MainActivity;
 import hung.jiawa.R;
 import hung.jiawa.presenter.IMapPresenter;
 import hung.jiawa.presenter.MapPresenterCompl;
 import hung.jiawa.view.IMapView;
 import hung.jiawa.view.activity.DetailActivity;
+import hung.jiawa.view.activity.PostLocationActivity;
 import hung.jiawa.view.adapter.CustomInfoWindowAdapter;
 
-public class MapFragment extends Fragment implements IMapView, OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMyLocationButtonClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class MapFragment extends Fragment implements IMapView, OnMapReadyCallback, View.OnClickListener, PopupMenu.OnMenuItemClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMyLocationButtonClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     private GoogleMap mMap;
-    private Button btn_share, btn_filter;
+    private ImageButton btn_save_location, btn_filter;
     private Spinner spinner_city, spinner_type;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private LoadingDialog mLoadingDialog = null;
+    private PopupMenu popupmenu;
     IMapPresenter mapPresenter;
     FragmentCallBack fragmentCallBack;
     //GoogleApiClient mGoogleApiClient = null;
@@ -73,16 +82,20 @@ public class MapFragment extends Fragment implements IMapView, OnMapReadyCallbac
 
         //find view
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mainMap);
-        btn_share = (Button) view.findViewById(R.id.button_share);
-        btn_filter = (Button) view.findViewById(R.id.button_filter);
+        btn_save_location = (ImageButton) view.findViewById(R.id.btn_save_location);
+        btn_filter = (ImageButton) view.findViewById(R.id.button_filter);
         spinner_city = (Spinner) view.findViewById(R.id.spinner_city);
         spinner_type = (Spinner) view.findViewById(R.id.spinner_type);
+        popupmenu = new PopupMenu(getActivity(), btn_save_location);
+        popupmenu.getMenuInflater().inflate(R.menu.menu_map, popupmenu.getMenu());
 
         //set listener
-        btn_share.setOnClickListener(this);
+        btn_save_location.setOnClickListener(this);
         btn_filter.setOnClickListener(this);
+        popupmenu.setOnMenuItemClickListener(this);
 
         //init
+        mLoadingDialog = new LoadingDialog(getActivity());
         mapPresenter = new MapPresenterCompl(getActivity(), this, mMap);
         checkPermissions();
         mapFragment.getMapAsync(this);
@@ -152,7 +165,7 @@ public class MapFragment extends Fragment implements IMapView, OnMapReadyCallbac
             mMap.setOnMarkerClickListener(this);
             mMap.setOnInfoWindowClickListener(this);
             LatLng sydney = new LatLng(23.5160065,120.9812453);
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 7f),1000,null);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 7f));
             //Set Custom InfoWindow Adapter
             CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(getActivity());
             mMap.setInfoWindowAdapter(adapter);
@@ -175,13 +188,15 @@ public class MapFragment extends Fragment implements IMapView, OnMapReadyCallbac
     public void doFilter(List<Map<String, Object>> latLngTitle, float zoom, LatLng city) {
         for(int i=0; i<latLngTitle.size(); i++) {
             Map<String, Object> data = latLngTitle.get(i);
-            double v = Double.valueOf(data.get("v").toString());
-            double v1 = Double.valueOf(data.get("v1").toString());
+            String latlng = data.get("latlng").toString();
+            String[] latlong = latlng.split(",");
+            double latitude = Double.parseDouble(latlong[0]);
+            double longitude = Double.parseDouble(latlong[1]);
+            LatLng markerLatLng = new LatLng(latitude, longitude);
             String title = data.get("title").toString();
             String id = data.get("id").toString();
-            LatLng latLng = new LatLng(v,v1);
             Marker marker = mMap.addMarker(new MarkerOptions()
-                    .position(latLng)
+                    .position(markerLatLng)
                     .title(title)
                     .snippet(id));
             marker.setTag(id);
@@ -209,8 +224,9 @@ public class MapFragment extends Fragment implements IMapView, OnMapReadyCallbac
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button_share:
-                fragmentCallBack.goToShareForum();
+            case R.id.btn_save_location:
+                showPopupMenu();
+                //fragmentCallBack.goToShareForum();
                 break;
             case R.id.button_filter:
                 mapPresenter.doFilter(spinner_city, spinner_type);
@@ -227,9 +243,19 @@ public class MapFragment extends Fragment implements IMapView, OnMapReadyCallbac
     public void showDetail(String tag) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("id", tag);
+        bundle.putString("lid", tag);
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    @Override
+    public void showLoadingDialog() {
+        mLoadingDialog.show();
+    }
+
+    @Override
+    public void dismissLoadingDialog() {
+        mLoadingDialog.dismiss();
     }
 
     @Override
@@ -279,5 +305,21 @@ public class MapFragment extends Fragment implements IMapView, OnMapReadyCallbac
     public void onInfoWindowClick(Marker marker) {
         String id = marker.getTag().toString();
         showDetail(id);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_save:
+                break;
+            case R.id.menu_post:
+                startActivity(new Intent(getActivity(), PostLocationActivity.class));
+                break;
+        }
+        return false;
+    }
+
+    private void showPopupMenu() {
+        popupmenu.show();
     }
 }

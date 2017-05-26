@@ -1,6 +1,26 @@
 <resources>
     <string name="app_name">JiaWa</string>
 
+    <!-- TakePhoto提示文字_-->
+    <string name="album_view">選擇圖片</string>
+    <string name="image_view">單擊選擇</string>
+    <string name="add">確定</string>
+    <string name="selected">已選</string>
+    <string name="limit_exceeded">最多能選 %d 張</string>
+    <string name="tip_type_not_image">選擇的不是圖片</string>
+    <string name="tip_no_camera">沒有相機</string>
+    <string name="tip_tips">提示</string>
+    <string name="tip_compress">正在壓縮照片...</string>
+    <string name="tip_compress_failed">"%1$s 圖片壓縮失敗:%2$s picturePath:%3$s"</string>
+    <string name="msg_crop_failed">"有裁切失敗的圖片"</string>
+    <string name="msg_compress_failed">"有壓縮失敗的圖片"</string>
+    <string name="msg_crop_canceled">" 取消裁切"</string>
+    <string name="msg_operation_canceled">"操作被取消"</string>
+    <string name="tip_permission_camera">沒有使用相機的權限，請在權限管理中開啟</string>
+    <string name="tip_permission_storage">沒有使用SD卡的權限，請在權限管理中開啟</string>
+    <string name="tip_permission_camera_storage">沒有使用相機和SD卡的權限，請在權限管理中開啟</string>
+
+
     <!-- bottombar_-->
     <string name="bottombar_title_forum">論壇</string>
     <string name="bottombar_title_map">夾點地圖</string>
@@ -71,4 +91,58 @@
         <item>無人店</item>
     </string-array>
 
+    <!--Po文城市下拉選單-->
+    <string-array name="post_city">
+        <item>所在縣市</item>
+        <item>臺北市</item>
+        <item>新北市</item>
+        <item>桃園市</item>
+        <item>臺中市</item>
+        <item>臺南市</item>
+        <item>高雄市</item>
+        <item>基隆市</item>
+        <item>新竹市</item>
+        <item>嘉義市</item>
+        <item>新竹縣</item>
+        <item>苗栗縣</item>
+        <item>彰化縣</item>
+        <item>南投縣</item>
+        <item>雲林縣</item>
+        <item>嘉義縣</item>
+        <item>屏東縣</item>
+        <item>宜蘭縣</item>
+        <item>花蓮縣</item>
+        <item>臺東縣</item>
+        <item>澎湖縣</item>
+    </string-array>
+
+    <!--Po文類型下拉選單-->
+    <string-array name="post_type">
+        <item>店面類型</item>
+        <item>有人店</item>
+        <item>無人店</item>
+    </string-array>
+
+    <!--Po文機台數下拉選單-->
+    <string-array name="post_machine">
+        <item>機台數</item>
+        <item>1-5台</item>
+        <item>6-10台</item>
+        <item>11-20台</item>
+        <item>21台以上</item>
+        <item>多到懶得數</item>
+    </string-array>
+
+    <style name="CustomDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+
+    <style name="CustomProgressDialog" parent="@style/CustomDialog">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

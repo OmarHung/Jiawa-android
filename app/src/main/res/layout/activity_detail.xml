@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="hung.jiawa.view.activity.DetailActivity">
 
-
     <RelativeLayout
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
@@ -14,51 +13,125 @@
         android:layout_alignParentTop="true"
         android:background="@color/primaryDark"
         android:elevation="6dp">
-        <Button
+
+        <TextView
             android:id="@+id/btn_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="false"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/primary"
+            android:layout_marginLeft="8dp"
+            android:gravity="center"
             android:text="返回"
+            android:textColor="@color/white"
             android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_toolTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="false"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@+id/btn_back"
+            android:gravity="left|center_vertical"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/btn_more"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:background="@color/transparent"
+            app:srcCompat="@android:drawable/ic_menu_share" />
     </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentBottom="false"
         android:layout_alignParentLeft="false"
         android:layout_alignParentStart="false"
         android:layout_below="@+id/toolBar">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="33dp"
+                android:layout_marginTop="16dp"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
-            <ImageView
-                android:id="@+id/img_picture"
+            <include
+                android:id="@+id/include_map"
+                layout="@layout/googlemap_activity"
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_height="200dp"
+                android:layout_below="@+id/tv_title" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/img_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_title"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="30dp"
-                android:scaleType="fitCenter" />
+                android:layout_below="@+id/include_map"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"></android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/tv_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/img_list"
+                android:layout_centerHorizontal="false"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@+id/tv_type"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/img_list"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_machine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/img_list"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@+id/tv_city"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/tv_city"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="20dp"
+                android:textColorHighlight="@color/black"
+                android:textSize="20sp" />
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

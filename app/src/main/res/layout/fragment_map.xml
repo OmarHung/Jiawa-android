@@ -12,18 +12,14 @@
         android:background="@color/primaryDark"
         android:elevation="6dp">
 
-        <Button
+        <ImageButton
             android:id="@+id/button_filter"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="false"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/primary"
-            android:text="篩選" />
+            android:layout_marginLeft="8dp"
+            android:background="@color/transparent"
+            android:src="@mipmap/ic_search" />
 
         <Spinner
             android:id="@+id/spinner_city"
@@ -41,21 +37,23 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@+id/spinner_city" />
+
+        <ImageButton
+            android:id="@+id/btn_save_location"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:background="@color/transparent"
+            android:src="@mipmap/ic_add_location" />
     </RelativeLayout>
 
     <include
         layout="@layout/googlemap"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="40dp" />
-
-    <Button
-        android:id="@+id/button_share"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="5dp"
-        android:background="@color/primary"
-        android:text="夾點分享" />
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_below="@+id/toolBar" />
 </RelativeLayout>

@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 
 public interface IDetailView {
     void toast(String msg);
-    void showDetail(String id, String title, String img, String v, String v1, String city_id, String type_id);
+    void showDetail(String id, String title, String latlng, String city_id, String type_id, String content, String machine_id, String like);
     void showImage(String imgUrl);
+    void showLoadingDialog();
+    void dismissLoadingDialog();
 }

@@ -35,6 +35,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
         this.iDetailModel = new DetailModelCompl(context, this);
         this.context = context;
         this.id = id;
+        iDetailView.showLoadingDialog();
         iDetailModel.getDetail(id);
     }
 
@@ -52,13 +53,16 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                 } else if (status.equals("201")) {
                     String id = jsonData.getString("id");
                     String title = jsonData.getString("title");
+                    String content = jsonData.getString("content");
                     String img = jsonData.getString("img");
-                    String v = jsonData.getString("v");
-                    String v1 = jsonData.getString("v1");
+                    String latlng = jsonData.getString("latlng");
                     String city_id = jsonData.getString("city_id");
                     String type_id = jsonData.getString("type_id");
-                    iDetailView.showDetail(id, title, img, v, v1, city_id, type_id);
-                    iDetailView.showImage(img);
+                    String machine = jsonData.getString("machines");
+                    String like = jsonData.getString("like");
+                    iDetailView.dismissLoadingDialog();
+                    iDetailView.showDetail(id, title, latlng, city_id, type_id, content, machine, like);
+                    if(img.length()>1) iDetailView.showImage(img);
                 }
             }
         } catch (JSONException e) {}
@@ -67,6 +71,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     @Override
     public void onError(String error) {
         iDetailView.toast(error);
+        iDetailView.dismissLoadingDialog();
     }
 
     //讀取網路圖片，型態為Bitmap

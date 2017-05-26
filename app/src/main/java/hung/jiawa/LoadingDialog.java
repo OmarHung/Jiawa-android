@@ -8,13 +8,18 @@ import android.content.Context;
  */
 
 public class LoadingDialog {
-    private ProgressDialog progressDialog = null;
+    private CustomProgressDialog progressDialog = null;
     private Context context;
     public LoadingDialog(Context context) {
         this.context = context;
     }
+    public void show() {
+        progressDialog = CustomProgressDialog.createDialog(context);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
     public void show(String msg) {
-        progressDialog = new ProgressDialog(context, R.style.AppTheme_Dark_Dialog);
+        progressDialog = CustomProgressDialog.createDialog(context);
         progressDialog.setCancelable(false);
         progressDialog.setMessage(msg);
         progressDialog.show();

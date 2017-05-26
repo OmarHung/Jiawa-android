@@ -17,6 +17,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +38,8 @@ public class DBConnector {
     public int MODE_GET_DETAIL=6;
     public int MODE_GET_FORUM=7;
     public int MODE_GET_ARTICLE=8;
+    public int MODE_POST_LOCATION=9;
+    public int MODE_UPLOAD_IMAGE=10;
 
     private static DBConnector mInstance;
     private RequestQueue mRequestQueue;
@@ -276,6 +281,63 @@ public class DBConnector {
         DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
     }
 
+    //發表夾點
+    public void executePostLocation(final String mid, final String title, final String content, final String latlng, final String city, final String type, final String number_of_machine, final String img) {
+        String url =website+"Get_post_location.php";
+        // Formulate the request and handle the response.
+        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        mAsyncTaskCallBack.onResult(MODE_POST_LOCATION, response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                ErrorList(error);
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("mid", mid);
+                map.put("title", title);
+                map.put("content", content);
+                map.put("img", img);
+                map.put("latlng", latlng);
+                map.put("city", city);
+                map.put("type", type);
+                map.put("number_of_machine", number_of_machine);
+                return map;
+            }
+        };
+        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
+    }
+    public void executeUploadImage(final String mid, final String img, final String id) {
+        String url =website+"Get_upload_image.php";
+        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        mAsyncTaskCallBack.onResult(MODE_UPLOAD_IMAGE, response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                ErrorList(error);
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("name", getPhotoFileName(mid,img,id));
+                map.put("img", img);
+                return map;
+            }
+        };
+        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
+    }
+
     private void ErrorList(VolleyError error) {
         String message = null;
         if (error instanceof NetworkError) {
@@ -292,5 +354,18 @@ public class DBConnector {
             message = "連接超時...請檢查您的網路狀態！";
         }
         mAsyncTaskCallBack.onError(message);
+    }
+    private String getPhotoFileName(String mid, String img, String id) {
+        String result="";
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("'IMG'_yyyyMMdd_HHmmss_");
+        result += mid + dateFormat.format(date) + id + ".jpg";
+        /*
+        String[] token = img.split("|");
+        for (int i=0;i<token.length;i++){
+            if(i==token.length-1) result += mid + dateFormat.format(date) + (i+1) + ".jpg";
+            else result += mid + dateFormat.format(date) + (i+1) + ".jpg|";
+        }*/
+        return result;
     }
 }

@@ -30,6 +30,7 @@ import hung.jiawa.presenter.ForumPresenterCompl;
 import hung.jiawa.presenter.IForumPresenter;
 import hung.jiawa.view.IForumView;
 import hung.jiawa.view.activity.PostArticleActivity;
+import hung.jiawa.view.activity.PostLocationActivity;
 import hung.jiawa.view.adapter.ArticleAdapter;
 import hung.jiawa.widget.XCDropDownListView;
 
@@ -161,7 +162,14 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
     public boolean onMenuItemClick(MenuItem item) {
         Log.d(TAG, NAME+"onMenuItemClick :" + item.getItemId());
         switch (item.getItemId()) {
-
+            case 1:
+                Intent intent = new Intent(getActivity(), PostLocationActivity.class);
+                startActivity(intent);
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
         }
         //Intent intent = new Intent(getActivity(), PostArticleActivity.class);
         //startActivity(intent);

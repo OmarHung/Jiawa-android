@@ -42,11 +42,14 @@ public class MapPresenterCompl implements IMapPresenter, AsyncTaskCallBack {
         this.iMapModel = new MapModelCompl(context, this);
         this.context = context;
         this.mMap = mMap;
+        iMapView.showLoadingDialog();
+        iMapModel.getMarker(0,0);
     }
 
     @Override
     public void onResult(int mode, String result) {
         Log.d(TAG, NAME+"onResult"+result + ":" + mode);
+        iMapView.dismissLoadingDialog();
         try {
             iMapView.clearMark();
             String status="", msg="", cityString="", cityZoom="";
@@ -73,14 +76,12 @@ public class MapPresenterCompl implements IMapPresenter, AsyncTaskCallBack {
                     iMapView.doFilter(myDataset, Float.valueOf(cityZoom), cityLatLng);
                 }else {
                     if (status.equals("201")) {
-                        String v = jsonData.getString("v");
-                        String v1 = jsonData.getString("v1");
+                        String latlng = jsonData.getString("latlng");
                         String title = jsonData.getString("title");
                         String id = jsonData.getString("id");
                         //存入myDataset
                         Map<String, Object> item = new HashMap<String, Object>();
-                        item.put("v", v);
-                        item.put("v1", v1);
+                        item.put("latlng", latlng);
                         item.put("title", title);
                         item.put("id", id);
                         myDataset.add(item);
@@ -92,11 +93,13 @@ public class MapPresenterCompl implements IMapPresenter, AsyncTaskCallBack {
 
     @Override
     public void onError(String error) {
+        iMapView.dismissLoadingDialog();
         iMapView.toast(error);
     }
 
     @Override
     public void doFilter(Spinner city, Spinner type) {
+        iMapView.showLoadingDialog();
         int cityPosition = city.getSelectedItemPosition();
         int typePosition = type.getSelectedItemPosition();
         Log.d(TAG, NAME+"city = "+city.getSelectedItemPosition() + ": type = " + type.getSelectedItemPosition());

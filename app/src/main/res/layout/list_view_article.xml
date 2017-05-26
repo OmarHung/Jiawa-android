@@ -30,54 +30,53 @@
                 android:maxLines="1"
                 android:text="啪啪ㄆ啪啪啪啪啪啪ㄆ啪啪啪啪啪啪ㄆ啪啪啪啪啪啪ㄆ啪啪啪啪"
                 android:textColor="@color/black"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_title"
+                android:layout_marginTop="5dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/tv_title"
                 android:text="啪啪ㄆ啪啪啪啪啪啪ㄆ啪啪啪啪啪啪ㄆ啪啪啪啪啪啪ㄆ啪啪啪啪"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="3">
+            android:layout_weight="3"
+            android:paddingRight="16dp">
 
             <TextView
                 android:id="@+id/tv_forum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
+                android:layout_alignParentRight="true"
                 android:text="夾點分享" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            <ImageView
+                android:id="@+id/img_response"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/tv_response"
+                android:layout_marginTop="8dp"
                 android:layout_below="@+id/tv_forum"
-                android:paddingLeft="20dp">
+                android:src="@mipmap/ic_response" />
 
-                <ImageView
-                    android:id="@+id/img_response"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:src="@mipmap/ic_response" />
-
-                <TextView
-                    android:id="@+id/tv_response"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/img_response"
-                    android:text="20" />
-
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_response"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="8dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="5dp"
+                android:layout_below="@+id/tv_forum"
+                android:text="20" />
         </RelativeLayout>
     </LinearLayout>
     <LinearLayout

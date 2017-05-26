@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
 
     @Override
     public void showLoadingDialog() {
-        mLoadingDialog.show("驗證帳戶中...");
+        mLoadingDialog.show();
     }
 
     @Override
