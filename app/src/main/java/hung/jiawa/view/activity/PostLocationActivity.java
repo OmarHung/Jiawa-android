@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,7 +35,6 @@ import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoActivity;
 import com.jph.takephoto.compress.CompressConfig;
@@ -280,13 +280,17 @@ public class PostLocationActivity extends TakePhotoActivity implements IPostLoca
                             builderTakePhotoOptions.setCorrectImage(true);
                             takePhoto.setTakePhotoOptions(builderTakePhotoOptions.create());
 
+                            CropOptions.Builder builderCropOptions=new CropOptions.Builder();
+                            builderCropOptions.setAspectX(1).setAspectY(1);
+                            builderCropOptions.setWithOwnCrop(false);
+
                             switch (which) {
                                 case 0:
                                     // 指定調用相機拍照後照片的儲存路徑
-                                    takePhoto.onPickFromCapture(imageUri);
+                                    takePhoto.onPickFromCaptureWithCrop(imageUri, builderCropOptions.create());
                                     break;
                                 case 1:
-                                    takePhoto.onPickMultiple(5-hasImageSelectCount);
+                                    takePhoto.onPickFromGalleryWithCrop(imageUri, builderCropOptions.create());
                                     break;
                             }
                         }

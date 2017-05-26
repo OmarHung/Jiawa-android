@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class PostArticleActivity extends AppCompatActivity implements IPostArtic
 
     @Override
     public void toast(String msg) {
-
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

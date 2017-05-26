@@ -21,10 +21,12 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Map;
 
+import hung.jiawa.LoadingDialog;
 import hung.jiawa.R;
 import hung.jiawa.presenter.ForumPresenterCompl;
 import hung.jiawa.presenter.IForumPresenter;
@@ -44,6 +46,7 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
     private RecyclerView article_list;
     private ArticleAdapter articleAdapter;
     private PopupMenu popupmenu;
+    private LoadingDialog mLoadingDialog = null;
     IForumPresenter forumPresenter;
     public static ForumFragment newInstance() {
         ForumFragment fragmentFirst = new ForumFragment();
@@ -76,6 +79,7 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
         popupmenu.setOnMenuItemClickListener(this);
 
         //init
+        mLoadingDialog = new LoadingDialog(getActivity());
         articleAdapter = new ArticleAdapter(getActivity());
         article_list.setLayoutManager(new LinearLayoutManager(getActivity()));
         forumPresenter = new ForumPresenterCompl(getActivity(), this);
@@ -88,7 +92,7 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
 
     @Override
     public void toast(String msg) {
-
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -117,6 +121,16 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
         articleAdapter.setMyDataset(null);
         article_list.setAdapter(articleAdapter);
         articleAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showLoadingDialog() {
+        mLoadingDialog.show();
+    }
+
+    @Override
+    public void dismissLoadingDialog() {
+        mLoadingDialog.dismiss();
     }
 
     @Override

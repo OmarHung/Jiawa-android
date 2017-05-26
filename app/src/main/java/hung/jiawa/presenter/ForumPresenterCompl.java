@@ -41,12 +41,14 @@ public class ForumPresenterCompl implements IForumPresenter, AsyncTaskCallBack {
         this.iForumModel = new ForumModelCompl(context, this);
         this.context = context;
         //取得論壇板清單用以顯示spinner
+        iForumView.showLoadingDialog();
         iForumModel.getForum();
     }
 
     @Override
     public void onResult(int mode, String result) {
         Log.d(TAG, NAME+"onResult"+result + ":" + mode);
+        iForumView.dismissLoadingDialog();
         try {
             String status="", msg="";
             List<Map<String, Object>> myDataset = new ArrayList<Map<String, Object>>();
@@ -118,6 +120,7 @@ public class ForumPresenterCompl implements IForumPresenter, AsyncTaskCallBack {
     @Override
     public void onError(String error) {
         iForumView.toast(error);
+        iForumView.dismissLoadingDialog();
     }
 
     @Override
