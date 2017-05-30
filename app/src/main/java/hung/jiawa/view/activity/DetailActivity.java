@@ -36,21 +36,20 @@ import hung.jiawa.presenter.IDetailPresenter;
 import hung.jiawa.view.IDetailView;
 import hung.jiawa.view.adapter.CustomInfoWindowAdapter;
 import hung.jiawa.view.adapter.ImageAdapter;
+import hung.jiawa.view.adapter.ResponseAdapter;
 import hung.jiawa.view.adapter.UriImageAdapter;
 
-public class DetailActivity extends AppCompatActivity implements IDetailView, View.OnClickListener, UriImageAdapter.OnRecyclerViewItemClickListener, OnMapReadyCallback {
+public class DetailActivity extends AppCompatActivity implements IDetailView, View.OnClickListener, OnMapReadyCallback {
     public final String TAG = "JiaWa";
     public final String NAME = "DetailActivity - ";
     private String latlng;
     private GoogleMap mMap;
     private ImageButton btn_more;
-    private TextView tv_toolTitle, tv_title, tv_content, tv_city, tv_type, tv_machine, btn_back;
-    private RecyclerView img_list;
-    IDetailPresenter detailPresenter;
-    private UriImageAdapter uriImageAdapter;
+    private TextView tv_toolTitle, tv_title, tv_content, tv_city, tv_type, tv_machine, btn_back, tv_total_like, tv_all_response, tv_total_response;
+    private RecyclerView img_list, response_list;
     private LoadingDialog mLoadingDialog = null;
     private MapFragment mapFragment;
-    List<Uri> imgList = new ArrayList<>();
+    IDetailPresenter detailPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +57,7 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
 
         Bundle bundle = getIntent().getExtras();
         String lid = bundle.getString("lid");
+
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mainMap);
         tv_toolTitle = (TextView) findViewById(R.id.tv_toolTitle);
         tv_title = (TextView) findViewById(R.id.tv_title);
@@ -66,24 +66,18 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
         tv_type = (TextView) findViewById(R.id.tv_type);
         tv_machine = (TextView) findViewById(R.id.tv_machine);
         btn_back = (TextView) findViewById(R.id.btn_back);
+        tv_total_like = (TextView) findViewById(R.id.tv_total_like);
+        tv_all_response = (TextView) findViewById(R.id.tv_all_response);
+        tv_total_response = (TextView) findViewById(R.id.tv_total_response);
         btn_more = (ImageButton) findViewById(R.id.btn_more);
         img_list = (RecyclerView) findViewById(R.id.img_list);
+        response_list = (RecyclerView) findViewById(R.id.response_list);
 
         btn_back.setOnClickListener(this);
         btn_more.setOnClickListener(this);
 
         mLoadingDialog = new LoadingDialog(this);
-        initRecyclerView();
-        detailPresenter = new DetailPresenterCompl(this, this, lid);
-    }
-
-    private void initRecyclerView() {
-        uriImageAdapter = new UriImageAdapter(this);
-        uriImageAdapter.setOnItemClickListener(this);
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        img_list.setLayoutManager(layoutManager);
-        img_list.setAdapter(uriImageAdapter);
+        detailPresenter = new DetailPresenterCompl(this, this, lid, img_list, response_list);
     }
 
     @Override
@@ -103,10 +97,13 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
     }
 
     @Override
-    public void showDetail(String id, String title, String latlng, String city_id, String type_id, String content, String machine_id, String like) {
+    public void showDetail(String id, String title, String latlng, String city_id, String type_id, String content, String machine_id, String like, String response) {
         this.latlng = latlng;
         tv_title.setText(title);
         tv_toolTitle.setText(title);
+        tv_total_like.setText(like);
+        tv_total_response.setText(response);
+        if(Integer.valueOf(response)<1) tv_all_response.setText("尚未有回文");
         Resources res =getResources();
         String[] city=res.getStringArray(R.array.post_city);
         String[] type=res.getStringArray(R.array.post_type);
@@ -119,16 +116,6 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
     }
 
     @Override
-    public void showImage(String imgUrl) {
-        String[] img = imgUrl.split(",");
-        for(int i=0;i<img.length;i++) {
-            Log.d(TAG, NAME+"images : " + img[i]+"  i : "+i);
-            imgList.add(Uri.parse(img[i]));
-        }
-        uriImageAdapter.setAllImages(imgList);
-    }
-
-    @Override
     public void showLoadingDialog() {
         mLoadingDialog.show();
     }
@@ -136,14 +123,6 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
     @Override
     public void dismissLoadingDialog() {
         mLoadingDialog.dismiss();
-    }
-
-    @Override
-    public void onItemClick(int position) {
-        //檢視相片
-        new ImageViewer.Builder(this, imgList)
-                .setStartPosition(position)
-                .show();
     }
 
     @Override

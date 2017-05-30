@@ -121,9 +121,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/include_map"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp">
+                android:layout_alignLeft="@+id/include_map"
+                android:layout_alignStart="@+id/include_map">
             </android.support.v7.widget.RecyclerView>
 
             <TextView
@@ -131,12 +130,58 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/img_list"
-                android:layout_marginBottom="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="20dp"
                 android:textColorHighlight="@color/black"
                 android:textSize="20sp" />
+            <LinearLayout
+                android:id="@+id/linear_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/base"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_below="@+id/tv_content"
+                android:orientation="horizontal"/>
+            <LinearLayout
+                android:id="@+id/linear_response_and_favorit"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_below="@+id/linear_line">
+                <ImageView
+                    android:src="@mipmap/ic_favorit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/tv_total_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="359"/>
+                <ImageView
+                    android:src="@mipmap/ic_response"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp" />
+                <TextView
+                    android:id="@+id/tv_total_response"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="19" />
+            </LinearLayout>
+            <include
+                layout="@layout/response_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linear_response_and_favorit"/>
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

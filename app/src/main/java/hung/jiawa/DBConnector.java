@@ -40,6 +40,7 @@ public class DBConnector {
     public int MODE_GET_ARTICLE=8;
     public int MODE_POST_LOCATION=9;
     public int MODE_UPLOAD_IMAGE=10;
+    public int MODE_GET_RESPONSE=11;
 
     private static DBConnector mInstance;
     private RequestQueue mRequestQueue;
@@ -265,6 +266,32 @@ public class DBConnector {
                     @Override
                     public void onResponse(String response) {
                         mAsyncTaskCallBack.onResult(MODE_GET_DETAIL, response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                ErrorList(error);
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("id", id);
+                return map;
+            }
+        };
+        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
+    }
+
+    //取得文章回覆
+    public void executeGetResponse(final String id) {
+        String url =website+"Get_response.php";
+        // Formulate the request and handle the response.
+        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        mAsyncTaskCallBack.onResult(MODE_GET_RESPONSE, response);
                     }
                 }, new Response.ErrorListener() {
             @Override

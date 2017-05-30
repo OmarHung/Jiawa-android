@@ -26,8 +26,17 @@ public class DetailModelCompl implements IDetailModel {
 
     @Override
     public void getDetail(String id) {
+        //6
         DBConnector mDBConnector = new DBConnector(context);
         mDBConnector.setCallBack(callBack);
         mDBConnector.executeGetDetail(id);
+    }
+
+    @Override
+    public void getResponse(String id) {
+        //11
+        DBConnector mDBConnector = new DBConnector(context);
+        mDBConnector.setCallBack(callBack);
+        mDBConnector.executeGetResponse(id);
     }
 }

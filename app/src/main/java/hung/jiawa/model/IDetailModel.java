@@ -6,4 +6,5 @@ package hung.jiawa.model;
 
 public interface IDetailModel {
     void getDetail(String id);
+    void getResponse(String id);
 }
