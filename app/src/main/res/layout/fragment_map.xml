@@ -56,4 +56,25 @@
         android:layout_alignParentLeft="false"
         android:layout_alignParentStart="false"
         android:layout_below="@+id/toolBar" />
+
+    <TextView
+        android:id="@+id/latlng"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="TextView"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/zoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/latlng"
+        android:layout_alignLeft="@+id/latlng"
+        android:layout_alignStart="@+id/latlng"
+        android:layout_marginBottom="12dp"
+        android:text="TextView"
+        android:visibility="gone" />
 </RelativeLayout>

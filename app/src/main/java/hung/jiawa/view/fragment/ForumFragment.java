@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,12 +32,13 @@ import hung.jiawa.R;
 import hung.jiawa.presenter.ForumPresenterCompl;
 import hung.jiawa.presenter.IForumPresenter;
 import hung.jiawa.view.IForumView;
+import hung.jiawa.view.activity.DetailActivity;
 import hung.jiawa.view.activity.PostArticleActivity;
 import hung.jiawa.view.activity.PostLocationActivity;
 import hung.jiawa.view.adapter.ArticleAdapter;
 import hung.jiawa.widget.XCDropDownListView;
 
-public class ForumFragment extends Fragment implements IForumView, View.OnClickListener, AdapterView.OnItemSelectedListener, PopupMenu.OnMenuItemClickListener{
+public class ForumFragment extends Fragment implements IForumView, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, AdapterView.OnItemSelectedListener, PopupMenu.OnMenuItemClickListener, ArticleAdapter.OnRecyclerViewItemClickListener {
     public final String TAG = "JiaWa";
     public final String NAME = "ForumFragment - ";
     private ImageButton btn_post, btn_search, btn_notification;
@@ -44,9 +46,11 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
     private TextView tv_new, tv_hot;
     private Spinner spinner_forum;
     private RecyclerView article_list;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ArticleAdapter articleAdapter;
     private PopupMenu popupmenu;
-    private LoadingDialog mLoadingDialog = null;
+    private int nowForum;
+    private int nowCate=0;
     IForumPresenter forumPresenter;
     public static ForumFragment newInstance() {
         ForumFragment fragmentFirst = new ForumFragment();
@@ -67,7 +71,9 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
         tv_hot = (TextView) view.findViewById(R.id.tv_hot);
         spinner_forum = (Spinner) view.findViewById(R.id.spinner_forum);
         article_list = (RecyclerView) view.findViewById(R.id.article_list);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         popupmenu = new PopupMenu(getActivity(), btn_post);
+        articleAdapter = new ArticleAdapter(getActivity());
 
         //set listener
         btn_post.setOnClickListener(this);
@@ -77,10 +83,10 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
         btn_hot.setOnClickListener(this);
         spinner_forum.setOnItemSelectedListener(this);
         popupmenu.setOnMenuItemClickListener(this);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        articleAdapter.setOnItemClickListener(this);
 
         //init
-        mLoadingDialog = new LoadingDialog(getActivity());
-        articleAdapter = new ArticleAdapter(getActivity());
         article_list.setLayoutManager(new LinearLayoutManager(getActivity()));
         forumPresenter = new ForumPresenterCompl(getActivity(), this);
 
@@ -111,6 +117,7 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
 
     @Override
     public void setArticleList(List<Map<String, Object>> article) {
+        swipeRefreshLayout.setRefreshing(false);
         articleAdapter.setMyDataset(article);
         article_list.setAdapter(articleAdapter);
         articleAdapter.notifyDataSetChanged();
@@ -118,19 +125,10 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
 
     @Override
     public void setNoArticle() {
+        swipeRefreshLayout.setRefreshing(false);
         articleAdapter.setMyDataset(null);
         article_list.setAdapter(articleAdapter);
         articleAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void showLoadingDialog() {
-        mLoadingDialog.show();
-    }
-
-    @Override
-    public void dismissLoadingDialog() {
-        mLoadingDialog.dismiss();
     }
 
     @Override
@@ -144,23 +142,39 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
             case R.id.btn_notification:
                 break;
             case R.id.btn_new:
-                btn_new.setBackgroundResource(R.drawable.seleted_new);
-                btn_hot.setBackgroundResource(0);
-                tv_new.setTextColor(getResources().getColor(R.color.accent));
-                tv_hot.setTextColor(getResources().getColor(R.color.primary));
+                if(nowCate!=1) {
+                    swipeRefreshLayout.setRefreshing(true);
+                    nowCate = 1;
+                    articleAdapter.clearData();
+                    btn_new.setBackgroundResource(R.drawable.seleted_new);
+                    btn_hot.setBackgroundResource(0);
+                    tv_new.setTextColor(getResources().getColor(R.color.accent));
+                    tv_hot.setTextColor(getResources().getColor(R.color.primary));
+                    forumPresenter.showArticle(nowForum, nowCate);
+                }
                 break;
             case R.id.btn_hot:
-                btn_hot.setBackgroundResource(R.drawable.seleted_hot);
-                btn_new.setBackgroundResource(0);
-                tv_hot.setTextColor(getResources().getColor(R.color.accent));
-                tv_new.setTextColor(getResources().getColor(R.color.primary));
+                if(nowCate!=0) {
+                    swipeRefreshLayout.setRefreshing(true);
+                    nowCate = 0;
+                    articleAdapter.clearData();
+                    btn_hot.setBackgroundResource(R.drawable.seleted_hot);
+                    btn_new.setBackgroundResource(0);
+                    tv_hot.setTextColor(getResources().getColor(R.color.accent));
+                    tv_new.setTextColor(getResources().getColor(R.color.primary));
+                    forumPresenter.showArticle(nowForum, nowCate);
+                }
                 break;
         }
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        forumPresenter.showArticle(position);
+        Log.d(TAG, NAME+"onItemSelected : "+position);
+        articleAdapter.clearData();
+        swipeRefreshLayout.setRefreshing(true);
+        nowForum=position;
+        forumPresenter.showArticle(position, nowCate);
     }
 
     @Override
@@ -188,5 +202,25 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
         //Intent intent = new Intent(getActivity(), PostArticleActivity.class);
         //startActivity(intent);
         return false;
+    }
+
+    @Override
+    public void onRefresh() {
+        Log.d(TAG, NAME+"onRefresh");
+        forumPresenter.showArticle(nowForum, nowCate);
+    }
+
+    @Override
+    public void onItemClick(String fid, String aid) {
+        if(fid.equals("1")) {
+            toast("fid = "+fid+" ,  aid = "+aid);
+            Intent intent = new Intent(getActivity(), DetailActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("lid", aid);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }else {
+            toast("fid = "+fid+" ,  aid = "+aid);
+        }
     }
 }

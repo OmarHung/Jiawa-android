@@ -13,6 +13,4 @@ public interface IForumView {
     void setForumList(List<Map<String, Object>> list);
     void setArticleList(List<Map<String, Object>> article);
     void setNoArticle();
-    void showLoadingDialog();
-    void dismissLoadingDialog();
 }

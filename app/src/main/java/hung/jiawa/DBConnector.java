@@ -154,7 +154,7 @@ public class DBConnector {
     }
 
     //取得論壇文章清單
-    public void executeGetArticle(final String fid) {
+    public void executeGetArticle(final String fid, final String cate) {
         String url =website+"Get_article.php";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
@@ -173,6 +173,7 @@ public class DBConnector {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("fid", fid);
+                map.put("cate", cate);
                 return map;
             }
         };

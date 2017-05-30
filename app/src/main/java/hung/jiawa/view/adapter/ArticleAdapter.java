@@ -18,7 +18,7 @@ import hung.jiawa.R;
  * Created by omar8 on 2017/5/24.
  */
 
-public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener, View.OnLongClickListener {
+public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public final String TAG = "JiaWa";
     public final String NAME = "ArticleAdapter - ";
     private Context mContext;
@@ -26,8 +26,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     //自定義監聽事件
     public static interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view);
-        void onItemLongClick(View view);
+        void onItemClick(String fid, String aid);
     }
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
 
@@ -46,10 +45,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.list_view_article, parent,false);
         MyViewHolder holder = new MyViewHolder(view);
-
-        view.setOnClickListener(this);
-        view.setOnLongClickListener(this);
-
         return holder;
     }
 
@@ -68,15 +63,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return myDataset.size();
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
-
-    @Override
-    public boolean onLongClick(View v) {
-        return false;
-    }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_title, tv_content, tv_response, tv_forum;
@@ -87,20 +73,16 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             tv_content = (TextView) view.findViewById(R.id.tv_content);
             tv_response = (TextView) view.findViewById(R.id.tv_response);
             tv_forum = (TextView) view.findViewById(R.id.tv_forum);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClick(myDataset.get(getPosition()).get("fid").toString(), myDataset.get(getPosition()).get("aid").toString());
+                }
+            });
         }
     }
-    /*
-    //添加一个item
-    public void addItem(Meizi meizi, int position) {
-        meizis.add(position, meizi);
-        notifyItemInserted(position);
-        recyclerview.scrollToPosition(position);//recyclerview滚动到新加item处
+    public void clearData() {
+        myDataset.clear();
+        notifyDataSetChanged();
     }
-
-    //删除一个item
-    public void removeItem(final int position) {
-        meizis.remove(position);
-        notifyItemRemoved(position);
-    }
-    */
 }

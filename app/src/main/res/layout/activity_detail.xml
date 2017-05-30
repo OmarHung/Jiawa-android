@@ -33,7 +33,8 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="16dp"
             android:layout_toRightOf="@+id/btn_back"
-            android:gravity="left|center_vertical"
+            android:layout_toLeftOf="@+id/btn_more"
+            android:gravity="center"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -44,7 +45,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="8dp"
             android:background="@color/transparent"
-            app:srcCompat="@android:drawable/ic_menu_share" />
+            android:src="@mipmap/ic_more"/>
     </RelativeLayout>
 
     <ScrollView
@@ -103,7 +104,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_toRightOf="@+id/tv_city"
                     android:textColor="@color/monsoon"
-                    android:textSize="16 sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
             <include
                 android:id="@+id/include_map"

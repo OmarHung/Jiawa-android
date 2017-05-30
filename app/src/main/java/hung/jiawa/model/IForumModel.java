@@ -6,5 +6,5 @@ package hung.jiawa.model;
 
 public interface IForumModel {
     void getForum();
-    void getArticle(String fid);
+    void getArticle(String fid, String cate);
 }

@@ -41,6 +41,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
 
     @Override
     public void onResult(int mode, String result) {
+        iDetailView.dismissLoadingDialog();
         Log.d(TAG, NAME+"onResult"+result + ":" + mode);
         try {
             JSONArray jsonArray = new JSONArray(result);
@@ -60,7 +61,6 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                     String type_id = jsonData.getString("type_id");
                     String machine = jsonData.getString("machines");
                     String like = jsonData.getString("like");
-                    iDetailView.dismissLoadingDialog();
                     iDetailView.showDetail(id, title, latlng, city_id, type_id, content, machine, like);
                     if(img.length()>1) iDetailView.showImage(img);
                 }

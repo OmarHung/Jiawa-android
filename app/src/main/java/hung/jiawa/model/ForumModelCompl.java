@@ -33,10 +33,10 @@ public class ForumModelCompl implements IForumModel {
     }
 
     @Override
-    public void getArticle(String fid) {
+    public void getArticle(String fid, String cate) {
         //  8
         DBConnector mDBConnector = new DBConnector(context);
         mDBConnector.setCallBack(callBack);
-        mDBConnector.executeGetArticle(fid);
+        mDBConnector.executeGetArticle(fid, cate);
     }
 }

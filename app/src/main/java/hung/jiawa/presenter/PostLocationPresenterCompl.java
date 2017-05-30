@@ -150,16 +150,20 @@ public class PostLocationPresenterCompl implements IPostLocationPresenter, Async
             this.number_of_machine = String.valueOf(number_of_machine);
             iPostLocationView.showLoadingDialog();
             amountImages = imgList.size();
-            for(int i=0;i<amountImages;i++) {
-                String str_Images="";
-                try {
-                    InputStream iStream = context.getContentResolver().openInputStream(imgList.get(i));
-                    byte[] inputData = getBytes(iStream);
-                    str_Images = Base64.encodeToString(inputData, Base64.DEFAULT);
-                } catch (IOException e) {
-                    e.printStackTrace();
+            if(amountImages>0) {
+                for (int i = 0; i < amountImages; i++) {
+                    String str_Images = "";
+                    try {
+                        InputStream iStream = context.getContentResolver().openInputStream(imgList.get(i));
+                        byte[] inputData = getBytes(iStream);
+                        str_Images = Base64.encodeToString(inputData, Base64.DEFAULT);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    iPostLocationModel.uploadImage(str_Images, String.valueOf(i + 1));
                 }
-                iPostLocationModel.uploadImage(str_Images,String.valueOf(i+1));
+            }else {
+                iPostLocationModel.postLoaction(this.title, this.content, this.latlng, this.city, this.type, this.number_of_machine, "");
             }
         }
     }

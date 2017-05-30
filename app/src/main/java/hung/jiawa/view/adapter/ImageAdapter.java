@@ -29,7 +29,7 @@ import hung.jiawa.R;
  * Created by omar8 on 2017/5/24.
  */
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.AddViewHolder> {
+public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder> {
     public final String TAG = "JiaWa";
     public final String NAME = "ImageAdapter - ";
     private Context mContext;
@@ -54,19 +54,56 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.AddViewHolde
         addAddImageView();
     }
 
+
     @Override
-    public AddViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new AddViewHolder(mLayoutInflater.inflate(R.layout.list_view_img, parent, false));
+    public int getItemViewType(int position) {
+        return myDataset.get(position).getType();
+    }
+
+    @Override
+    public MyViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
+        //照片
+        if(viewType==0){
+            View view = LayoutInflater.from(mContext).inflate(R.layout.list_view_img, parent, false);//这个布局就是一个imageview用来显示图片
+            final MyViewHolder holder = new MyViewHolder(view);
+            //给布局设置点击和长点击监听
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClick(holder.getPosition(), myDataset.get(holder.getPosition()).getId(), myDataset.get(holder.getPosition()).getType(), myDataset.get(holder.getPosition()).getImage());
+                }
+            });
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mOnItemClickListener.onItemLongClick(holder.getPosition(), myDataset.get(holder.getPosition()).getId(), myDataset.get(holder.getPosition()).getType());
+                    return true;
+                }
+            });
+
+            return holder;
+        }
+        //加入按鈕
+        else{
+            View view = LayoutInflater.from(mContext).inflate(R.layout.list_view_img_add, parent, false);//这个布局就是一个imageview用来显示图片
+            final MyViewHolder holder = new MyViewHolder(view);
+            //给布局设置点击和长点击监听
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClick(holder.getPosition(), myDataset.get(holder.getPosition()).getId(), myDataset.get(holder.getPosition()).getType(), myDataset.get(holder.getPosition()).getImage());
+                }
+            });
+            return holder;
+        }
     }
 
 
     @Override
-    public void onBindViewHolder(AddViewHolder holder, int position) {
-        if(holder instanceof AddViewHolder){
+    public void onBindViewHolder(MyViewHolder holder, int position) {
+        if(holder instanceof MyViewHolder){
             if(myDataset.get(position).getType()!=1) {
                 holder.img.setImageURI(Uri.fromFile(myDataset.get(position).getImage()));
-            }else {
-                holder.img.setImageResource(R.mipmap.ic_add);
             }
         }
     }
@@ -76,25 +113,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.AddViewHolde
         return myDataset.size();
     }
 
-    public class AddViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         private SimpleDraweeView img;
-
-        AddViewHolder(View view) {
+        MyViewHolder(View view) {
             super(view);
             img = (SimpleDraweeView) view.findViewById(R.id.img);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mOnItemClickListener.onItemClick(getPosition(), myDataset.get(getPosition()).getId(), myDataset.get(getPosition()).getType(), myDataset.get(getPosition()).getImage());
-                }
-            });
-            view.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    mOnItemClickListener.onItemLongClick(getPosition(), myDataset.get(getPosition()).getId(), myDataset.get(getPosition()).getType());
-                    return true;
-                }
-            });
         }
     }
     public void setAllImages(ArrayList<ImageListItem> imgList) {

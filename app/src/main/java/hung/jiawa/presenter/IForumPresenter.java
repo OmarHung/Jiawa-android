@@ -5,5 +5,5 @@ package hung.jiawa.presenter;
  */
 
 public interface IForumPresenter {
-    void showArticle(int position);
+    void showArticle(int position, int cate);
 }
