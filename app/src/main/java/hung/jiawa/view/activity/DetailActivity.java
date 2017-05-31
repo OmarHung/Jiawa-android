@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.renderscript.Long3;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
     public final String TAG = "JiaWa";
     public final String NAME = "DetailActivity - ";
     private String latlng;
+    private RelativeLayout content_layout;
     private GoogleMap mMap;
     private ImageButton btn_more;
     private TextView tv_toolTitle, tv_title, tv_content, tv_city, tv_type, tv_machine, btn_back, tv_total_like, tv_all_response, tv_total_response;
@@ -58,6 +61,7 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
         Bundle bundle = getIntent().getExtras();
         String lid = bundle.getString("lid");
 
+        content_layout = (RelativeLayout) findViewById(R.id.content_layout);
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mainMap);
         tv_toolTitle = (TextView) findViewById(R.id.tv_toolTitle);
         tv_title = (TextView) findViewById(R.id.tv_title);
@@ -98,6 +102,7 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
 
     @Override
     public void showDetail(String id, String title, String latlng, String city_id, String type_id, String content, String machine_id, String like, String response) {
+        Log.d(TAG,NAME+"showDetail");
         this.latlng = latlng;
         tv_title.setText(title);
         tv_toolTitle.setText(title);
@@ -127,6 +132,7 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.d(TAG,NAME+"onMapReady");
         try {
             mMap = googleMap;
             String[] latlong = latlng.split(",");
@@ -136,6 +142,7 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
             mMap.addMarker(new MarkerOptions()
                     .position(location));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 18f));
+            content_layout.setVisibility(View.VISIBLE);
         }catch (SecurityException e){
             e.printStackTrace();
         }
