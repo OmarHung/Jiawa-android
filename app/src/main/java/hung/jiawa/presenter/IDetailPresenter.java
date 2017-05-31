@@ -5,4 +5,7 @@ package hung.jiawa.presenter;
  */
 
 public interface IDetailPresenter {
+    void onResume();
+    void postResponse(String aid, String content);
+    String getProfileImage();
 }

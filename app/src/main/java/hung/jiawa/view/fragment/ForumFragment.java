@@ -213,14 +213,14 @@ public class ForumFragment extends Fragment implements IForumView, SwipeRefreshL
     @Override
     public void onItemClick(String fid, String aid) {
         if(fid.equals("1")) {
-            toast("fid = "+fid+" ,  aid = "+aid);
+            //toast("fid = "+fid+" ,  aid = "+aid);
             Intent intent = new Intent(getActivity(), DetailActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("lid", aid);
             intent.putExtras(bundle);
             startActivity(intent);
         }else {
-            toast("fid = "+fid+" ,  aid = "+aid);
+            //toast("fid = "+fid+" ,  aid = "+aid);
         }
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -24,13 +25,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical">
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/profile_img"
-                android:src="@drawable/user"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                app:civ_border_width="0.2dp"
-                app:civ_border_color="#bcbcbc"/>
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                fresco:placeholderImageScaleType="centerCrop"
+                fresco:placeholderImage="@drawable/user"
+                fresco:roundAsCircle="true"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,7 +68,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_content"
-            android:gravity="center_vertical"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="18dp">
@@ -95,24 +97,30 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="6dp"
-                        android:text="21"
-                        android:textSize="20sp" />
+                        android:text="21" />
                 </LinearLayout>
                 <TextView
-                    android:id="@+id/tv_response"
+                    android:id="@+id/btn_response"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="18dp"
+                    android:textColor="@color/jet"
                     android:text="回覆"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="18sp" />
             </LinearLayout>
+
             <ImageButton
                 android:id="@+id/btn_more"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
+                android:layout_height="20dp"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@color/transparent"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_more_black" />
         </RelativeLayout>
 

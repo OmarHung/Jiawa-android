@@ -41,6 +41,8 @@ public class DBConnector {
     public int MODE_POST_LOCATION=9;
     public int MODE_UPLOAD_IMAGE=10;
     public int MODE_GET_RESPONSE=11;
+    public int MODE_GET_PROFILE=12;
+    public int MODE_POST_RESPONSE=13;
 
     private static DBConnector mInstance;
     private RequestQueue mRequestQueue;
@@ -311,7 +313,7 @@ public class DBConnector {
 
     //發表夾點
     public void executePostLocation(final String mid, final String title, final String content, final String latlng, final String city, final String type, final String number_of_machine, final String img) {
-        String url =website+"Get_post_location.php";
+        String url =website+"Post_location.php";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -341,6 +343,35 @@ public class DBConnector {
         };
         DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
     }
+
+    //發表回覆
+    public void executePostResponse(final String mid, final String content, final String aid) {
+        String url =website+"Post_response.php";
+        // Formulate the request and handle the response.
+        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        mAsyncTaskCallBack.onResult(MODE_POST_RESPONSE, response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                ErrorList(error);
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("mid", mid);
+                map.put("content", content);
+                map.put("aid", aid);
+                return map;
+            }
+        };
+        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
+    }
+
     public void executeUploadImage(final String mid, final String img, final String id) {
         String url =website+"Get_upload_image.php";
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
@@ -360,6 +391,32 @@ public class DBConnector {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("name", getPhotoFileName(mid,img,id));
                 map.put("img", img);
+                return map;
+            }
+        };
+        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
+    }
+
+    //取得個人資訊
+    public void executeGetProfile(final String id) {
+        String url =website+"Get_profile.php";
+        // Formulate the request and handle the response.
+        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        mAsyncTaskCallBack.onResult(MODE_GET_PROFILE, response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                ErrorList(error);
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("id", id);
                 return map;
             }
         };

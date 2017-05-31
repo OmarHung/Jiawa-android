@@ -39,4 +39,32 @@ public class DetailModelCompl implements IDetailModel {
         mDBConnector.setCallBack(callBack);
         mDBConnector.executeGetResponse(id);
     }
+
+    @Override
+    public void getProfile(String id) {
+        //12
+        DBConnector mDBConnector = new DBConnector(context);
+        mDBConnector.setCallBack(callBack);
+        mDBConnector.executeGetProfile(id);
+    }
+
+    @Override
+    public void setProfileToPre(String name, String email, String img) {
+        settings.save("name",name);
+        settings.save("email",email);
+        settings.save("img",img);
+    }
+
+    @Override
+    public void postResponse(String aid, String content) {
+        //13
+        DBConnector mDBConnector = new DBConnector(context);
+        mDBConnector.setCallBack(callBack);
+        mDBConnector.executePostResponse(mid,content,aid);
+    }
+
+    @Override
+    public String getProfileImage() {
+        return settings.getString("img","");
+    }
 }
