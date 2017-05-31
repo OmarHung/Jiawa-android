@@ -10,6 +10,8 @@ import java.util.Map;
 public interface IPostLocationView {
     void toast(String msg);
     void showLoadingDialog();
+    void showLocationDialog(String Items[]);
     void dismissLoadingDialog();
     void showLocationDetail(String aid);
+    void setLatlng(String lat, String lng);
 }

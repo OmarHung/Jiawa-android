@@ -201,7 +201,7 @@ public class MapFragment extends Fragment implements IMapView, LocationHelper.On
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(markerLatLng)
                     .title(title)
-                    .snippet(id));
+                    .snippet("點我觀看詳細"));
             marker.setTag(id);
         }
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(city, zoom),2000,null);

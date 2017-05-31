@@ -71,6 +71,7 @@ import java.util.Date;
 import java.util.List;
 
 import hung.jiawa.ImageListItem;
+import hung.jiawa.LoactionItem;
 import hung.jiawa.LoadingDialog;
 import hung.jiawa.LocationHelper;
 import hung.jiawa.R;
@@ -378,6 +379,18 @@ public class PostLocationActivity extends TakePhotoActivity implements IPostLoca
     }
 
     @Override
+    public void showLocationDialog(String Items[]) {
+        new AlertDialog.Builder(this)
+                .setTitle("選擇位置")
+                .setItems(Items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        postLocationPresenter.setLatlng(which);
+                    }
+                }).show();
+    }
+
+    @Override
     public void dismissLoadingDialog() {
         mLoadingDialog.dismiss();
     }
@@ -392,6 +405,12 @@ public class PostLocationActivity extends TakePhotoActivity implements IPostLoca
         finish();
     }
 
+    @Override
+    public void setLatlng(String lat, String lng) {
+        edt_lat.setText(lat);
+        edt_lng.setText(lng);
+    }
+
     private void checkCancel() {
 
     }
@@ -400,6 +419,7 @@ public class PostLocationActivity extends TakePhotoActivity implements IPostLoca
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_saved:
+                postLocationPresenter.showLocationDialog();
                 break;
             case R.id.menu_now:
                 showLoadingDialog();

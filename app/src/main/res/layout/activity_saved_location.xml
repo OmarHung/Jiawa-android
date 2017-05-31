@@ -29,12 +29,16 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="false"
             android:layout_centerInParent="true"
-            android:layout_toLeftOf="@+id/btn_more"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@+id/btn_delete"
             android:layout_toRightOf="@+id/btn_back"
-            android:text="儲存的位置"
+            android:ellipsize="end"
             android:gravity="center"
+            android:maxLines="1"
+            android:text="儲存的位置"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <ImageButton
             android:id="@+id/btn_delete"

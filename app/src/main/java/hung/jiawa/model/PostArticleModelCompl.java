@@ -4,6 +4,7 @@ import android.content.Context;
 
 import hung.jiawa.AsyncTaskCallBack;
 import hung.jiawa.DBConnector;
+import hung.jiawa.ItemDAO;
 import hung.jiawa.PreferenceHelper;
 
 import static hung.jiawa.PreferenceHelper.with;

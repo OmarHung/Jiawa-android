@@ -3,8 +3,12 @@ package hung.jiawa.model;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import java.util.List;
+
 import hung.jiawa.AsyncTaskCallBack;
 import hung.jiawa.DBConnector;
+import hung.jiawa.ItemDAO;
+import hung.jiawa.LoactionItem;
 import hung.jiawa.PreferenceHelper;
 
 import static hung.jiawa.PreferenceHelper.with;
@@ -14,6 +18,7 @@ import static hung.jiawa.PreferenceHelper.with;
  */
 
 public class PostLocationModelCompl implements IPostLocationModel {
+    private ItemDAO itemDAO;
     Context context;
     PreferenceHelper settings;
     String mid;
@@ -21,6 +26,7 @@ public class PostLocationModelCompl implements IPostLocationModel {
     public PostLocationModelCompl(Context context, AsyncTaskCallBack callBack) {
         this.context = context;
         this.callBack = callBack;
+        itemDAO = new ItemDAO(context);
         settings = with(context);
         mid = settings.getString("mid","");
     }
@@ -37,5 +43,10 @@ public class PostLocationModelCompl implements IPostLocationModel {
         DBConnector mDBConnector = new DBConnector(context);
         mDBConnector.setCallBack(callBack);
         mDBConnector.executeUploadImage(mid, img, id);
+    }
+
+    @Override
+    public List<LoactionItem> getAll() {
+        return itemDAO.getAll();
     }
 }

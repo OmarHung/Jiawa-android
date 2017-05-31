@@ -1,6 +1,7 @@
 package hung.jiawa.presenter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -26,9 +27,11 @@ import java.util.Map;
 
 import hung.jiawa.AsyncTaskCallBack;
 import hung.jiawa.PreferenceHelper;
+import hung.jiawa.R;
 import hung.jiawa.model.DetailModelCompl;
 import hung.jiawa.model.IDetailModel;
 import hung.jiawa.view.IDetailView;
+import hung.jiawa.view.adapter.LocaionDetailAdapter;
 import hung.jiawa.view.adapter.ResponseAdapter;
 import hung.jiawa.view.adapter.UriImageAdapter;
 
@@ -38,25 +41,23 @@ import static hung.jiawa.PreferenceHelper.with;
  * Created by omar8 on 2017/5/22.
  */
 
-public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack, UriImageAdapter.OnRecyclerViewItemClickListener, ResponseAdapter.OnRecyclerViewItemClickListener, ResponseAdapter.OnLoadedCallBack {
+public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack, LocaionDetailAdapter.OnRecyclerViewItemClickListener {
     public final String TAG = "JiaWa";
     public final String NAME = "DetailActivity - ";
-    private RecyclerView img_list, response_list;
-    private UriImageAdapter uriImageAdapter;
-    private ResponseAdapter responseAdapter;
-    private boolean readyToScroll=false;
+    private RecyclerView recyclerView;
+    private LocaionDetailAdapter locaionDetailAdapter;
+    private boolean isResponsed=false;
     PreferenceHelper settings;
     IDetailView iDetailView;
     IDetailModel iDetailModel;
     Context context;
     String id, mid;
-    public DetailPresenterCompl(Context context, IDetailView iDetailView, String id, RecyclerView img_list, RecyclerView response_list) {
+    public DetailPresenterCompl(Context context, IDetailView iDetailView, String id, RecyclerView recyclerView) {
         this.iDetailView = iDetailView;
         this.iDetailModel = new DetailModelCompl(context, this);
         this.context = context;
         this.id = id;
-        this.img_list = img_list;
-        this.response_list = response_list;
+        this.recyclerView = recyclerView;
         settings = with(context);
         mid = settings.getString("mid","");
         initRecyclerView();
@@ -65,7 +66,11 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     @Override
     public void onResult(int mode, String result) {
         iDetailView.dismissLoadingDialog();
-        List<Map<String, Object>> responseList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> locationDetialList = new ArrayList<Map<String, Object>>();
+        Resources res = context.getResources();
+        String[] city=res.getStringArray(R.array.post_city);
+        String[] type=res.getStringArray(R.array.post_type);
+        String[] machine=res.getStringArray(R.array.post_machine);
         Log.d(TAG, NAME+"onResult"+result + ":" + mode);
         try {
             String status="", msg="";
@@ -81,7 +86,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                     if (status.equals("201")) {
                         if(mode==13) {
                             //發表回覆
-                            readyToScroll=true;
+                            isResponsed = true;
                             iDetailView.toast(msg);
                             iDetailView.dismissResponseDialog();
                         }
@@ -96,16 +101,34 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                             String latlng = jsonData.getString("latlng");
                             String city_id = jsonData.getString("city_id");
                             String type_id = jsonData.getString("type_id");
-                            String machine = jsonData.getString("machines");
+                            String machine_id = jsonData.getString("machines");
                             String like = jsonData.getString("like");
-                            String resopne = jsonData.getString("resopne");
+                            String response = jsonData.getString("response");
                             String name = jsonData.getString("name");
                             String profile_img = jsonData.getString("profile_img");
                             String time = jsonData.getString("time");
-                            iDetailView.showDetail(id, title, latlng, city_id, type_id, content, machine, like, resopne, name, time, profile_img);
-                            if (img.length() > 1) {
-                                setImages(img);
-                            }
+                            //iDetailView.showDetail(id, title, latlng, city_id, type_id, content, machine, like, resopne, name, time, profile_img);
+                            Map<String, Object> item = new HashMap<String, Object>();
+                            item.put("aid", id);
+                            item.put("title", title);
+                            item.put("name", name);
+                            item.put("forum", "夾點分享");
+                            item.put("time", time);
+                            item.put("content", content);
+                            item.put("profile_img", profile_img);
+                            item.put("city", city[Integer.valueOf(city_id)]);
+                            item.put("type", type[Integer.valueOf(type_id)]);
+                            item.put("machine", machine[Integer.valueOf(machine_id)]);
+                            //item.put("resopne", resopne);
+                            item.put("latlng", latlng);
+                            item.put("images", img);
+                            item.put("like", like);
+                            item.put("response", response);
+                            item.put("ViewType",0);
+                            iDetailView.setToolBarTitle(title);
+                            iDetailView.setAid(id);
+                            locaionDetailAdapter.addItem(item);
+                            iDetailModel.getResponse(id);
                         }
                     }else if(mode==11) {
                         if (status.equals("201")) {
@@ -116,19 +139,17 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                             String time = jsonData.getString("time");
                             String content = jsonData.getString("content");
                             String img = jsonData.getString("img");
-                            //String resopne = jsonData.getString("resopne");
                             String like = jsonData.getString("like");
                             Map<String, Object> item = new HashMap<String, Object>();
+                            item.put("ViewType",1);
                             item.put("mid", mid);
                             item.put("name", name);
                             item.put("rid", rid);
                             item.put("time", time);
                             item.put("content", content);
                             item.put("number_of_like", like);
-                            //item.put("resopne", resopne);
                             item.put("img", img);
-                            responseList.add(item);
-                            //showResponse(mid, time, content, img, resopne, like, floor);
+                            locaionDetailAdapter.addItem(item);
                         }else if(status.equals("401")) {
 
                         }
@@ -143,8 +164,9 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                     }
                 }
             }
-            if(mode==11 && status.equals("201")) {
-                responseAdapter.setMyDataset(responseList);
+            if(mode==11 && isResponsed) {
+                isResponsed=false;
+                recyclerView.smoothScrollToPosition(locaionDetailAdapter.getItemCount()-1);
             }
         } catch (JSONException e) {}
     }
@@ -156,40 +178,17 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     }
 
     private void initRecyclerView() {
-        uriImageAdapter = new UriImageAdapter(context);
-        uriImageAdapter.setOnItemClickListener(this);
+        locaionDetailAdapter = new LocaionDetailAdapter(context);
+        locaionDetailAdapter.setOnItemClickListener(this);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        img_list.setLayoutManager(layoutManager);
-        img_list.setAdapter(uriImageAdapter);
-
-        responseAdapter = new ResponseAdapter(context);
-        responseAdapter.setOnItemClickListener(this);
-        responseAdapter.setOnLoadedCallBack(this);
-        final LinearLayoutManager responseLayoutManager = new LinearLayoutManager(context);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        response_list.setLayoutManager(responseLayoutManager);
-        response_list.setAdapter(responseAdapter);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(locaionDetailAdapter);
     }
 
     @Override
-    public void onItemClick(int position) {
-        showImages(position);
-    }
-    private void setImages(String imgUrl) {
-        List<Uri> imgList = new ArrayList<>();
-        String[] img = imgUrl.split(",");
-        for(int i=0;i<img.length;i++) {
-            Log.d(TAG, NAME+"images : " + img[i]+"  i : "+i);
-            imgList.add(Uri.parse(img[i]));
-        }
-        uriImageAdapter.setAllImages(imgList);
-    }
-
-    private void showImages(int position) {
-        new ImageViewer.Builder(context, uriImageAdapter.getIamgeList())
-                .setStartPosition(position)
-                .show();
+    public void onResponseLocationClick(String aid) {
+        iDetailView.showResponseDialog(locaionDetailAdapter.getItemCount());
     }
 
     @Override
@@ -209,8 +208,8 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
 
     public void onResume() {
         iDetailView.showLoadingDialog();
+        locaionDetailAdapter.clearData();
         iDetailModel.getDetail(id);
-        iDetailModel.getResponse(id);
         iDetailModel.getProfile(mid);
     }
 
@@ -227,13 +226,5 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     @Override
     public String getProfileImage() {
         return iDetailModel.getProfileImage();
-    }
-
-    @Override
-    public void onLoaded() {
-        if(readyToScroll) {
-            readyToScroll=false;
-            iDetailView.scrollToBottom();
-        }
     }
 }

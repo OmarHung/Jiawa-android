@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 import hung.jiawa.AsyncTaskCallBack;
+import hung.jiawa.LoactionItem;
 import hung.jiawa.R;
 import hung.jiawa.model.PostLocationModelCompl;
 import hung.jiawa.model.IPostLocationModel;
@@ -167,6 +168,34 @@ public class PostLocationPresenterCompl implements IPostLocationPresenter, Async
             }
         }
     }
+
+    @Override
+    public List<LoactionItem> getAll() {
+        return iPostLocationModel.getAll();
+    }
+
+    @Override
+    public void showLocationDialog() {
+        List<LoactionItem> items = getAll();
+        int amont = items.size();
+        String[] Items = new String[amont];
+        for(int i=0;i<amont;i++) {
+            Items[i] = items.get(i).getName();
+        }
+        iPostLocationView.showLocationDialog(Items);
+    }
+
+    @Override
+    public void setLatlng(int which) {
+        List<LoactionItem> items = getAll();
+        String LatLng = items.get(which).getLatlng();
+        //字串轉LatLng
+        String[] latlong = LatLng.split(",");
+        String latitude = latlong[0];
+        String longitude = latlong[1];
+        iPostLocationView.setLatlng(latitude, longitude);
+    }
+
     public byte[] getBytes(InputStream inputStream) throws IOException {
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         int bufferSize = 1024;
