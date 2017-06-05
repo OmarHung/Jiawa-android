@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, OnTabS
                 mapFragment.load();
                 break;
             case 2:
-                personFragment.load();
+                //personFragment.load();
                 break;
         }
         mBottomBar.selectTabAtPosition(currentItem);

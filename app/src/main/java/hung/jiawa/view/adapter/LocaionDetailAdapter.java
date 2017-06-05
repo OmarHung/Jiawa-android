@@ -10,17 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
@@ -28,13 +23,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.stfalcon.frescoimageviewer.ImageViewer;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import hung.jiawa.ImageListItem;
-import hung.jiawa.LoadingDialog;
 import hung.jiawa.R;
 
 /**
@@ -54,9 +46,10 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     //自定義監聽事件
     public interface OnRecyclerViewItemClickListener {
-        void onResponseLocationClick(String aid);
-        void onResponseClick(String rid);
-        void onLikeClick(String rid);
+        void onResponseArticleClick(String aid);
+        void onResponseResponseClick(String rid, int position);
+        void onLikeArticleClick(String aid);
+        void onLikeResponseClick(String rid, int position);
         void onProfileClick(String mid);
     }
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
@@ -112,6 +105,10 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     }
                 }
             });
+            if(myDataset.get(position).get("like").toString().equals("1"))
+                ((LocationViewHolder) holder).btn_article_like.setImageResource(R.mipmap.ic_favorit_fill);
+            else
+                ((LocationViewHolder) holder).btn_article_like.setImageResource(R.mipmap.ic_favorit);
             ((LocationViewHolder) holder).tv_name.setText(myDataset.get(position).get("name").toString());
             ((LocationViewHolder) holder).tv_time.setText(myDataset.get(position).get("time").toString());
             ((LocationViewHolder) holder).tv_forum.setText(myDataset.get(position).get("forum").toString());
@@ -125,7 +122,7 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             if(!myDataset.get(position).get("images").toString().equals(""))
                 ((LocationViewHolder) holder).uriImageAdapter.setAllImages(setImages(myDataset.get(position).get("images").toString()));
             ((LocationViewHolder) holder).tv_content.setText(myDataset.get(position).get("content").toString());
-            ((LocationViewHolder) holder).tv_total_like.setText(myDataset.get(position).get("like").toString());
+            ((LocationViewHolder) holder).tv_total_like.setText(myDataset.get(position).get("like_total").toString());
             ((LocationViewHolder) holder).tv_total_response.setText(myDataset.get(position).get("response").toString());
             if(Integer.valueOf(myDataset.get(position).get("response").toString())>0) {
                 ((LocationViewHolder) holder).tv_all_response.setText("全部回文");
@@ -133,12 +130,16 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 ((LocationViewHolder) holder).tv_all_response.setText("尚未有回文");
             }
         }else if(holder instanceof ResopnseViewHolder){
+            if(myDataset.get(position).get("like").toString().equals("1"))
+                ((ResopnseViewHolder) holder).btn_response_like.setImageResource(R.mipmap.ic_favorit_fill);
+            else
+                ((ResopnseViewHolder) holder).btn_response_like.setImageResource(R.mipmap.ic_favorit);
             ((ResopnseViewHolder) holder).tv_floor.setText(position+"樓");
             ((ResopnseViewHolder) holder).tv_name.setText(myDataset.get(position).get("name").toString());
             ((ResopnseViewHolder) holder).tv_time.setText(myDataset.get(position).get("time").toString());
             ((ResopnseViewHolder) holder).tv_content.setText(myDataset.get(position).get("content").toString());
             //((MyViewHolder) holder).tv_response.setText(myDataset.get(position).get("response").toString());
-            ((ResopnseViewHolder) holder).tv_number_of_like.setText(myDataset.get(position).get("number_of_like").toString());
+            ((ResopnseViewHolder) holder).tv_number_of_like.setText(myDataset.get(position).get("like_total").toString());
             if(!myDataset.get(position).get("img").toString().equals(""))
                 ((ResopnseViewHolder) holder).profile_img.setImageURI(myDataset.get(position).get("img").toString());
         }
@@ -149,7 +150,7 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         return myDataset.size();
     }
 
-    public class LocationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class LocationViewHolder extends RecyclerView.ViewHolder {
         //private RelativeLayout content_layout;
         //private LinearLayout detailView;
         private GoogleMap mMap;
@@ -158,6 +159,7 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         private SimpleDraweeView profile_img;
         private RecyclerView img_list;
         private MapFragment mapFragment;
+        private ImageView btn_article_like;
         //private EditText edt_content;
         LocationViewHolder(View view) {
             super(view);
@@ -165,6 +167,7 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             //detailView = (LinearLayout) view.findViewById(R.id.detailView);
             FragmentManager manager = ((Activity) mContext).getFragmentManager();
             mapFragment = (MapFragment) manager.findFragmentById(R.id.mainMap);
+            btn_article_like = (ImageView) view.findViewById(R.id.btn_article_like);
             tv_title = (TextView) view.findViewById(R.id.tv_title);
             tv_content = (TextView) view.findViewById(R.id.tv_content);
             tv_city = (TextView) view.findViewById(R.id.tv_city);
@@ -181,11 +184,17 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             img_list.setNestedScrollingEnabled(false);
             profile_img = (SimpleDraweeView) view.findViewById(R.id.profile_img);
 
-            btn_response.setOnClickListener(this);
+            btn_article_like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onLikeArticleClick(myDataset.get(0).get("aid").toString());
+                }
+            });
+            //btn_response.setOnClickListener(this);
             btn_response.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.onResponseLocationClick(myDataset.get(0).get("aid").toString());
+                    mOnItemClickListener.onResponseArticleClick(myDataset.get(0).get("aid").toString());
                 }
             });
             uriImageAdapter = new UriImageAdapter(mContext);
@@ -200,16 +209,11 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             img_list.setLayoutManager(layoutManager);
             img_list.setAdapter(uriImageAdapter);
         }
-
-        @Override
-        public void onClick(View v) {
-
-        }
     }
 
     public class ResopnseViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_floor, tv_content, tv_time, btn_response, tv_number_of_like, tv_name;
-        private ImageView check_like;
+        private ImageView btn_response_like;
         private SimpleDraweeView profile_img;
         ResopnseViewHolder(View view) {
             super(view);
@@ -217,22 +221,24 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             tv_name = (TextView) view.findViewById(R.id.tv_name);
             tv_content = (TextView) view.findViewById(R.id.tv_content);
             btn_response = (TextView) view.findViewById(R.id.btn_response);
+            tv_time = (TextView) view.findViewById(R.id.tv_time);
+            tv_number_of_like = (TextView) view.findViewById(R.id.tv_number_of_like);
+            btn_response_like = (ImageView) view.findViewById(R.id.btn_response_like);
+            profile_img = (SimpleDraweeView) view.findViewById(R.id.profile_img);
+
+
             btn_response.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.onResponseClick(myDataset.get(getPosition()).get("rid").toString());
+                    mOnItemClickListener.onResponseResponseClick(myDataset.get(getPosition()).get("rid").toString(), getPosition());
                 }
             });
-            tv_time = (TextView) view.findViewById(R.id.tv_time);
-            tv_number_of_like = (TextView) view.findViewById(R.id.tv_number_of_like);
-            check_like = (ImageView) view.findViewById(R.id.check_like);
-            check_like.setOnClickListener(new View.OnClickListener() {
+            btn_response_like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.onLikeClick(myDataset.get(getPosition()).get("rid").toString());
+                    mOnItemClickListener.onLikeResponseClick(myDataset.get(getPosition()).get("rid").toString(), getPosition());
                 }
             });
-            profile_img = (SimpleDraweeView) view.findViewById(R.id.profile_img);
             profile_img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -264,6 +270,40 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
     public void clearData() {
         myDataset.clear();
+        notifyDataSetChanged();
+    }
+    public void setArticleLike() {
+        Map<String, Object> item = myDataset.get(0);
+        item.put("like", 1);
+        int like_total = Integer.valueOf(item.get("like_total").toString());
+        item.put("like_total", like_total+1);
+        myDataset.set(0, item);
+        notifyDataSetChanged();
+    }
+    public void setArticleDisLike() {
+        Map<String, Object> item = myDataset.get(0);
+        item.put("like", 0);
+        int like_total = Integer.valueOf(item.get("like_total").toString());
+        item.put("like_total", like_total-1);
+        myDataset.set(0, item);
+        notifyDataSetChanged();
+    }
+
+    public void setResponseLike(int position) {
+        Map<String, Object> item = myDataset.get(position);
+        item.put("like", 1);
+        int like_total = Integer.valueOf(item.get("like_total").toString());
+        item.put("like_total", like_total+1);
+        myDataset.set(position, item);
+        notifyDataSetChanged();
+    }
+
+    public void setResponseDisLike(int position) {
+        Map<String, Object> item = myDataset.get(position);
+        item.put("like", 0);
+        int like_total = Integer.valueOf(item.get("like_total").toString());
+        item.put("like_total", like_total-1);
+        myDataset.set(position, item);
         notifyDataSetChanged();
     }
 }

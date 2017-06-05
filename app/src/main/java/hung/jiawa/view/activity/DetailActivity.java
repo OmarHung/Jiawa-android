@@ -153,6 +153,26 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
     }
 
     @Override
+    public void setArticleLike() {
+
+    }
+
+    @Override
+    public void setResponseLike(String rid) {
+
+    }
+
+    @Override
+    public void setArticleDisLike() {
+
+    }
+
+    @Override
+    public void setResponseDisLike(String rid) {
+
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_back:

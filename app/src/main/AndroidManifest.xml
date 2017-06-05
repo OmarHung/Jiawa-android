@@ -56,7 +56,8 @@
         <activity android:name=".view.activity.DetailActivity" />
         <activity android:name=".view.activity.PostArticleActivity" />
         <activity android:name=".view.activity.PostLocationActivity" />
-        <activity android:name=".view.activity.SavedLocationActivity"></activity>
+        <activity android:name=".view.activity.SavedLocationActivity" />
+        <activity android:name=".view.activity.PersonalFavoritActivity"></activity>
     </application>
 
 </manifest>

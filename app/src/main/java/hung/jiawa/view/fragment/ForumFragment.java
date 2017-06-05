@@ -24,6 +24,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dinuscxj.refresh.RecyclerRefreshLayout;
+
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +40,7 @@ import hung.jiawa.view.activity.PostLocationActivity;
 import hung.jiawa.view.adapter.ArticleAdapter;
 import hung.jiawa.widget.XCDropDownListView;
 
-public class ForumFragment extends Fragment implements IForumView, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, AdapterView.OnItemSelectedListener, PopupMenu.OnMenuItemClickListener, ArticleAdapter.OnRecyclerViewItemClickListener {
+public class ForumFragment extends Fragment implements IForumView, View.OnClickListener, AdapterView.OnItemSelectedListener, PopupMenu.OnMenuItemClickListener, ArticleAdapter.OnRecyclerViewItemClickListener, RecyclerRefreshLayout.OnRefreshListener {
     public final String TAG = "JiaWa";
     public final String NAME = "ForumFragment - ";
     private ImageButton btn_post, btn_search, btn_notification;
@@ -46,11 +48,12 @@ public class ForumFragment extends Fragment implements IForumView, SwipeRefreshL
     private TextView tv_new, tv_hot;
     private Spinner spinner_forum;
     private RecyclerView article_list;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private RecyclerRefreshLayout swipeRefreshLayout;
     private ArticleAdapter articleAdapter;
     private PopupMenu popupmenu;
-    private int nowForum;
+    private int nowForum=0;
     private int nowCate=0;
+    private boolean isFirstTime=true;
     IForumPresenter forumPresenter;
     public static ForumFragment newInstance() {
         ForumFragment fragmentFirst = new ForumFragment();
@@ -71,7 +74,7 @@ public class ForumFragment extends Fragment implements IForumView, SwipeRefreshL
         tv_hot = (TextView) view.findViewById(R.id.tv_hot);
         spinner_forum = (Spinner) view.findViewById(R.id.spinner_forum);
         article_list = (RecyclerView) view.findViewById(R.id.article_list);
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout = (RecyclerRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         popupmenu = new PopupMenu(getActivity(), btn_post);
         articleAdapter = new ArticleAdapter(getActivity());
 
@@ -93,7 +96,16 @@ public class ForumFragment extends Fragment implements IForumView, SwipeRefreshL
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG,NAME+"onResume");
+        swipeRefreshLayout.setRefreshing(true);
+        forumPresenter.showArticle(nowForum, nowCate);
+    }
+
     public void load() {
+
     }
 
     @Override
@@ -171,10 +183,13 @@ public class ForumFragment extends Fragment implements IForumView, SwipeRefreshL
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Log.d(TAG, NAME+"onItemSelected : "+position);
-        articleAdapter.clearData();
-        swipeRefreshLayout.setRefreshing(true);
-        nowForum=position;
-        forumPresenter.showArticle(position, nowCate);
+        if(!isFirstTime) {
+            articleAdapter.clearData();
+            swipeRefreshLayout.setRefreshing(true);
+            nowForum=position;
+            forumPresenter.showArticle(position, nowCate);
+        }
+        isFirstTime=false;
     }
 
     @Override

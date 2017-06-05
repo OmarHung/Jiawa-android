@@ -29,7 +29,7 @@ public class DetailModelCompl implements IDetailModel {
         //6
         DBConnector mDBConnector = new DBConnector(context);
         mDBConnector.setCallBack(callBack);
-        mDBConnector.executeGetDetail(id);
+        mDBConnector.executeGetDetail(mid, id);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class DetailModelCompl implements IDetailModel {
         //11
         DBConnector mDBConnector = new DBConnector(context);
         mDBConnector.setCallBack(callBack);
-        mDBConnector.executeGetResponse(id);
+        mDBConnector.executeGetResponse(mid, id);
     }
 
     @Override
@@ -61,6 +61,22 @@ public class DetailModelCompl implements IDetailModel {
         DBConnector mDBConnector = new DBConnector(context);
         mDBConnector.setCallBack(callBack);
         mDBConnector.executePostResponse(mid,content,aid);
+    }
+
+    @Override
+    public void checkArticleLike(String aid) {
+        //14
+        DBConnector mDBConnector = new DBConnector(context);
+        mDBConnector.setCallBack(callBack);
+        mDBConnector.executeCheckArticleLike(mid,aid);
+    }
+
+    @Override
+    public void checkResponseLike(String rid) {
+        //15
+        DBConnector mDBConnector = new DBConnector(context);
+        mDBConnector.setCallBack(callBack);
+        mDBConnector.executeCheckResponseLike(mid,rid);
     }
 
     @Override

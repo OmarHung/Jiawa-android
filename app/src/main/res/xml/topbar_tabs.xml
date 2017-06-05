@@ -1,0 +1,11 @@
+<tabs>
+    <tab
+        id="@+id/topbar_favorit"
+        title="@string/topbar_title_favorit" />
+    <tab
+        id="@+id/topbar_article"
+        title="@string/topbar_title_article" />
+    <tab
+        id="@+id/topbar_friend"
+        title="@string/topbar_title_friend" />
+</tabs>

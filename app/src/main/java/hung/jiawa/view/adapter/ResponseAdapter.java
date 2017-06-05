@@ -116,7 +116,7 @@ public class ResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             });
             tv_time = (TextView) view.findViewById(R.id.tv_time);
             tv_number_of_like = (TextView) view.findViewById(R.id.tv_number_of_like);
-            check_like = (ImageView) view.findViewById(R.id.check_like);
+            //check_like = (ImageView) view.findViewById(R.id.check_like);
             check_like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

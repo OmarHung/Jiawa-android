@@ -43,6 +43,9 @@ public class DBConnector {
     public int MODE_GET_RESPONSE=11;
     public int MODE_GET_PROFILE=12;
     public int MODE_POST_RESPONSE=13;
+    public int MODE_CHECK_ARTICLE_LIKE=14;
+    public int MODE_CHECK_RESPONSE_LIKE=15;
+    public int MODE_GET_FAVORIT=16;
 
     private static DBConnector mInstance;
     private RequestQueue mRequestQueue;
@@ -260,7 +263,7 @@ public class DBConnector {
     }
 
     //取得店家資訊
-    public void executeGetDetail(final String id) {
+    public void executeGetDetail(final String mid, final String id) {
         String url =website+"Get_detail.php";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
@@ -278,6 +281,7 @@ public class DBConnector {
         }) {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
+                map.put("mid", mid);
                 map.put("id", id);
                 return map;
             }
@@ -286,7 +290,7 @@ public class DBConnector {
     }
 
     //取得文章回覆
-    public void executeGetResponse(final String id) {
+    public void executeGetResponse(final String mid, final String id) {
         String url =website+"Get_response.php";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
@@ -304,6 +308,7 @@ public class DBConnector {
         }) {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
+                map.put("mid", mid);
                 map.put("id", id);
                 return map;
             }
@@ -417,6 +422,86 @@ public class DBConnector {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("id", id);
+                return map;
+            }
+        };
+        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
+    }
+
+    //檢查文章是否LIKE
+    public void executeCheckArticleLike(final String mid, final String aid) {
+        String url =website+"Check_article_like.php";
+        // Formulate the request and handle the response.
+        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        mAsyncTaskCallBack.onResult(MODE_CHECK_ARTICLE_LIKE, response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                ErrorList(error);
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("mid", mid);
+                map.put("aid", aid);
+                return map;
+            }
+        };
+        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
+    }
+
+    //檢查回文是否LIKE
+    public void executeCheckResponseLike(final String mid, final String rid) {
+        String url =website+"Check_response_like.php";
+        // Formulate the request and handle the response.
+        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        mAsyncTaskCallBack.onResult(MODE_CHECK_RESPONSE_LIKE, response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                ErrorList(error);
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("mid", mid);
+                map.put("rid", rid);
+                return map;
+            }
+        };
+        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
+    }
+
+    //取得收藏的文章列表
+    public void executeGetFavorit(final String mid) {
+        String url =website+"Get_favorit.php";
+        // Formulate the request and handle the response.
+        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        mAsyncTaskCallBack.onResult(MODE_GET_FAVORIT, response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                ErrorList(error);
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("mid", mid);
                 return map;
             }
         };

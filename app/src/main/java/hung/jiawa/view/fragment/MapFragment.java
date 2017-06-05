@@ -357,4 +357,5 @@ public class MapFragment extends Fragment implements IMapView, LocationHelper.On
     public void onMarkerDragEnd(Marker marker) {
         myLocationLatLng = marker.getPosition();
     }
+
 }

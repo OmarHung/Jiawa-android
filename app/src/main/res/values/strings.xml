@@ -37,6 +37,11 @@
     <string name="bottombar_title_map">夾點地圖</string>
     <string name="bottombar_title_person">個人中心</string>
 
+    <!-- topbar_-->
+    <string name="topbar_title_article">文章</string>
+    <string name="topbar_title_favorit">收藏</string>
+    <string name="topbar_title_friend">好友</string>
+
     <!-- 表單Hint -->
     <string name="prompt_name">名稱</string>
     <string name="prompt_email">帳號 (請輸入電子信箱)</string>

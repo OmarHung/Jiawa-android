@@ -47,6 +47,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     private RecyclerView recyclerView;
     private LocaionDetailAdapter locaionDetailAdapter;
     private boolean isResponsed=false;
+    private int lastClickLikeResponsePos;
     PreferenceHelper settings;
     IDetailView iDetailView;
     IDetailModel iDetailModel;
@@ -82,13 +83,24 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                     msg = jsonData.getString("msg");
                     if (status.equals("501")) {
                         iDetailView.toast(msg);
-                    }
-                    if (status.equals("201")) {
+                    }else if (status.equals("201")) {
                         if(mode==13) {
                             //發表回覆
                             isResponsed = true;
                             iDetailView.toast(msg);
                             iDetailView.dismissResponseDialog();
+                        }else if(mode==14) {
+                            locaionDetailAdapter.setArticleLike();
+                            //iDetailView.setArticleLike();
+                        }else if(mode==15) {
+                            locaionDetailAdapter.setResponseLike(lastClickLikeResponsePos);
+                            //iDetailView.setResponseLike(rid);
+                        }
+                    }else if(status.equals("301")) {
+                        if(mode==14) {
+                            locaionDetailAdapter.setArticleDisLike();
+                        }else if(mode==15) {
+                            locaionDetailAdapter.setResponseDisLike(lastClickLikeResponsePos);
                         }
                     }
                 }else {
@@ -103,6 +115,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                             String type_id = jsonData.getString("type_id");
                             String machine_id = jsonData.getString("machines");
                             String like = jsonData.getString("like");
+                            String like_total = jsonData.getString("like_total");
                             String response = jsonData.getString("response");
                             String name = jsonData.getString("name");
                             String profile_img = jsonData.getString("profile_img");
@@ -123,6 +136,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                             item.put("latlng", latlng);
                             item.put("images", img);
                             item.put("like", like);
+                            item.put("like_total", like_total);
                             item.put("response", response);
                             item.put("ViewType",0);
                             iDetailView.setToolBarTitle(title);
@@ -140,6 +154,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                             String content = jsonData.getString("content");
                             String img = jsonData.getString("img");
                             String like = jsonData.getString("like");
+                            String like_total = jsonData.getString("like_total");
                             Map<String, Object> item = new HashMap<String, Object>();
                             item.put("ViewType",1);
                             item.put("mid", mid);
@@ -147,7 +162,8 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                             item.put("rid", rid);
                             item.put("time", time);
                             item.put("content", content);
-                            item.put("number_of_like", like);
+                            item.put("like", like);
+                            item.put("like_total", like_total);
                             item.put("img", img);
                             locaionDetailAdapter.addItem(item);
                         }else if(status.equals("401")) {
@@ -187,18 +203,26 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     }
 
     @Override
-    public void onResponseLocationClick(String aid) {
+    public void onResponseArticleClick(String aid) {
+        Log.d(TAG, NAME+"onResponseArticleClick  : " + aid);
         iDetailView.showResponseDialog(locaionDetailAdapter.getItemCount());
     }
-
     @Override
-    public void onResponseClick(String rid) {
-        Log.d(TAG, NAME+"onResponseClick  : " + rid);
+    public void onResponseResponseClick(String rid, int position) {
+        Log.d(TAG, NAME+"onResponseResponseClick  : " + rid+"  position="+position);
     }
 
     @Override
-    public void onLikeClick(String rid) {
-        Log.d(TAG, NAME+"onLikeClick  : " + rid);
+    public void onLikeArticleClick(String aid) {
+        Log.d(TAG, NAME+"onLikeArticleClick  : " + aid);
+        iDetailModel.checkArticleLike(aid);
+    }
+
+    @Override
+    public void onLikeResponseClick(String rid, int position) {
+        Log.d(TAG, NAME+"onLikeResponseClick  : " + rid+"  position="+position);
+        lastClickLikeResponsePos=position;
+        iDetailModel.checkResponseLike(rid);
     }
 
     @Override
