@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">JiaWa</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3246097450290535/3337025008</string>
+    <string name="banner_ad_app_id">ca-app-pub-3246097450290535~1860291804</string>
+
+    <string name="app_name">夾娃王</string>
 
     <!-- TakePhoto提示文字_-->
     <string name="album_view">選擇圖片</string>

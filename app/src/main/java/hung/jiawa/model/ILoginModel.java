@@ -8,6 +8,6 @@ import hung.jiawa.AsyncTaskCallBack;
 
 public interface ILoginModel {
     void checkMember(String account, String password);
-    void savePreference(String email, String mid, String name, String logintime);
+    void savePreference(String email, String mid, String name, String logintime, String img);
     String getPreferenceLogined();
 }

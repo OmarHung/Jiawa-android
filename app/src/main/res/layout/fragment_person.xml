@@ -82,12 +82,42 @@
                 android:background="@color/jumbo"/>
 
             <RelativeLayout
-                android:id="@+id/list_favorit"
+                android:id="@+id/list_location"
                 android:layout_below="@+id/list_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:layout_marginTop="8dp">
+                <LinearLayout
+                    android:layout_alignParentTop="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:background="@color/jumbo"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/jet"
+                    android:text="座標"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_expansion"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/list_favorit"
+                android:layout_below="@+id/list_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
                 <LinearLayout
                     android:layout_alignParentTop="true"
                     android:layout_width="match_parent"
@@ -141,43 +171,13 @@
                     android:src="@drawable/ic_expansion"
                     android:layout_alignParentRight="true"/>
             </RelativeLayout>
-
             <RelativeLayout
-                android:id="@+id/list_response"
+                android:id="@+id/list_friend"
                 android:layout_below="@+id/list_artcle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white">
-                <LinearLayout
-                    android:layout_alignParentTop="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.2dp"
-                    android:background="@color/jumbo"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="16dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/jet"
-                    android:text="回文"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_expansion"
-                    android:layout_alignParentRight="true"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/list_friend"
-                android:layout_below="@+id/list_response"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:visibility="gone">
                 <LinearLayout
                     android:layout_alignParentTop="true"
                     android:layout_width="match_parent"
@@ -213,6 +213,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:visibility="gone"
                 android:layout_marginTop="8dp">
                 <LinearLayout
                     android:layout_alignParentTop="true"
@@ -243,7 +244,8 @@
                 android:layout_below="@+id/list_setting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:layout_marginTop="8dp">
                 <LinearLayout
                     android:layout_alignParentTop="true"
                     android:layout_width="match_parent"
@@ -267,8 +269,39 @@
                     android:src="@drawable/ic_expansion"
                     android:layout_alignParentRight="true"/>
             </RelativeLayout>
+
             <LinearLayout
                 android:layout_below="@+id/list_about"
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:background="@color/jumbo"/>
+
+            <RelativeLayout
+                android:id="@+id/list_logout"
+                android:layout_below="@+id/list_about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginTop="8dp">
+                <LinearLayout
+                    android:layout_alignParentTop="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:background="@color/jumbo"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/red"
+                    android:text="登出"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_below="@+id/list_logout"
                 android:layout_width="match_parent"
                 android:layout_height="0.2dp"
                 android:background="@color/jumbo"/>

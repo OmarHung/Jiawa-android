@@ -5,34 +5,33 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
 
-import hung.jiawa.LoadingDialog;
 import hung.jiawa.R;
-import hung.jiawa.presenter.IPersonalFavoritPresenter;
-import hung.jiawa.presenter.PersonalFavoritPresenterCompl;
-import hung.jiawa.view.IPersonalFavoritView;
+import hung.jiawa.presenter.IPersonalArticlePresenter;
+import hung.jiawa.presenter.PersonalArticlePresenterCompl;
+import hung.jiawa.view.IPersonalArticleView;
 
-public class PersonalFavoritActivity extends AppCompatActivity implements IPersonalFavoritView, View.OnClickListener, RecyclerRefreshLayout.OnRefreshListener {
+public class PersonalArticleActivity extends AppCompatActivity implements IPersonalArticleView, View.OnClickListener, RecyclerRefreshLayout.OnRefreshListener {
     private RecyclerView article_list;
-    private TextView tv_toolTitle, btn_back, tv_nofavorit;
+    private TextView tv_toolTitle, btn_back, tv_label;
     private ImageButton btn_more;
     private RecyclerRefreshLayout swipeRefreshLayout;
-    IPersonalFavoritPresenter personalFavoritPresenter;
+    IPersonalArticlePresenter personalArticlePresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_personal_favorit);
+        setContentView(R.layout.activity_personal_article);
 
         article_list = (RecyclerView) findViewById(R.id.article_list);
         btn_more = (ImageButton) findViewById(R.id.btn_more);
         btn_back = (TextView) findViewById(R.id.btn_back);
-        tv_nofavorit = (TextView) findViewById(R.id.tv_nofavorit);
+        tv_label = (TextView) findViewById(R.id.tv_label);
         tv_toolTitle = (TextView) findViewById(R.id.tv_toolTitle);
         swipeRefreshLayout = (RecyclerRefreshLayout) findViewById(R.id.swipeRefreshLayout);
 
@@ -40,16 +39,15 @@ public class PersonalFavoritActivity extends AppCompatActivity implements IPerso
         btn_more.setOnClickListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        tv_toolTitle.setText("收藏");
-        personalFavoritPresenter = new PersonalFavoritPresenterCompl(this,this);
-        personalFavoritPresenter.initRecyclerView(article_list);
-        //personalFavoritPresenter.getFavorit();
+        tv_toolTitle.setText("文章");
+        personalArticlePresenter = new PersonalArticlePresenterCompl(this,this);
+        personalArticlePresenter.initRecyclerView(article_list);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        personalFavoritPresenter.getFavorit();
+        personalArticlePresenter.getArticle();
     }
 
     @Override
@@ -67,8 +65,8 @@ public class PersonalFavoritActivity extends AppCompatActivity implements IPerso
     }
 
     @Override
-    public void setNoFavorit(String msg) {
-        tv_nofavorit.setText(msg);
+    public void setNoArticle(String msg) {
+        tv_label.setText(msg);
     }
 
     @Override
@@ -94,6 +92,6 @@ public class PersonalFavoritActivity extends AppCompatActivity implements IPerso
 
     @Override
     public void onRefresh() {
-        personalFavoritPresenter.getFavorit();
+        personalArticlePresenter.getArticle();
     }
 }

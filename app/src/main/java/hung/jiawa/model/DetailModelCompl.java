@@ -47,13 +47,14 @@ public class DetailModelCompl implements IDetailModel {
         mDBConnector.setCallBack(callBack);
         mDBConnector.executeGetProfile(id);
     }
-
+    /*
     @Override
     public void setProfileToPre(String name, String email, String img) {
         settings.save("name",name);
         settings.save("email",email);
         settings.save("img",img);
     }
+    */
 
     @Override
     public void postResponse(String aid, String content) {
@@ -69,6 +70,14 @@ public class DetailModelCompl implements IDetailModel {
         DBConnector mDBConnector = new DBConnector(context);
         mDBConnector.setCallBack(callBack);
         mDBConnector.executeCheckArticleLike(mid,aid);
+    }
+
+    @Override
+    public void checkArticleKeep(String aid) {
+        //17
+        DBConnector mDBConnector = new DBConnector(context);
+        mDBConnector.setCallBack(callBack);
+        mDBConnector.executeCheckArticleKeep(mid,aid);
     }
 
     @Override

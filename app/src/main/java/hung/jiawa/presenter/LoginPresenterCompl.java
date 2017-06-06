@@ -58,7 +58,8 @@ public class LoginPresenterCompl implements ILoginPresenter, AsyncTaskCallBack {
                     String mid = jsonData.getString("mid");
                     String name = jsonData.getString("name");
                     String logintime = jsonData.getString("logintime");
-                    iLoginModel.savePreference(email, mid, name, logintime);
+                    String img = jsonData.getString("img");
+                    iLoginModel.savePreference(email, mid, name, logintime, img);
                     iLoginView.goToPreLoadActivity();
                 }
             }

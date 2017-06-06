@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "502292624071",
+    "firebase_url": "https://jiawa-1494313661417.firebaseio.com",
+    "project_id": "jiawa-1494313661417",
+    "storage_bucket": "jiawa-1494313661417.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502292624071:android:fa612f12c160c667",
+        "android_client_info": {
+          "package_name": "hung.jiawa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "502292624071-mn5bprnhfg728hsc94bc0e2i4vhlf7q0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBw5u_uRbo6JHKnbwvQjHvHl-xJJrK4xY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

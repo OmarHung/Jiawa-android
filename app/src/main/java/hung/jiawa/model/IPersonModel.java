@@ -9,4 +9,5 @@ public interface IPersonModel {
     String getName();
     String getProfileImage();
     String getEmail();
+    void logout();
 }

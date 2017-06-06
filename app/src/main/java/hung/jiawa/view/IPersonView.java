@@ -11,5 +11,6 @@ public interface IPersonView {
     void setName(String name);
     //void showResponseDialog(int floor);
     void dismissLoadingDialog();
+    void startLoginActivity();
     //void dismissResponseDialog();
 }

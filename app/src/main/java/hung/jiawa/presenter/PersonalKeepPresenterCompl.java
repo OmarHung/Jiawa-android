@@ -1,13 +1,9 @@
 package hung.jiawa.presenter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-
-import com.dinuscxj.refresh.RecyclerRefreshLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,35 +15,30 @@ import java.util.List;
 import java.util.Map;
 
 import hung.jiawa.AsyncTaskCallBack;
-import hung.jiawa.model.ForumModelCompl;
-import hung.jiawa.model.IForumModel;
-import hung.jiawa.model.IPersonalFavoritModel;
-import hung.jiawa.model.PersonalFavoritModelCompl;
-import hung.jiawa.view.IForumView;
-import hung.jiawa.view.IPersonalFavoritView;
-import hung.jiawa.view.activity.DetailActivity;
+import hung.jiawa.model.IPersonalKeepModel;
+import hung.jiawa.model.PersonalKeepModelCompl;
+import hung.jiawa.view.IPersonalKeepView;
 import hung.jiawa.view.adapter.ArticleAdapter;
-import hung.jiawa.view.adapter.LocaionDetailAdapter;
 
 /**
  * Created by omar8 on 2017/5/22.
  */
 
-public class PersonalFavoritPresenterCompl implements IPersonalFavoritPresenter, AsyncTaskCallBack, ArticleAdapter.OnRecyclerViewItemClickListener {
+public class PersonalKeepPresenterCompl implements IPersonalKeepPresenter, AsyncTaskCallBack, ArticleAdapter.OnRecyclerViewItemClickListener {
     public final String TAG = "JiaWa";
-    public final String NAME = "PersonalFavoritPresenterCompl - ";
+    public final String NAME = "PersonalKeepPresenterCompl - ";
     private ArticleAdapter articleAdapter;
-    IPersonalFavoritView iPersonalFavoritView;
-    IPersonalFavoritModel iPersonalFavoritModel;
+    IPersonalKeepView iPersonalKeepView;
+    IPersonalKeepModel iPersonalKeepModel;
     Context context;
-    public PersonalFavoritPresenterCompl(Context context, IPersonalFavoritView iPersonalFavoritView) {
-        this.iPersonalFavoritView = iPersonalFavoritView;
-        this.iPersonalFavoritModel = new PersonalFavoritModelCompl(context, this);
+    public PersonalKeepPresenterCompl(Context context, IPersonalKeepView iPersonalKeepView) {
+        this.iPersonalKeepView = iPersonalKeepView;
+        this.iPersonalKeepModel = new PersonalKeepModelCompl(context, this);
         this.context = context;
     }
     @Override
     public void onResult(int mode, String result) {
-        iPersonalFavoritView.dismissLoadingDialog();
+        iPersonalKeepView.dismissLoadingDialog();
         Log.d(TAG, NAME+"onResult"+result + ":" + mode);
         try {
             String status="", msg="";
@@ -60,7 +51,7 @@ public class PersonalFavoritPresenterCompl implements IPersonalFavoritPresenter,
                     status = jsonData.getString("status");
                     msg = jsonData.getString("msg");
                     if (status.equals("501")) {
-                        iPersonalFavoritView.toast(msg);
+                        iPersonalKeepView.toast(msg);
                     }
                 }else {
                     if (status.equals("201")) {
@@ -84,21 +75,21 @@ public class PersonalFavoritPresenterCompl implements IPersonalFavoritPresenter,
                     }
                 }
             }
-            if(myDataset.size()>0) iPersonalFavoritView.setNoFavorit("");
-            else iPersonalFavoritView.setNoFavorit(msg);
+            if(myDataset.size()>0) iPersonalKeepView.setNoFavorit("");
+            else iPersonalKeepView.setNoFavorit(msg);
             showFavorit(myDataset);
         } catch (JSONException e) {}
     }
 
     @Override
     public void onError(String error) {
-        iPersonalFavoritView.toast(error);
+        iPersonalKeepView.toast(error);
     }
 
     @Override
     public void getFavorit() {
-        iPersonalFavoritView.showLoadingDialog();
-        iPersonalFavoritModel.getFavorit();
+        iPersonalKeepView.showLoadingDialog();
+        iPersonalKeepModel.getFavorit();
     }
     @Override
     public void showFavorit(List<Map<String, Object>> myDataset) {
@@ -118,8 +109,8 @@ public class PersonalFavoritPresenterCompl implements IPersonalFavoritPresenter,
 
     @Override
     public void onItemClick(String fid, String aid) {
-        if(fid.equals("1")) {
-            iPersonalFavoritView.startDetailActivity(aid);
+        if(fid.equals("2")) {
+            iPersonalKeepView.startDetailActivity(aid);
         }else {
             //toast("fid = "+fid+" ,  aid = "+aid);
         }

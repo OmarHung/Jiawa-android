@@ -51,4 +51,9 @@ public class PersonModelCompl implements IPersonModel {
     public String getEmail() {
         return settings.getString("email","");
     }
+
+    @Override
+    public void logout() {
+        settings.save("login", "nologin");
+    }
 }

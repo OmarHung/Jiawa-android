@@ -56,4 +56,10 @@ public class PersonPresenterCompl implements IPersonPresenter, AsyncTaskCallBack
     public void onError(String error) {
         iPersonView.toast(error);
     }
+
+    @Override
+    public void logout() {
+        iPersonModel.logout();
+        iPersonView.startLoginActivity();
+    }
 }

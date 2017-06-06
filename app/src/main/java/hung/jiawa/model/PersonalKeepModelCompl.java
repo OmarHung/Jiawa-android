@@ -12,12 +12,12 @@ import static hung.jiawa.PreferenceHelper.with;
  * Created by omar8 on 2017/5/22.
  */
 
-public class PersonalFavoritModelCompl implements IPersonalFavoritModel {
+public class PersonalKeepModelCompl implements IPersonalKeepModel {
     Context context;
     PreferenceHelper settings;
     String mid;
     AsyncTaskCallBack callBack;
-    public PersonalFavoritModelCompl(Context context, AsyncTaskCallBack callBack) {
+    public PersonalKeepModelCompl(Context context, AsyncTaskCallBack callBack) {
         this.context = context;
         this.callBack = callBack;
         settings = with(context);

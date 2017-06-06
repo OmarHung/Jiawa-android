@@ -47,7 +47,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     private RecyclerView recyclerView;
     private LocaionDetailAdapter locaionDetailAdapter;
     private boolean isResponsed=false;
-    private int lastClickLikeResponsePos;
+    //private int lastClickLikeResponsePos;
     PreferenceHelper settings;
     IDetailView iDetailView;
     IDetailModel iDetailModel;
@@ -90,17 +90,23 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                             iDetailView.toast(msg);
                             iDetailView.dismissResponseDialog();
                         }else if(mode==14) {
-                            locaionDetailAdapter.setArticleLike();
+                            //locaionDetailAdapter.setArticleLike();
                             //iDetailView.setArticleLike();
                         }else if(mode==15) {
-                            locaionDetailAdapter.setResponseLike(lastClickLikeResponsePos);
+                            //locaionDetailAdapter.setResponseLike(lastClickLikeResponsePos);
+                            //iDetailView.setResponseLike(rid);
+                        }else if(mode==17) {
+                            //locaionDetailAdapter.setArticleKeep();
                             //iDetailView.setResponseLike(rid);
                         }
                     }else if(status.equals("301")) {
                         if(mode==14) {
-                            locaionDetailAdapter.setArticleDisLike();
+                            //locaionDetailAdapter.setArticleDisLike();
                         }else if(mode==15) {
-                            locaionDetailAdapter.setResponseDisLike(lastClickLikeResponsePos);
+                            //locaionDetailAdapter.setResponseDisLike(lastClickLikeResponsePos);
+                        }else if(mode==17) {
+                            //locaionDetailAdapter.setArticleDisKeep();
+                            //iDetailView.setResponseLike(rid);
                         }
                     }
                 }else {
@@ -115,6 +121,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                             String type_id = jsonData.getString("type_id");
                             String machine_id = jsonData.getString("machines");
                             String like = jsonData.getString("like");
+                            String keep = jsonData.getString("keep");
                             String like_total = jsonData.getString("like_total");
                             String response = jsonData.getString("response");
                             String name = jsonData.getString("name");
@@ -136,6 +143,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                             item.put("latlng", latlng);
                             item.put("images", img);
                             item.put("like", like);
+                            item.put("keep", keep);
                             item.put("like_total", like_total);
                             item.put("response", response);
                             item.put("ViewType",0);
@@ -175,7 +183,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                             String name = jsonData.getString("name");
                             String email = jsonData.getString("email");
                             String img = jsonData.getString("img");
-                            iDetailModel.setProfileToPre(name, email, img);
+                            //iDetailModel.setProfileToPre(name, email, img);
                         }
                     }
                 }
@@ -213,15 +221,32 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     }
 
     @Override
-    public void onLikeArticleClick(String aid) {
+    public void onLikeArticleClick(String aid, String now) {
         Log.d(TAG, NAME+"onLikeArticleClick  : " + aid);
+        if(now.equals("1"))
+            locaionDetailAdapter.setArticleDisLike();
+        else
+            locaionDetailAdapter.setArticleLike();
         iDetailModel.checkArticleLike(aid);
     }
 
     @Override
-    public void onLikeResponseClick(String rid, int position) {
+    public void onKeepArticleClick(String aid, String now) {
+        if(now.equals("1"))
+            locaionDetailAdapter.setArticleDisKeep();
+        else
+            locaionDetailAdapter.setArticleKeep();
+        iDetailModel.checkArticleKeep(aid);
+    }
+
+    @Override
+    public void onLikeResponseClick(String rid, int position, String now) {
         Log.d(TAG, NAME+"onLikeResponseClick  : " + rid+"  position="+position);
-        lastClickLikeResponsePos=position;
+        //lastClickLikeResponsePos=position;
+        if(now.equals("1"))
+            locaionDetailAdapter.setResponseDisLike(position);
+        else
+            locaionDetailAdapter.setResponseLike(position);
         iDetailModel.checkResponseLike(rid);
     }
 

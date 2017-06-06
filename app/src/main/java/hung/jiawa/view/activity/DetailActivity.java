@@ -1,42 +1,20 @@
 package hung.jiawa.view.activity;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.net.Uri;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.text.NumberFormat;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-import hung.jiawa.ItemDAO;
-import hung.jiawa.LoactionItem;
 import hung.jiawa.LoadingDialog;
 import hung.jiawa.R;
 import hung.jiawa.presenter.DetailPresenterCompl;
@@ -103,7 +81,7 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
     public void showResponseDialog(int floor) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final LayoutInflater inflater = getLayoutInflater();
-        final View view = inflater.inflate(R.layout.response_dialog_view,null);
+        final View view = inflater.inflate(R.layout.dialog_response_view,null);
         builder.setView(view);
         alertDialog = builder.create();
         SimpleDraweeView profile_img = (SimpleDraweeView) view.findViewById(R.id.profile_img);

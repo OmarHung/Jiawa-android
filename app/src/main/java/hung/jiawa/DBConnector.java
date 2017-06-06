@@ -46,6 +46,8 @@ public class DBConnector {
     public int MODE_CHECK_ARTICLE_LIKE=14;
     public int MODE_CHECK_RESPONSE_LIKE=15;
     public int MODE_GET_FAVORIT=16;
+    public int MODE_CHECK_ARTICLE_KEEP=17;
+    public int MODE_GET_PERSONAL_ARTICLE=18;
 
     private static DBConnector mInstance;
     private RequestQueue mRequestQueue;
@@ -484,7 +486,7 @@ public class DBConnector {
 
     //取得收藏的文章列表
     public void executeGetFavorit(final String mid) {
-        String url =website+"Get_favorit.php";
+        String url =website+"Get_keep.php";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -502,6 +504,58 @@ public class DBConnector {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("mid", mid);
+                return map;
+            }
+        };
+        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
+    }
+
+    //取得自己發佈的文章列表
+    public void executeGetPersonalArticle(final String mid) {
+        String url =website+"Get_personal_article.php";
+        // Formulate the request and handle the response.
+        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        mAsyncTaskCallBack.onResult(MODE_GET_PERSONAL_ARTICLE, response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                ErrorList(error);
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("mid", mid);
+                return map;
+            }
+        };
+        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
+    }
+
+    public void executeCheckArticleKeep(final String mid, final String aid) {
+        String url =website+"Check_article_keep.php";
+        // Formulate the request and handle the response.
+        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        mAsyncTaskCallBack.onResult(MODE_CHECK_ARTICLE_KEEP, response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                ErrorList(error);
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("mid", mid);
+                map.put("aid", aid);
                 return map;
             }
         };

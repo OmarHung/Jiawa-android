@@ -53,11 +53,12 @@ public class LoginModelCompl implements ILoginModel {
     }
 
     @Override
-    public void savePreference(String email, String mid, String name, String logintime) {
-        settings.save("account", email);
+    public void savePreference(String email, String mid, String name, String logintime, String img) {
+        settings.save("email", email);
         settings.save("mid", mid);
         settings.save("name", name);
         settings.save("logintime", logintime);
+        settings.save("img", img);
         settings.save("login", "logined");
     }
 
