@@ -1,6 +1,7 @@
 package hung.jiawa.presenter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -42,12 +43,30 @@ public class PersonPresenterCompl implements IPersonPresenter, AsyncTaskCallBack
     public void onResult(int mode, String result) {
         Log.d(TAG, NAME+"onResult"+result + ":" + mode);
         try {
-            String status="", msg="";
-            List<Map<String, Object>> myDataset = new ArrayList<Map<String, Object>>();
             JSONArray jsonArray = new JSONArray(result);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonData = jsonArray.getJSONObject(i);
-                Log.d(TAG, NAME + "lengh = " + jsonArray.length() + " : i = " + i + ": jsonData = " + jsonData.toString());
+                String status = jsonData.getString("status");
+                String msg = jsonData.getString("msg");
+                if (status.equals("501")) {
+                    iPersonView.toast(msg);
+                } else if (status.equals("201")) {
+                    if(mode == 19) {
+                        //改名
+                        String name = jsonData.getString("name");
+                        iPersonView.setName(name);
+                        iPersonModel.setPreferenceName(name);
+                    }else if(mode == 20) {
+                        //改頭像
+                        String img = jsonData.getString("img");
+                        iPersonView.setProfileImage(img);
+                        iPersonModel.setPreferenceProfileImage(img);
+                    }else if(mode == 21) {
+                        //上傳頭像
+                        String l_img = jsonData.getString("l_img");
+                        iPersonModel.setProfileImage(l_img);
+                    }
+                }
             }
         } catch (JSONException e) {}
     }
@@ -61,5 +80,27 @@ public class PersonPresenterCompl implements IPersonPresenter, AsyncTaskCallBack
     public void logout() {
         iPersonModel.logout();
         iPersonView.startLoginActivity();
+    }
+
+    @Override
+    public String getName() {
+        return iPersonModel.getName();
+    }
+
+    @Override
+    public List<Uri> getProfileImage() {
+        List<Uri> img = new ArrayList<>();
+        img.add(Uri.parse(iPersonModel.getProfileImage()));
+        return img;
+    }
+
+    @Override
+    public void setName(String name) {
+        iPersonModel.setName(name);
+    }
+
+    @Override
+    public void uploadProfileImage(String img) {
+        iPersonModel.uploadProfileImage(img);
     }
 }

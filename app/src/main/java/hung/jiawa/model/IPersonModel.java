@@ -10,4 +10,9 @@ public interface IPersonModel {
     String getProfileImage();
     String getEmail();
     void logout();
+    void setName(String name);
+    void setProfileImage(String img);
+    void uploadProfileImage(String img);
+    void setPreferenceName(String name);
+    void setPreferenceProfileImage(String img);
 }

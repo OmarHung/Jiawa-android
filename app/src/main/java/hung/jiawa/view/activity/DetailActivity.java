@@ -105,6 +105,7 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
             }
         });
         edt_content.setText(strContent);
+        edt_content.setSelection(edt_content.getText().toString().length());
         String uri = detailPresenter.getProfileImage();
         if(!uri.equals("")) profile_img.setImageURI(uri);
         tv_floor.setText(floor+"樓");

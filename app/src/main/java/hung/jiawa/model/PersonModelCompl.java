@@ -56,4 +56,38 @@ public class PersonModelCompl implements IPersonModel {
     public void logout() {
         settings.save("login", "nologin");
     }
+
+    @Override
+    public void setName(String name) {
+        // 19
+        DBConnector mDBConnector = new DBConnector(context);
+        mDBConnector.setCallBack(callBack);
+        mDBConnector.executeUpdateProfileName(mid, name);
+    }
+
+    @Override
+    public void setProfileImage(String img) {
+        // 20
+        DBConnector mDBConnector = new DBConnector(context);
+        mDBConnector.setCallBack(callBack);
+        mDBConnector.executeUpdateProfileImage(mid, img);
+    }
+
+    @Override
+    public void uploadProfileImage(String img) {
+        // 21
+        DBConnector mDBConnector = new DBConnector(context);
+        mDBConnector.setCallBack(callBack);
+        mDBConnector.executeUploadProfileImage(mid, img);
+    }
+
+    @Override
+    public void setPreferenceName(String name) {
+        settings.save("name", name);
+    }
+
+    @Override
+    public void setPreferenceProfileImage(String img) {
+        settings.save("img", img);
+    }
 }

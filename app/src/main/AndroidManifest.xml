@@ -69,7 +69,7 @@
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
-        <activity android:name=".view.activity.SettingActivity"></activity>
+        <activity android:name=".view.activity.SettingActivity" />
     </application>
 
 </manifest>

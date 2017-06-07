@@ -48,6 +48,9 @@ public class DBConnector {
     public int MODE_GET_FAVORIT=16;
     public int MODE_CHECK_ARTICLE_KEEP=17;
     public int MODE_GET_PERSONAL_ARTICLE=18;
+    public int MODE_UPDATE_PROFILE_NAME=19;
+    public int MODE_UPDATE_PROFILE_IMAGE=20;
+    public int MODE_UPLOAD_PROFILE_IMAGE=21;
 
     private static DBConnector mInstance;
     private RequestQueue mRequestQueue;
@@ -380,7 +383,7 @@ public class DBConnector {
     }
 
     public void executeUploadImage(final String mid, final String img, final String id) {
-        String url =website+"Get_upload_image.php";
+        String url =website+"Upload_image.php";
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -562,6 +565,85 @@ public class DBConnector {
         DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
     }
 
+    //更新使用者名稱
+    public void executeUpdateProfileName(final String mid, final String name) {
+        String url =website+"Update_profile_name.php";
+        // Formulate the request and handle the response.
+        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        mAsyncTaskCallBack.onResult(MODE_UPDATE_PROFILE_NAME, response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                ErrorList(error);
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("mid", mid);
+                map.put("name", name);
+                return map;
+            }
+        };
+        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
+    }
+
+    //更新使用者頭像連結
+    public void executeUpdateProfileImage(final String mid, final String img) {
+        String url =website+"Update_profile_image.php";
+        // Formulate the request and handle the response.
+        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        mAsyncTaskCallBack.onResult(MODE_UPDATE_PROFILE_IMAGE, response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                ErrorList(error);
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("mid", mid);
+                map.put("img", img);
+                return map;
+            }
+        };
+        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
+    }
+
+    public void executeUploadProfileImage(final String mid, final String img) {
+        String url =website+"Upload_profile_image.php";
+        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        mAsyncTaskCallBack.onResult(MODE_UPLOAD_PROFILE_IMAGE, response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                ErrorList(error);
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("name", getPhotoFileName(mid,img,""));
+                map.put("img", img);
+                return map;
+            }
+        };
+        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
+    }
+
     private void ErrorList(VolleyError error) {
         String message = null;
         if (error instanceof NetworkError) {
@@ -579,6 +661,7 @@ public class DBConnector {
         }
         mAsyncTaskCallBack.onError(message);
     }
+
     private String getPhotoFileName(String mid, String img, String id) {
         String result="";
         Date date = new Date(System.currentTimeMillis());
