@@ -113,7 +113,7 @@ public class DBConnector {
         DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest );
     }
 
-    public void executeSignUp(final String name, final String email, final String password) {
+    public void executeSignUp(final String email, final String password, final String name, final String nick_name) {
         String url =website+"member_api/sign_up";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
@@ -132,6 +132,7 @@ public class DBConnector {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("name", name);
+                map.put("nick_name", nick_name);
                 map.put("email", email);
                 map.put("password", password);
                 return map;

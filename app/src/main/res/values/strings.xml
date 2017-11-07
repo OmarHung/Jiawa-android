@@ -46,7 +46,8 @@
     <string name="topbar_title_friend">好友</string>
 
     <!-- 表單Hint -->
-    <string name="prompt_name">名稱</string>
+    <string name="prompt_name">真實姓名</string>
+    <string name="prompt_nick_name">暱稱</string>
     <string name="prompt_email">帳號 (請輸入電子信箱)</string>
     <string name="prompt_find_password_email">請輸入註冊時使用的電子信箱</string>
     <string name="prompt_password">密碼</string>
