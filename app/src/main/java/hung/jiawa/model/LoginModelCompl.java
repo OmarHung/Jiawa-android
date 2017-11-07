@@ -6,6 +6,8 @@ import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 import java.security.spec.AlgorithmParameterSpec;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -28,13 +30,11 @@ public class LoginModelCompl implements ILoginModel {
     private final static String KeyAES = "059sd0397svc59s64ge6q3wrdf183dwe";
     Context context;
     PreferenceHelper settings;
-    String mid;
     AsyncTaskCallBack callBack;
     public LoginModelCompl(Context context, AsyncTaskCallBack callBack) {
         this.context = context;
         this.callBack = callBack;
         settings = with(context);
-        mid = settings.getString("mid","");
     }
 
     @Override
@@ -53,18 +53,19 @@ public class LoginModelCompl implements ILoginModel {
     }
 
     @Override
-    public void savePreference(String email, String mid, String name, String logintime, String img) {
-        settings.save("email", email);
-        settings.save("mid", mid);
-        settings.save("name", name);
-        settings.save("logintime", logintime);
-        settings.save("img", img);
-        settings.save("login", "logined");
+    public void savePreference(Map<String, String> data) {
+        for (String key : data.keySet()) {
+            settings.save(key, data.get(key));
+        }
     }
 
     @Override
-    public String getPreferenceLogined() {
-        return settings.getString("login", "nologin");
+    public Map<String, String> getPreferenceLoginData() {
+        //Log.d("getPreferenceLoginData", "email:"+settings.getString("'email'", "") + " password:" + settings.getString("'password'", ""));
+        Map<String,  String> data = new HashMap<String, String>();
+        data.put("email",settings.getString("email", ""));
+        data.put("password",settings.getString("password", ""));
+        return data;
     }
 
     //AES加密，帶入byte[]型態的16位英數組合文字、32位英數組合Key、需加密文字

@@ -42,19 +42,16 @@ public class PreLoadPresenterCompl implements IPreLoadPresenter, AsyncTaskCallBa
     public void onResult(int mode, String result) {
         Log.d(TAG, NAME+"onResult"+result + ":" + mode);
         try {
-            JSONArray jsonArray = new JSONArray(result);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonData = jsonArray.getJSONObject(i);
-                String status = jsonData.getString("status");
-                String msg = jsonData.getString("msg");
-                if (status.equals("501")) {
-                    iPreLoadView.toast(msg);
-                    iPreLoadView.finishActivity();
-                } else if (status.equals("201")) {
-                    serverStatus = jsonData.getInt("serverStatus");
-                    if (serverStatus==0) iPreLoadView.showLoadingDialog();
-                    else iPreLoadView.goToMainActivity();
-                }
+            JSONObject jsonData = new JSONObject(result);
+            String status = jsonData.getString("status");
+            String msg = jsonData.getString("msg");
+            if (status.equals("error")) {
+                iPreLoadView.toast(msg);
+                iPreLoadView.finishActivity();
+            } else if (status.equals("ok")) {
+                serverStatus = Integer.parseInt(msg);
+                if (serverStatus==0) iPreLoadView.showLoadingDialog();
+                else iPreLoadView.goToMainActivity();
             }
         } catch (JSONException e) {}
     }

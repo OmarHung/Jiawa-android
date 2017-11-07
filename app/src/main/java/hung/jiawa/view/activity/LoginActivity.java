@@ -43,8 +43,8 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
         Tv_linkSignup.setOnClickListener(this);
 
         //init
-        loginPresenter = new LoginPresenterCompl(this, this);
         mLoadingDialog = new LoadingDialog(this);
+        loginPresenter = new LoginPresenterCompl(this, this);
     }
 
     @Override

@@ -11,6 +11,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import hung.jiawa.AsyncTaskCallBack;
 import hung.jiawa.R;
 import hung.jiawa.model.ILoginModel;
@@ -24,6 +28,7 @@ import hung.jiawa.view.ILoginView;
 public class LoginPresenterCompl implements ILoginPresenter, AsyncTaskCallBack {
     public final String TAG = "JiaWa";
     public final String NAME = "LoginActivity - ";
+    private String password;
     ILoginView iLoginView;
     ILoginModel iLoginModel;
     Context context;
@@ -32,11 +37,15 @@ public class LoginPresenterCompl implements ILoginPresenter, AsyncTaskCallBack {
         this.iLoginModel = new LoginModelCompl(context, this);
         this.context = context;
 
-        //取出skip屬性的字串
-        String login = iLoginModel.getPreferenceLogined();
-        if (login.equals("logined")) {
-            Log.d(TAG, NAME+"已登入");
-            iLoginView.goToPreLoadActivity();
+        Map<String, String> loginData = iLoginModel.getPreferenceLoginData();
+        String email = loginData.get("email").toString();
+        String password = loginData.get("password").toString();
+        Log.d(TAG, NAME+"email:"+email+" password:"+password);
+        if (email.length()>0 && password.length()>0) {
+            Log.d(TAG, NAME+"已登入過");
+            // 已登入過，顯示loading並連網確認用戶
+            iLoginView.showLoadingDialog();
+            iLoginModel.checkMember(email, password);
         }
     }
 
@@ -45,24 +54,28 @@ public class LoginPresenterCompl implements ILoginPresenter, AsyncTaskCallBack {
         Log.d(TAG, NAME+"onResult"+result + ":" + mode);
         iLoginView.dismissLoadingDialog();
         try {
-            JSONArray jsonArray = new JSONArray(result);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonData = jsonArray.getJSONObject(i);
-                String status = jsonData.getString("status");
-                String msg = jsonData.getString("msg");
-                if (status.equals("501")) {
-                    iLoginView.toast(msg);
-                } else if (status.equals("201")) {
-                    iLoginView.toast(msg);
-                    String email = jsonData.getString("email");
-                    String mid = jsonData.getString("mid");
-                    String name = jsonData.getString("name");
-                    String logintime = jsonData.getString("logintime");
-                    String img = jsonData.getString("img");
-                    iLoginModel.savePreference(email, mid, name, logintime, img);
-                    iLoginView.goToPreLoadActivity();
+            JSONObject jsonData = new JSONObject(result);
+            String status = jsonData.getString("status");
+            String msg = jsonData.getString("msg");
+            if (status.equals("error")) {
+                iLoginView.toast(msg);
+            } else if (status.equals("ok")) {
+                iLoginView.toast(msg);
+                String data = jsonData.getString("data");
+                JSONObject json = new JSONObject(data);
+                Map<String, String> hashMap = new HashMap<String, String>();
+                Iterator<String> temp = json.keys();
+                while (temp.hasNext()) {
+                    String key = temp.next();
+                    Object value = json.get(key);
+                    hashMap.put(key,value.toString());
+                    Log.d(TAG, NAME+"key:"+key + " value:" + value.toString());
                 }
+                hashMap.put("password",password);
+                iLoginModel.savePreference(hashMap);
+                iLoginView.goToPreLoadActivity();
             }
+
         } catch (JSONException e) {}
     }
 
@@ -109,6 +122,7 @@ public class LoginPresenterCompl implements ILoginPresenter, AsyncTaskCallBack {
             focusView.requestFocus();
         } else {
             // 表單無誤，顯示loading並連網確認用戶
+            this.password = password;
             iLoginView.showLoadingDialog();
             iLoginModel.checkMember(email, password);
         }
@@ -121,6 +135,6 @@ public class LoginPresenterCompl implements ILoginPresenter, AsyncTaskCallBack {
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() >= 8;
+        return password.length() >= 6;
     }
 }

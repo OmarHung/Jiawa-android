@@ -55,7 +55,7 @@ public class DBConnector {
     private static DBConnector mInstance;
     private RequestQueue mRequestQueue;
     private static Context mCtx;
-    private String website = "http://zollow.why3s.tw/jiawa/";
+    private String website = "http://zollow.why3s.tw/japi/";
     int timeoutConnection = 10000;
     int timeoutSocket = 10000;
     AsyncTaskCallBack mAsyncTaskCallBack;
@@ -87,7 +87,7 @@ public class DBConnector {
     }
 
     public void executeLogin(final String email, final String password) {
-        String url =website+"Login.php";
+        String url =website+"member_api/sign_in";
         // Formulate the request and handle the response.
         StringRequest mStringRequest  = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -114,7 +114,7 @@ public class DBConnector {
     }
 
     public void executeSignUp(final String name, final String email, final String password) {
-        String url =website+"Check_and_new_member.php";
+        String url =website+"member_api/sign_up";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
             new Response.Listener<String>() {
@@ -222,7 +222,7 @@ public class DBConnector {
 
     //取得伺服器狀態
     public void executeGetServerStatus() {
-        String url =website+"Get_server_status.php";
+        String url =website+"server_api";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {

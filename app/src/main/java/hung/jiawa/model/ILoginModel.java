@@ -1,5 +1,8 @@
 package hung.jiawa.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import hung.jiawa.AsyncTaskCallBack;
 
 /**
@@ -8,6 +11,6 @@ import hung.jiawa.AsyncTaskCallBack;
 
 public interface ILoginModel {
     void checkMember(String account, String password);
-    void savePreference(String email, String mid, String name, String logintime, String img);
-    String getPreferenceLogined();
+    void savePreference(Map<String, String> data);
+    Map<String, String> getPreferenceLoginData();
 }
