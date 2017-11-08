@@ -231,6 +231,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     }
 
     public void onResume() {
+        Log.d(TAG, NAME+"onResume");
         iDetailView.showLoadingDialog();
         locaionDetailAdapter.clearData();
         iDetailModel.getDetail(id);

@@ -100,8 +100,8 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
     public void onResume() {
         super.onResume();
         Log.d(TAG,NAME+"onResume");
-        swipeRefreshLayout.setRefreshing(true);
-        forumPresenter.showArticle(nowForum, nowCate);
+        //swipeRefreshLayout.setRefreshing(true);
+        //forumPresenter.showArticle(nowForum, nowCate);
     }
 
     public void load() {
@@ -125,6 +125,7 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
                 android.R.layout.simple_spinner_dropdown_item,
                 forum);
         spinner_forum.setAdapter(forumList);
+        forumPresenter.showArticle(nowForum, nowCate);
     }
 
     @Override
