@@ -243,7 +243,7 @@ public class DBConnector {
 
     //取得最新版本資訊
     public void executeGetMarker(final int cityPosition, final int typePosition) {
-        String url =website+"Get_marker.php";
+        String url =website+"article_api/spots_list";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {

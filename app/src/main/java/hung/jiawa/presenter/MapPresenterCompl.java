@@ -52,41 +52,34 @@ public class MapPresenterCompl implements IMapPresenter, AsyncTaskCallBack {
         iMapView.dismissLoadingDialog();
         try {
             iMapView.clearMark();
-            String status="", msg="", cityString="", cityZoom="";
             List<Map<String, Object>> myDataset = new ArrayList<Map<String, Object>>();
-            JSONArray jsonArray = new JSONArray(result);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonData = jsonArray.getJSONObject(i);
-                Log.d(TAG, NAME+"lengh = "+jsonArray.length()+" : i = "+i + ": jsonData = " + jsonData.toString());
-                if(i==0) {
-                    status = jsonData.getString("status");
-                    msg = jsonData.getString("msg");
-                    if (status.equals("501")) {
-                        iMapView.toast(msg);
-                    }
-                }else if(i==jsonArray.length()-1){
-                    cityString = jsonData.getString("cityLatLng");
-                    cityZoom = jsonData.getString("cityZoom");
-                    //字串轉LatLng
-                    String[] latlong = cityString.split(",");
-                    double latitude = Double.parseDouble(latlong[0]);
-                    double longitude = Double.parseDouble(latlong[1]);
-                    LatLng cityLatLng = new LatLng(latitude, longitude);
-                    iMapView.clearMark();
-                    iMapView.doFilter(myDataset, Float.valueOf(cityZoom), cityLatLng);
-                }else {
-                    if (status.equals("201")) {
-                        String latlng = jsonData.getString("latlng");
-                        String title = jsonData.getString("title");
-                        String id = jsonData.getString("id");
-                        //存入myDataset
-                        Map<String, Object> item = new HashMap<String, Object>();
-                        item.put("latlng", latlng);
-                        item.put("title", title);
-                        item.put("id", id);
-                        myDataset.add(item);
-                    }
+            JSONObject jsonData = new JSONObject(result);
+            String status = jsonData.getString("status");
+            String msg = jsonData.getString("msg");
+            if(status.equals("ok")) {
+                String data = jsonData.getString("data");
+                JSONArray array = new JSONArray(data);
+                for(int i=0; i<array.length(); i++) {
+                    JSONObject spot_detail = new JSONObject(array.get(i).toString());
+                    //存入myDataset
+                    Map<String, Object> item = new HashMap<String, Object>();
+                    item.put("id", spot_detail.getString("id"));
+                    item.put("title", spot_detail.getString("title"));
+                    item.put("latlng", spot_detail.getString("latlng"));
+                    myDataset.add(item);
                 }
+
+                String Zoom = jsonData.getString("zoom");
+                String LatLng = jsonData.getString("latlng");
+                //字串轉LatLng
+                String[] latlong = LatLng.split(",");
+                double latitude = Double.parseDouble(latlong[0]);
+                double longitude = Double.parseDouble(latlong[1]);
+                LatLng cityLatLng = new LatLng(latitude, longitude);
+                iMapView.clearMark();
+                iMapView.doFilter(myDataset, Float.valueOf(Zoom), cityLatLng);
+            }else if(status.equals("empty")) {
+                iMapView.toast(msg);
             }
         } catch (JSONException e) {}
     }
