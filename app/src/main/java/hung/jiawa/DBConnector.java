@@ -147,7 +147,7 @@ public class DBConnector {
 
     //取得論壇板清單
     public void executeGetForum() {
-        String url =website+"Get_forum.php";
+        String url =website+"forum_api/forums_list";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -166,8 +166,8 @@ public class DBConnector {
     }
 
     //取得論壇文章清單
-    public void executeGetArticle(final String fid, final String cate) {
-        String url =website+"Get_article.php";
+    public void executeGetArticle(final String forum_id, final String cate) {
+        String url =website+"article_api/articles_list";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -184,7 +184,7 @@ public class DBConnector {
         }) {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("fid", fid);
+                map.put("forum_id", forum_id);
                 map.put("cate", cate);
                 return map;
             }

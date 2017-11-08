@@ -56,6 +56,7 @@ public class LoginModelCompl implements ILoginModel {
     public void savePreference(Map<String, String> data) {
         for (String key : data.keySet()) {
             settings.save(key, data.get(key));
+            Log.d("savePreference", "key:"+key + " value:" + data.get(key));
         }
     }
 

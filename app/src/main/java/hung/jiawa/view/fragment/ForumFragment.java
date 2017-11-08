@@ -118,8 +118,8 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
         String[] forum = new String[list.size()+1];
         forum[0] = "全部";
         for(int i=0;i<list.size();i++) {
-            popupmenu.getMenu().add(0, i+1, 0, list.get(i).get("fName").toString());//.getMenu().add(list.get(i).get("fName").toString());
-            forum[i+1] = list.get(i).get("fName").toString();
+            popupmenu.getMenu().add(0, i+1, 0, list.get(i).get("title").toString());//.getMenu().add(list.get(i).get("fName").toString());
+            forum[i+1] = list.get(i).get("title").toString();
         }
         ArrayAdapter<String> forumList = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item,
