@@ -65,28 +65,24 @@ public class PostLocationPresenterCompl implements IPostLocationPresenter, Async
         Log.d(TAG, NAME+"onResult"+result + ":" + mode);
         if(mode == 9) iPostLocationView.dismissLoadingDialog();
         try {
-            JSONArray jsonArray = new JSONArray(result);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonData = jsonArray.getJSONObject(i);
-                String status = jsonData.getString("status");
-                String msg = jsonData.getString("msg");
-                if (status.equals("501")) {
+            JSONObject jsonData = new JSONObject(result);
+            String status = jsonData.getString("status");
+            String msg = jsonData.getString("msg");
+            if (status.equals("error")) {
+                iPostLocationView.toast(msg);
+            } else if (status.equals("ok")) {
+                if (mode == 10) {
+                    countImages++;
+                    if (countImages == amountImages) {
+                        nameImages += jsonData.getString("img");
+                        iPostLocationModel.postLoaction(title, content, latlng, city, type, number_of_machine, nameImages);
+                    } else nameImages += jsonData.getString("img") + ",";
+                } else if (mode == 9) {
+                    String aid = jsonData.getString("id");
                     iPostLocationView.toast(msg);
-                } else if (status.equals("201")) {
-                    if(mode == 10) {
-                        countImages++;
-                        if(countImages==amountImages) {
-                            nameImages += jsonData.getString("l_img");
-                            iPostLocationModel.postLoaction(title, content, latlng, city, type, number_of_machine,nameImages);
-                        }
-                        else nameImages += jsonData.getString("l_img")+",";
-                    }else if(mode == 9) {
-                        String lid = jsonData.getString("lid");
-                        iPostLocationView.toast(msg);
-                        iPostLocationView.showLocationDetail(lid);
-                    }
-                    Log.d(TAG, NAME+"onResult : "+countImages+"   nameImages =  " + nameImages);
+                    iPostLocationView.showLocationDetail(aid);
                 }
+                Log.d(TAG, NAME + "onResult : " + countImages + "   nameImages =  " + nameImages);
             }
         } catch (JSONException e) {}
     }

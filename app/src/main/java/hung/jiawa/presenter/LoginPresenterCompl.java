@@ -45,6 +45,7 @@ public class LoginPresenterCompl implements ILoginPresenter, AsyncTaskCallBack {
             Log.d(TAG, NAME+"已登入過");
             // 已登入過，顯示loading並連網確認用戶
             iLoginView.showLoadingDialog();
+            this.password = password;
             iLoginModel.checkMember(email, password);
         }
     }

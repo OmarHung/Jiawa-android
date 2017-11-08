@@ -54,7 +54,8 @@ public class PersonModelCompl implements IPersonModel {
 
     @Override
     public void logout() {
-        settings.save("login", "nologin");
+        settings.save("email", "");
+        settings.save("password", "");
     }
 
     @Override

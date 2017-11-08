@@ -324,7 +324,7 @@ public class DBConnector {
 
     //發表夾點
     public void executePostLocation(final String mid, final String title, final String content, final String latlng, final String city, final String type, final String number_of_machine, final String img) {
-        String url =website+"Post_location.php";
+        String url =website+"article_api/spot_insert";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -341,14 +341,16 @@ public class DBConnector {
         }) {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("mid", mid);
+                map.put("forum_id", "2");
+                map.put("type", "s");
+                map.put("member_id", mid);
                 map.put("title", title);
                 map.put("content", content);
                 map.put("img", img);
                 map.put("latlng", latlng);
-                map.put("city", city);
-                map.put("type", type);
-                map.put("number_of_machine", number_of_machine);
+                map.put("city_id", city);
+                map.put("type_id", type);
+                map.put("unit", number_of_machine);
                 return map;
             }
         };
@@ -384,7 +386,7 @@ public class DBConnector {
     }
 
     public void executeUploadImage(final String mid, final String img, final String id) {
-        String url =website+"Upload_image.php";
+        String url =website+"upload_file_api/spot_image";
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override

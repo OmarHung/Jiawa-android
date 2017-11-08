@@ -118,7 +118,7 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
         String[] forum = new String[list.size()+1];
         forum[0] = "全部";
         for(int i=0;i<list.size();i++) {
-            popupmenu.getMenu().add(0, i+1, 0, list.get(i).get("title").toString());//.getMenu().add(list.get(i).get("fName").toString());
+            if(i>0) popupmenu.getMenu().add(0, i+1, 0, list.get(i).get("title").toString());//.getMenu().add(list.get(i).get("fName").toString());
             forum[i+1] = list.get(i).get("title").toString();
         }
         ArrayAdapter<String> forumList = new ArrayAdapter<>(getActivity(),
@@ -207,10 +207,10 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
         Log.d(TAG, NAME+"onMenuItemClick :" + item.getItemId());
         switch (item.getItemId()) {
             case 1:
-                Intent intent = new Intent(getActivity(), PostLocationActivity.class);
-                startActivity(intent);
                 break;
             case 2:
+                Intent intent = new Intent(getActivity(), PostLocationActivity.class);
+                startActivity(intent);
                 break;
             case 3:
                 break;

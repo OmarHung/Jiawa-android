@@ -399,7 +399,7 @@ public class PostLocationActivity extends TakePhotoActivity implements IPostLoca
     public void showLocationDetail(String aid) {
         Intent intent = new Intent(this, DetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("lid", aid);
+        bundle.putString("aid", aid);
         intent.putExtras(bundle);
         startActivity(intent);
         finish();
