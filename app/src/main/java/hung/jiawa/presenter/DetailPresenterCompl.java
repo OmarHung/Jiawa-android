@@ -60,7 +60,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
         this.id = id;
         this.recyclerView = recyclerView;
         settings = with(context);
-        mid = settings.getString("mid","");
+        mid = settings.getString("id","");
         initRecyclerView();
     }
 
@@ -74,6 +74,61 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
         String[] machine=res.getStringArray(R.array.post_machine);
         Log.d(TAG, NAME+"onResult"+result + ":" + mode);
         try {
+            JSONObject jsonData = new JSONObject(result);
+            String status = jsonData.getString("status");
+            String msg = jsonData.getString("msg");
+            if(mode==6) {
+                if(status.equals("error")) {
+                    iDetailView.toast(msg);
+                }else if(status.equals("ok")) {
+                    String detail = jsonData.getString("detail");
+                    JSONObject spot_detail = new JSONObject(detail);
+                    Map<String, Object> item = new HashMap<String, Object>();
+                    item.put("aid", spot_detail.getString("id"));
+                    item.put("title", spot_detail.getString("title"));
+                    item.put("name", spot_detail.getString("name"));
+                    item.put("forum", "夾點分享");
+                    item.put("time", spot_detail.getString("date_add"));
+                    item.put("content", spot_detail.getString("content"));
+                    item.put("profile_img", spot_detail.getString("profile_img"));
+                    item.put("city", city[Integer.valueOf(spot_detail.getString("city_id"))]);
+                    item.put("type", type[Integer.valueOf(spot_detail.getString("type_id"))]);
+                    item.put("machine", machine[Integer.valueOf(spot_detail.getString("unit"))]);
+                    item.put("latlng", spot_detail.getString("latlng"));
+                    item.put("images", spot_detail.getString("img"));
+                    item.put("like", spot_detail.getString("member_favorite"));
+                    item.put("keep", spot_detail.getString("member_keep"));
+                    item.put("like_total", spot_detail.getString("favorite_count"));
+                    item.put("response", spot_detail.getString("response_count"));
+                    item.put("ViewType",0);
+                    iDetailView.setToolBarTitle(spot_detail.getString("title"));
+                    iDetailView.setAid(id);
+                    locaionDetailAdapter.addItem(item);
+                    iDetailModel.getResponse(id);
+                }
+            }else if(mode==11) {
+                if(status.equals("error")) {
+                    iDetailView.toast(msg);
+                }else if(status.equals("ok")) {
+                    String data = jsonData.getString("data");
+                    JSONArray array = new JSONArray(data);
+                    for(int i=0; i<array.length(); i++) {
+                        JSONObject response_detail = new JSONObject(array.get(i).toString());
+                        Map<String, Object> item = new HashMap<String, Object>();
+                        item.put("ViewType", 1);
+                        item.put("mid", response_detail.getString("member_id"));
+                        item.put("name", response_detail.getString("name"));
+                        item.put("rid", response_detail.getString("id"));
+                        item.put("time", response_detail.getString("date_add"));
+                        item.put("content", response_detail.getString("content"));
+                        item.put("like", response_detail.getString("member_favorite"));
+                        item.put("like_total", response_detail.getString("favorite_count"));
+                        item.put("img", response_detail.getString("img"));
+                        locaionDetailAdapter.addItem(item);
+                    }
+                }
+            }
+            /*
             String status="", msg="";
             JSONArray jsonArray = new JSONArray(result);
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -188,6 +243,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                     }
                 }
             }
+            */
             if(mode==11 && isResponsed) {
                 isResponsed=false;
                 recyclerView.smoothScrollToPosition(locaionDetailAdapter.getItemCount()-1);

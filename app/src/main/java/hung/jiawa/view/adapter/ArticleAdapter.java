@@ -26,7 +26,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     //自定義監聽事件
     public static interface OnRecyclerViewItemClickListener {
-        void onItemClick(String fid, String aid);
+        void onItemClick(String type, String aid);
     }
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
 
@@ -76,7 +76,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.onItemClick(myDataset.get(getPosition()).get("fid").toString(), myDataset.get(getPosition()).get("aid").toString());
+                    mOnItemClickListener.onItemClick(myDataset.get(getPosition()).get("type").toString(), myDataset.get(getPosition()).get("aid").toString());
                 }
             });
         }

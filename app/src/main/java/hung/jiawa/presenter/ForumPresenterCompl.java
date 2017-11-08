@@ -83,6 +83,7 @@ public class ForumPresenterCompl implements IForumPresenter, AsyncTaskCallBack {
                         Map<String, Object> item = new HashMap<String, Object>();
                         item.put("aid", article_detail.getString("id"));
                         item.put("fid", article_detail.getString("forum_id"));
+                        item.put("type", article_detail.getString("type"));
                         item.put("forum", article_detail.getString("forum_title"));
                         item.put("title", article_detail.getString("title"));
                         item.put("content", article_detail.getString("content"));

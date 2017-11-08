@@ -226,16 +226,13 @@ public class ForumFragment extends Fragment implements IForumView, View.OnClickL
     }
 
     @Override
-    public void onItemClick(String fid, String aid) {
-        if(fid.equals("2")) {
-            //toast("fid = "+fid+" ,  aid = "+aid);
+    public void onItemClick(String type, String aid) {
+        if(type.equals("s")) {
             Intent intent = new Intent(getActivity(), DetailActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString("lid", aid);
+            bundle.putString("aid", aid);
             intent.putExtras(bundle);
             startActivity(intent);
-        }else {
-            //toast("fid = "+fid+" ,  aid = "+aid);
         }
     }
 }

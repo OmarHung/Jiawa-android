@@ -28,7 +28,7 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
     private EditText edt_content;
     private TextView tv_toolTitle, btn_back;
     private ImageButton btn_more;
-    private String lid, aid, strContent="";
+    private String aid, strContent="";
     private LoadingDialog mLoadingDialog=null;
     private AlertDialog alertDialog=null;
     IDetailPresenter detailPresenter;
@@ -38,18 +38,18 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
         setContentView(R.layout.activity_detail);
 
         Bundle bundle = getIntent().getExtras();
-        lid = bundle.getString("lid");
+        aid     = bundle.getString("aid");
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        btn_more = (ImageButton) findViewById(R.id.btn_more);
-        btn_back = (TextView) findViewById(R.id.btn_back);
-        tv_toolTitle = (TextView) findViewById(R.id.tv_toolTitle);
+        recyclerView= (RecyclerView) findViewById(R.id.recyclerView);
+        btn_more    = (ImageButton) findViewById(R.id.btn_more);
+        btn_back    = (TextView) findViewById(R.id.btn_back);
+        tv_toolTitle= (TextView) findViewById(R.id.tv_toolTitle);
 
         btn_back.setOnClickListener(this);
         btn_more.setOnClickListener(this);
 
-        mLoadingDialog = new LoadingDialog(this);
-        detailPresenter = new DetailPresenterCompl(this, this, lid, recyclerView);
+        mLoadingDialog  = new LoadingDialog(this);
+        detailPresenter = new DetailPresenterCompl(this, this, aid, recyclerView);
     }
     @Override
     protected void onResume() {

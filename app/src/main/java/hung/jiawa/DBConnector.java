@@ -270,7 +270,7 @@ public class DBConnector {
 
     //取得店家資訊
     public void executeGetDetail(final String mid, final String id) {
-        String url =website+"Get_detail.php";
+        String url =website+"article_api/spots_detail";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -297,7 +297,7 @@ public class DBConnector {
 
     //取得文章回覆
     public void executeGetResponse(final String mid, final String id) {
-        String url =website+"Get_response.php";
+        String url =website+"response_api/responses_list";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
