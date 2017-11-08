@@ -67,11 +67,6 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     @Override
     public void onResult(int mode, String result) {
         iDetailView.dismissLoadingDialog();
-        List<Map<String, Object>> locationDetialList = new ArrayList<Map<String, Object>>();
-        Resources res = context.getResources();
-        String[] city=res.getStringArray(R.array.post_city);
-        String[] type=res.getStringArray(R.array.post_type);
-        String[] machine=res.getStringArray(R.array.post_machine);
         Log.d(TAG, NAME+"onResult"+result + ":" + mode);
         try {
             JSONObject jsonData = new JSONObject(result);
@@ -81,6 +76,10 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                 if(status.equals("error")) {
                     iDetailView.toast(msg);
                 }else if(status.equals("ok")) {
+                    Resources res = context.getResources();
+                    String[] city=res.getStringArray(R.array.post_city);
+                    String[] type=res.getStringArray(R.array.post_type);
+                    String[] machine=res.getStringArray(R.array.post_machine);
                     String detail = jsonData.getString("detail");
                     JSONObject spot_detail = new JSONObject(detail);
                     Map<String, Object> item = new HashMap<String, Object>();
@@ -147,114 +146,20 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
             JSONArray jsonArray = new JSONArray(result);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonData = jsonArray.getJSONObject(i);
-                if(i==0) {
-                    status = jsonData.getString("status");
-                    msg = jsonData.getString("msg");
-                    if (status.equals("501")) {
-                        iDetailView.toast(msg);
-                    }else if (status.equals("201")) {
-                        if(mode==13) {
-                            //發表回覆
-                            isResponsed = true;
-                            iDetailView.toast(msg);
-                            iDetailView.dismissResponseDialog();
-                        }else if(mode==14) {
-                            //locaionDetailAdapter.setArticleLike();
-                            //iDetailView.setArticleLike();
-                        }else if(mode==15) {
-                            //locaionDetailAdapter.setResponseLike(lastClickLikeResponsePos);
-                            //iDetailView.setResponseLike(rid);
-                        }else if(mode==17) {
-                            //locaionDetailAdapter.setArticleKeep();
-                            //iDetailView.setResponseLike(rid);
-                        }
-                    }else if(status.equals("301")) {
-                        if(mode==14) {
-                            //locaionDetailAdapter.setArticleDisLike();
-                        }else if(mode==15) {
-                            //locaionDetailAdapter.setResponseDisLike(lastClickLikeResponsePos);
-                        }else if(mode==17) {
-                            //locaionDetailAdapter.setArticleDisKeep();
-                            //iDetailView.setResponseLike(rid);
-                        }
-                    }
-                }else {
-                    if(mode==6) {
-                        if (status.equals("201")) {
-                            String id = jsonData.getString("id");
-                            String title = jsonData.getString("title");
-                            String content = jsonData.getString("content");
-                            String img = jsonData.getString("img");
-                            String latlng = jsonData.getString("latlng");
-                            String city_id = jsonData.getString("city_id");
-                            String type_id = jsonData.getString("type_id");
-                            String machine_id = jsonData.getString("machines");
-                            String like = jsonData.getString("like");
-                            String keep = jsonData.getString("keep");
-                            String like_total = jsonData.getString("like_total");
-                            String response = jsonData.getString("response");
-                            String name = jsonData.getString("name");
-                            String profile_img = jsonData.getString("profile_img");
-                            String time = jsonData.getString("time");
-                            //iDetailView.showDetail(id, title, latlng, city_id, type_id, content, machine, like, resopne, name, time, profile_img);
-                            Map<String, Object> item = new HashMap<String, Object>();
-                            item.put("aid", id);
-                            item.put("title", title);
-                            item.put("name", name);
-                            item.put("forum", "夾點分享");
-                            item.put("time", time);
-                            item.put("content", content);
-                            item.put("profile_img", profile_img);
-                            item.put("city", city[Integer.valueOf(city_id)]);
-                            item.put("type", type[Integer.valueOf(type_id)]);
-                            item.put("machine", machine[Integer.valueOf(machine_id)]);
-                            //item.put("resopne", resopne);
-                            item.put("latlng", latlng);
-                            item.put("images", img);
-                            item.put("like", like);
-                            item.put("keep", keep);
-                            item.put("like_total", like_total);
-                            item.put("response", response);
-                            item.put("ViewType",0);
-                            iDetailView.setToolBarTitle(title);
-                            iDetailView.setAid(id);
-                            locaionDetailAdapter.addItem(item);
-                            iDetailModel.getResponse(id);
-                        }
-                    }else if(mode==11) {
-                        if (status.equals("201")) {
-                            //文章回覆
-                            String mid = jsonData.getString("mid");
-                            String name = jsonData.getString("name");
-                            String rid = jsonData.getString("rid");
-                            String time = jsonData.getString("time");
-                            String content = jsonData.getString("content");
-                            String img = jsonData.getString("img");
-                            String like = jsonData.getString("like");
-                            String like_total = jsonData.getString("like_total");
-                            Map<String, Object> item = new HashMap<String, Object>();
-                            item.put("ViewType",1);
-                            item.put("mid", mid);
-                            item.put("name", name);
-                            item.put("rid", rid);
-                            item.put("time", time);
-                            item.put("content", content);
-                            item.put("like", like);
-                            item.put("like_total", like_total);
-                            item.put("img", img);
-                            locaionDetailAdapter.addItem(item);
-                        }else if(status.equals("401")) {
-
-                        }
-                    }else if(mode==12) {
-                        if (status.equals("201")) {
-                            //個人資訊
-                            String name = jsonData.getString("name");
-                            String email = jsonData.getString("email");
-                            String img = jsonData.getString("img");
-                            //iDetailModel.setProfileToPre(name, email, img);
-                        }
-                    }
+                String status = jsonData.getString("status");
+                String msg = jsonData.getString("msg");
+                if (status.equals("501")) {
+                    iDetailView.toast(msg);
+                } else if (status.equals("201")) {
+                    String id = jsonData.getString("id");
+                    String title = jsonData.getString("title");
+                    String img = jsonData.getString("img");
+                    String v = jsonData.getString("v");
+                    String v1 = jsonData.getString("v1");
+                    String city_id = jsonData.getString("city_id");
+                    String type_id = jsonData.getString("type_id");
+                    iDetailView.showDetail(id, title, img, v, v1, city_id, type_id);
+                    iDetailView.showImage(img);
                 }
             }
             */
