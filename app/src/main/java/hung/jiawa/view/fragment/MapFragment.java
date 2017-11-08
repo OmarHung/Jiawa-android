@@ -250,7 +250,7 @@ public class MapFragment extends Fragment implements IMapView, LocationHelper.On
     public void showDetail(String tag) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("lid", tag);
+        bundle.putString("aid", tag);
         intent.putExtras(bundle);
         startActivity(intent);
     }

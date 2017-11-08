@@ -357,7 +357,7 @@ public class DBConnector {
 
     //發表回覆
     public void executePostResponse(final String mid, final String content, final String aid) {
-        String url =website+"Post_response.php";
+        String url =website+"response_api/response_insert";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -410,7 +410,7 @@ public class DBConnector {
 
     //取得個人資訊
     public void executeGetProfile(final String id) {
-        String url =website+"Get_profile.php";
+        String url =website+"member_api/profile";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -436,7 +436,7 @@ public class DBConnector {
 
     //檢查文章是否LIKE
     public void executeCheckArticleLike(final String mid, final String aid) {
-        String url =website+"Check_article_like.php";
+        String url =website+"member_api/check_article_favorite";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -463,7 +463,7 @@ public class DBConnector {
 
     //檢查回文是否LIKE
     public void executeCheckResponseLike(final String mid, final String rid) {
-        String url =website+"Check_response_like.php";
+        String url =website+"member_api/check_response_favorite";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -541,7 +541,7 @@ public class DBConnector {
     }
 
     public void executeCheckArticleKeep(final String mid, final String aid) {
-        String url =website+"Check_article_keep.php";
+        String url =website+"member_api/check_article_keep";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {

@@ -127,6 +127,20 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                         locaionDetailAdapter.addItem(item);
                     }
                 }
+            }else if(mode==12) {
+
+
+            }else if(mode==13) {
+                //發表回覆
+                isResponsed = true;
+                iDetailView.toast(msg);
+                iDetailView.dismissResponseDialog();
+            }else if(mode==14) {
+
+
+            }else if(mode==15) {
+
+
             }
             /*
             String status="", msg="";
