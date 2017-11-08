@@ -7,6 +7,6 @@ import java.util.Map;
  */
 
 public interface ISignUpModel {
-    void SignUp(String account, String password, String name, String nick_name);
+    void SignUp(String account, String password, String name);//, String nick_name);
     void savePreference(Map<String, String> data);
 }

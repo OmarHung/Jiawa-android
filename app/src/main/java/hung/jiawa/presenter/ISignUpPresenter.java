@@ -7,5 +7,5 @@ import android.widget.EditText;
  */
 
 public interface ISignUpPresenter {
-    void attemptSignUp(EditText Ed_Email, EditText Ed_Password, EditText Ed_ReEnterPassword, EditText Ed_Name, EditText Ed_NickName);
+    void attemptSignUp(EditText Ed_Email, EditText Ed_Password, EditText Ed_ReEnterPassword, EditText Ed_Name);//, EditText Ed_NickName);
 }

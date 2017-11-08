@@ -47,12 +47,12 @@ public class SignUpActivity extends AppCompatActivity implements ISignUpView, Vi
     private final static String IvAES = "pgkf250ff5se5gs2" ;
     private final static String KeyAES = "059sd0397svc59s64ge6q3wrdf183dwe";
 
-    private EditText Ed_Name, Ed_NickName, Ed_Email, Ed_Password, Ed_ReEnterPassword;
+    private EditText Ed_Name, Ed_Email, Ed_Password, Ed_ReEnterPassword;//, Ed_NickName;
     private Button Bt_Signup;
     private TextView Tv_Login;
 
     private String name = "";
-    private String nick_name = "";
+    //private String nick_name = "";
     private String email = "";
     private String password = "";
     private String re_enter_password = "";
@@ -70,7 +70,7 @@ public class SignUpActivity extends AppCompatActivity implements ISignUpView, Vi
 
         //find view
         Ed_Name = (EditText) findViewById(R.id.input_name);
-        Ed_NickName = (EditText) findViewById(R.id.input_nick_name);
+        //Ed_NickName = (EditText) findViewById(R.id.input_nick_name);
         Ed_Email = (EditText) findViewById(R.id.input_email);
         Ed_Password = (EditText) findViewById(R.id.input_password);
         Ed_ReEnterPassword = (EditText) findViewById(R.id.input_reEnterPassword);
@@ -91,7 +91,7 @@ public class SignUpActivity extends AppCompatActivity implements ISignUpView, Vi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_next:
-                signUpPresenter.attemptSignUp(Ed_Email, Ed_Password, Ed_ReEnterPassword, Ed_Name, Ed_NickName);
+                signUpPresenter.attemptSignUp(Ed_Email, Ed_Password, Ed_ReEnterPassword, Ed_Name);//, Ed_NickName);
                 break;
             case R.id.link_login:
                 startActivity(new Intent(this, LoginActivity.class));

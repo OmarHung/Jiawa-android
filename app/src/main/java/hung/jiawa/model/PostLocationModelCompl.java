@@ -28,7 +28,7 @@ public class PostLocationModelCompl implements IPostLocationModel {
         this.callBack = callBack;
         itemDAO = new ItemDAO(context);
         settings = with(context);
-        mid = settings.getString("mid","");
+        mid = settings.getString("id","");
     }
 
     @Override

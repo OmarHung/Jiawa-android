@@ -21,7 +21,7 @@ public class PersonalArticleModelCompl implements IPersonalArticleModel {
         this.context = context;
         this.callBack = callBack;
         settings = with(context);
-        mid = settings.getString("mid","");
+        mid = settings.getString("id","");
     }
 
     @Override

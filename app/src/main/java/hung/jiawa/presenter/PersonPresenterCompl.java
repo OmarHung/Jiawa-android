@@ -43,29 +43,27 @@ public class PersonPresenterCompl implements IPersonPresenter, AsyncTaskCallBack
     public void onResult(int mode, String result) {
         Log.d(TAG, NAME+"onResult"+result + ":" + mode);
         try {
-            JSONArray jsonArray = new JSONArray(result);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonData = jsonArray.getJSONObject(i);
-                String status = jsonData.getString("status");
-                String msg = jsonData.getString("msg");
-                if (status.equals("501")) {
+            JSONObject jsonData = new JSONObject(result);
+            String status = jsonData.getString("status");
+            String msg = jsonData.getString("msg");
+            if (status.equals("error")) {
+                iPersonView.toast(msg);
+            } else if (status.equals("ok")) {
+                if(mode == 19) {
+                    //改名
+                    String name = jsonData.getString("name");
+                    iPersonView.setName(name);
+                    iPersonModel.setPreferenceName(name);
+                }else if(mode == 20) {
+                    //改頭像
+                    String img = jsonData.getString("img");
+                    iPersonView.setProfileImage(img);
+                    iPersonModel.setPreferenceProfileImage(img);
                     iPersonView.toast(msg);
-                } else if (status.equals("201")) {
-                    if(mode == 19) {
-                        //改名
-                        String name = jsonData.getString("name");
-                        iPersonView.setName(name);
-                        iPersonModel.setPreferenceName(name);
-                    }else if(mode == 20) {
-                        //改頭像
-                        String img = jsonData.getString("img");
-                        iPersonView.setProfileImage(img);
-                        iPersonModel.setPreferenceProfileImage(img);
-                    }else if(mode == 21) {
-                        //上傳頭像
-                        String l_img = jsonData.getString("l_img");
-                        iPersonModel.setProfileImage(l_img);
-                    }
+                }else if(mode == 21) {
+                    //上傳頭像
+                    String l_img = jsonData.getString("img");
+                    iPersonModel.setProfileImage(l_img);
                 }
             }
         } catch (JSONException e) {}

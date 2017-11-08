@@ -113,7 +113,7 @@ public class DBConnector {
         DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest );
     }
 
-    public void executeSignUp(final String email, final String password, final String name, final String nick_name) {
+    public void executeSignUp(final String email, final String password, final String name) {//, final String nick_name) {
         String url =website+"member_api/sign_up";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
@@ -132,7 +132,7 @@ public class DBConnector {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("name", name);
-                map.put("nick_name", nick_name);
+                //map.put("nick_name", nick_name);
                 map.put("email", email);
                 map.put("password", password);
                 return map;
@@ -492,7 +492,7 @@ public class DBConnector {
 
     //取得收藏的文章列表
     public void executeGetFavorit(final String mid) {
-        String url =website+"Get_keep.php";
+        String url =website+"member_api/member_keep";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -518,7 +518,7 @@ public class DBConnector {
 
     //取得自己發佈的文章列表
     public void executeGetPersonalArticle(final String mid) {
-        String url =website+"Get_personal_article.php";
+        String url =website+"member_api/member_article";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -570,7 +570,7 @@ public class DBConnector {
 
     //更新使用者名稱
     public void executeUpdateProfileName(final String mid, final String name) {
-        String url =website+"Update_profile_name.php";
+        String url =website+"member_api/member_update";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -589,6 +589,7 @@ public class DBConnector {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("mid", mid);
                 map.put("name", name);
+                map.put("type", "name");
                 return map;
             }
         };
@@ -597,7 +598,7 @@ public class DBConnector {
 
     //更新使用者頭像連結
     public void executeUpdateProfileImage(final String mid, final String img) {
-        String url =website+"Update_profile_image.php";
+        String url =website+"member_api/member_update";
         // Formulate the request and handle the response.
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -616,6 +617,7 @@ public class DBConnector {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("mid", mid);
                 map.put("img", img);
+                map.put("type", "img");
                 return map;
             }
         };
@@ -623,7 +625,7 @@ public class DBConnector {
     }
 
     public void executeUploadProfileImage(final String mid, final String img) {
-        String url =website+"Upload_profile_image.php";
+        String url =website+"upload_file_api/profile_image";
         StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override

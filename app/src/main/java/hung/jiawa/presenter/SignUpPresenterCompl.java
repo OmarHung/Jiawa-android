@@ -76,10 +76,10 @@ public class SignUpPresenterCompl implements ISignUpPresenter, AsyncTaskCallBack
     }
 
     @Override
-    public void attemptSignUp(EditText Ed_Email, EditText Ed_Password, EditText Ed_ReEnterPassword, EditText Ed_Name, EditText Ed_NickName) {
+    public void attemptSignUp(EditText Ed_Email, EditText Ed_Password, EditText Ed_ReEnterPassword, EditText Ed_Name) {//, EditText Ed_NickName) {
         // Reset errors.
         Ed_Name.setError(null);
-        Ed_NickName.setError(null);
+        //Ed_NickName.setError(null);
         Ed_Email.setError(null);
         Ed_Password.setError(null);
         Ed_ReEnterPassword.setError(null);
@@ -87,7 +87,7 @@ public class SignUpPresenterCompl implements ISignUpPresenter, AsyncTaskCallBack
 
         // Store values at the time of the login attempt.
         String name = Ed_Name.getText().toString();
-        String nick_name = Ed_NickName.getText().toString();
+        //String nick_name = Ed_NickName.getText().toString();
         String email = Ed_Email.getText().toString();
         String password = Ed_Password.getText().toString();
         String re_enter_password = Ed_ReEnterPassword.getText().toString();
@@ -139,13 +139,13 @@ public class SignUpPresenterCompl implements ISignUpPresenter, AsyncTaskCallBack
             cancel = true;
         }
 
-        // Check for a valid nickname
+        /* Check for a valid nickname
         if (TextUtils.isEmpty(nick_name)) {
             Ed_NickName.setError(context.getString(R.string.error_field_required));
             focusView = Ed_Name;
             cancel = true;
         }
-
+        */
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -154,7 +154,7 @@ public class SignUpPresenterCompl implements ISignUpPresenter, AsyncTaskCallBack
             // 表單無誤，顯示loading並連網確認用戶
             this.password = password;
             iSignUpView.showLoadingDialog();
-            iSignUpModel.SignUp(email, password, name, nick_name);
+            iSignUpModel.SignUp(email, password, name);//, nick_name);
         }
     }
 

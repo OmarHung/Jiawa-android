@@ -37,7 +37,7 @@ public class SignUpModelCompl implements ISignUpModel {
     }
 
     @Override
-    public void SignUp(String account, String password, String name, String nick_name) {
+    public void SignUp(String account, String password, String name) {//, String nick_name) {
         //將IvAES、KeyAES、TextAES轉成byte[]型態帶入EncryptAES進行加密，再將回傳值轉成字串
         byte[] TextByte = new byte[0];
         try {
@@ -48,7 +48,7 @@ public class SignUpModelCompl implements ISignUpModel {
         password = Base64.encodeToString(TextByte, Base64.DEFAULT);
         DBConnector mDBConnector = new DBConnector(context);
         mDBConnector.setCallBack(callBack);
-        mDBConnector.executeSignUp(account, password, name, nick_name);
+        mDBConnector.executeSignUp(account, password, name);//, nick_name);
     }
 
     @Override

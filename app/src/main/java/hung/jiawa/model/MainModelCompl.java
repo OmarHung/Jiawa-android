@@ -19,6 +19,6 @@ public class MainModelCompl implements IMainModel {
     public MainModelCompl(Context context) {
         this.context = context;
         settings = with(context);
-        mid = settings.getString("mid","");
+        mid = settings.getString("id","");
     }
 }

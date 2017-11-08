@@ -20,7 +20,7 @@ public class MapModelCompl implements IMapModel {
         this.context = context;
         this.callBack = callBack;
         settings = with(context);
-        mid = settings.getString("mid","");
+        mid = settings.getString("id","");
     }
 
     @Override
