@@ -126,20 +126,24 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                         locaionDetailAdapter.addItem(item);
                     }
                 }
-            }else if(mode==12) {
-
-
             }else if(mode==13) {
+                //發表留言
+                if(status.equals("error")) {
+                    iDetailView.toast(msg);
+                }else if(status.equals("ok")) {
+                    isResponsed = true;
+                    iDetailView.toast(msg);
+                    iDetailView.dismissResponseDialog();
+                }
+            }else if(mode==22) {
                 //發表回覆
-                isResponsed = true;
-                iDetailView.toast(msg);
-                iDetailView.dismissResponseDialog();
-            }else if(mode==14) {
-
-
-            }else if(mode==15) {
-
-
+                if(status.equals("error")) {
+                    iDetailView.toast(msg);
+                }else if(status.equals("ok")) {
+                    isResponsed = true;
+                    iDetailView.toast(msg);
+                    iDetailView.dismissResponseDialog();
+                }
             }
             /*
             String status="", msg="";
@@ -188,11 +192,12 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     @Override
     public void onResponseArticleClick(String aid) {
         Log.d(TAG, NAME+"onResponseArticleClick  : " + aid);
-        iDetailView.showResponseDialog(locaionDetailAdapter.getItemCount());
+        iDetailView.showResponseDialog("a","0",0);
     }
     @Override
     public void onResponseResponseClick(String rid, int position) {
         Log.d(TAG, NAME+"onResponseResponseClick  : " + rid+"  position="+position);
+        iDetailView.showResponseDialog("r", rid, position);
     }
 
     @Override
@@ -239,12 +244,12 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     }
 
     @Override
-    public void postResponse(String aid, String content) {
+    public void postResponse(String type, String id, String content) {
         if(TextUtils.isEmpty(content)) {
-            iDetailView.toast("未填寫回文");
+            iDetailView.toast("未填寫內容");
         }else {
             iDetailView.showLoadingDialog();
-            iDetailModel.postResponse(aid, content);
+            iDetailModel.postResponse(type, id, content);
         }
     }
 

@@ -130,9 +130,9 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             ((LocationViewHolder) holder).tv_total_like.setText(myDataset.get(position).get("like_total").toString());
             ((LocationViewHolder) holder).tv_total_response.setText(myDataset.get(position).get("response").toString());
             if(Integer.valueOf(myDataset.get(position).get("response").toString())>0) {
-                ((LocationViewHolder) holder).tv_all_response.setText("全部回文");
+                ((LocationViewHolder) holder).tv_all_response.setText("全部留言");
             }else {
-                ((LocationViewHolder) holder).tv_all_response.setText("尚未有回文");
+                ((LocationViewHolder) holder).tv_all_response.setText("尚未有留言");
             }
         }else if(holder instanceof ResopnseViewHolder){
             if(myDataset.get(position).get("like").toString().equals("1"))

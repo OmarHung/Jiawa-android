@@ -57,11 +57,18 @@ public class DetailModelCompl implements IDetailModel {
     */
 
     @Override
-    public void postResponse(String aid, String content) {
-        //13
-        DBConnector mDBConnector = new DBConnector(context);
-        mDBConnector.setCallBack(callBack);
-        mDBConnector.executePostResponse(mid,content,aid);
+    public void postResponse(String type, String id, String content) {
+        if(type.equals("a")) {
+            //13
+            DBConnector mDBConnector = new DBConnector(context);
+            mDBConnector.setCallBack(callBack);
+            mDBConnector.executePostResponse(mid, content, id);
+        }else if(type.equals("r")) {
+            //22
+            DBConnector mDBConnector = new DBConnector(context);
+            mDBConnector.setCallBack(callBack);
+            mDBConnector.executePostResponseResponse(mid, content, id);
+        }
     }
 
     @Override

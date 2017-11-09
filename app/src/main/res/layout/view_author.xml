@@ -37,7 +37,7 @@
             android:textColor="@color/jumbo"
             android:layout_marginLeft="8dp"
             android:text="2017/05/30 16:50"
-            android:textSize="18sp"/>
+            android:textSize="12sp"/>
     </LinearLayout>
     <TextView
         android:id="@+id/tv_forum"

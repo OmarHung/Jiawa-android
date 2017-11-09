@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -78,7 +79,7 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
     }
 
     @Override
-    public void showResponseDialog(int floor) {
+    public void showResponseDialog(final String type, final String rid, int forFloor) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final LayoutInflater inflater = getLayoutInflater();
         final View view = inflater.inflate(R.layout.dialog_response_view,null);
@@ -108,12 +109,15 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
         edt_content.setSelection(edt_content.getText().toString().length());
         String uri = detailPresenter.getProfileImage();
         if(!uri.equals("")) profile_img.setImageURI(uri);
-        tv_floor.setText(floor+"樓");
+        if(forFloor>0) tv_floor.setText("回覆"+forFloor+"樓");
+        else tv_floor.setText("發布留言");
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, NAME+"btn_send  : " + rid+"  type="+type);
                 strContent = edt_content.getText().toString();
-                detailPresenter.postResponse(aid, strContent);
+                if(type.equals("a")) detailPresenter.postResponse(type, aid, strContent);
+                else if(type.equals("r")) detailPresenter.postResponse(type, rid, strContent);
             }
         });
         alertDialog.show();

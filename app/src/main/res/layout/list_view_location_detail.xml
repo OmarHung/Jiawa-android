@@ -4,6 +4,7 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <RelativeLayout
         android:id="@+id/content_layout"
         android:layout_width="match_parent"
@@ -89,8 +90,8 @@
             android:layout_alignLeft="@+id/include_map"
             android:layout_alignRight="@+id/include_map"
             android:layout_below="@+id/include_map"
-            android:layout_marginTop="8dp">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_marginTop="8dp"></android.support.v7.widget.RecyclerView>
+
         <TextView
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
@@ -112,30 +113,32 @@
             android:layout_marginTop="8dp"
             android:background="@color/base"
             android:orientation="horizontal" />
+
         <RelativeLayout
             android:id="@+id/rl_response_and_favorit_and_keep"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linear_line"
-            android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp">
+
             <ImageView
                 android:id="@+id/btn_keep"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_keep"/>
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_keep" />
 
             <LinearLayout
                 android:id="@+id/linear_response_and_favorit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -168,33 +171,34 @@
                     android:id="@+id/btn_response"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="10dp"
-                    android:paddingBottom="5dp"
                     android:layout_marginLeft="18dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="留言"
                     android:textColor="@color/jet"
-                    android:text="回覆"
                     android:textSize="18sp" />
             </LinearLayout>
         </RelativeLayout>
 
         <LinearLayout
-            android:layout_below="@+id/rl_response_and_favorit_and_keep"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_below="@+id/rl_response_and_favorit_and_keep"
             android:background="@color/iron"
             android:gravity="center_vertical|left"
-            android:paddingTop="18dp"
+            android:orientation="horizontal"
             android:paddingBottom="6dp"
-            android:paddingLeft="18dp">
+            android:paddingLeft="18dp"
+            android:paddingTop="18dp">
+
             <TextView
                 android:id="@+id/tv_all_response"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="全部回文"/>
+                android:text="全部留言"
+                android:textSize="18sp" />
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

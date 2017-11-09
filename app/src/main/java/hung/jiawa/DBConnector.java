@@ -51,6 +51,7 @@ public class DBConnector {
     public int MODE_UPDATE_PROFILE_NAME=19;
     public int MODE_UPDATE_PROFILE_IMAGE=20;
     public int MODE_UPLOAD_PROFILE_IMAGE=21;
+    public int MODE_POST_RESPONSE_RESPONSE=22;
 
     private static DBConnector mInstance;
     private RequestQueue mRequestQueue;
@@ -357,7 +358,7 @@ public class DBConnector {
         DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
     }
 
-    //發表回覆
+    //發表留言
     public void executePostResponse(final String mid, final String content, final String aid) {
         String url =website+"response_api/response_insert";
         // Formulate the request and handle the response.
@@ -379,6 +380,34 @@ public class DBConnector {
                 map.put("mid", mid);
                 map.put("content", content);
                 map.put("aid", aid);
+                return map;
+            }
+        };
+        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
+    }
+
+    //發表回覆
+    public void executePostResponseResponse(final String mid, final String content, final String rid) {
+        String url =website+"response_api/response_response_insert";
+        // Formulate the request and handle the response.
+        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        mAsyncTaskCallBack.onResult(MODE_POST_RESPONSE_RESPONSE, response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                ErrorList(error);
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("mid", mid);
+                map.put("content", content);
+                map.put("rid", rid);
                 return map;
             }
         };

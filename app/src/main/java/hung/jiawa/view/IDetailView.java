@@ -11,7 +11,7 @@ public interface IDetailView {
     void setToolBarTitle(String title);
     void setAid(String aid);
     void showLoadingDialog();
-    void showResponseDialog(int floor);
+    void showResponseDialog(final String type, final String rid, int forFloor);
     void dismissLoadingDialog();
     void dismissResponseDialog();
     void setArticleLike();

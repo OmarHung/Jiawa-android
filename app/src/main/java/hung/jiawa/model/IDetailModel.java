@@ -9,7 +9,7 @@ public interface IDetailModel {
     void getResponse(String id);
     void getProfile(String id);
     //void setProfileToPre(String name, String email, String img);
-    void postResponse(String aid, String content);
+    void postResponse(String type, String aid, String content);
     void checkArticleLike(String aid);
     void checkArticleKeep(String aid);
     void checkResponseLike(String rid);
