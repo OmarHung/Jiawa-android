@@ -6,4 +6,5 @@ package hung.jiawa.view;
 
 public interface IMainView {
     void toast(String msg);
+    void finish();
 }

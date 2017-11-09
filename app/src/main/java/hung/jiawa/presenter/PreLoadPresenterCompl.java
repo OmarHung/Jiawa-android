@@ -51,7 +51,7 @@ public class PreLoadPresenterCompl implements IPreLoadPresenter, AsyncTaskCallBa
             } else if (status.equals("ok")) {
                 serverStatus = Integer.parseInt(msg);
                 if (serverStatus==0) iPreLoadView.showLoadingDialog();
-                else iPreLoadView.goToMainActivity();
+                else iPreLoadView.goToLoginActivity();
             }
         } catch (JSONException e) {}
     }

@@ -5,4 +5,5 @@ package hung.jiawa.presenter;
  */
 
 public interface IMainPresenter {
+    void exit();
 }

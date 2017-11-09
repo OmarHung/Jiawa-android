@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -115,11 +118,24 @@ public class MainActivity extends AppCompatActivity implements IMainView, OnTabS
 
     @Override
     public void toast(String msg) {
-
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void goToShareForum() {
         mPager.setCurrentItem(0);
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            mainPresenter.exit();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void finish() {
+        System.exit(0);
     }
 }

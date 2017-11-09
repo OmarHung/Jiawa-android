@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import hung.jiawa.LoadingDialog;
+import hung.jiawa.MainActivity;
 import hung.jiawa.R;
 import hung.jiawa.presenter.ILoginPresenter;
 import hung.jiawa.presenter.LoginPresenterCompl;
@@ -69,8 +70,10 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
     }
 
     @Override
-    public void goToPreLoadActivity() {
-        startActivity(new Intent(this, PreLoadActivity.class));
+    public void goToMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
         finish();
     }
 

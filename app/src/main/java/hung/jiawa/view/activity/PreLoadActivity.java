@@ -54,8 +54,8 @@ public class PreLoadActivity extends AppCompatActivity implements IPreLoadView {
     }
 
     @Override
-    public void goToMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+    public void goToLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();

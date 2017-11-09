@@ -6,7 +6,7 @@ package hung.jiawa.view;
 
 public interface ILoginView {
     void toast(String msg);
-    void goToPreLoadActivity();
+    void goToMainActivity();
     void showLoadingDialog();
     void dismissLoadingDialog();
 }

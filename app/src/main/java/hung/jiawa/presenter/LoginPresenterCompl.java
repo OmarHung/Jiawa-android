@@ -44,7 +44,7 @@ public class LoginPresenterCompl implements ILoginPresenter, AsyncTaskCallBack {
         if (email.length()>0 && password.length()>0) {
             Log.d(TAG, NAME+"已登入過");
             // 已登入過，顯示loading並連網確認用戶
-            iLoginView.showLoadingDialog();
+            this.iLoginView.showLoadingDialog();
             this.password = password;
             iLoginModel.checkMember(email, password);
         }
@@ -61,7 +61,6 @@ public class LoginPresenterCompl implements ILoginPresenter, AsyncTaskCallBack {
             if (status.equals("error")) {
                 iLoginView.toast(msg);
             } else if (status.equals("ok")) {
-                iLoginView.toast(msg);
                 String data = jsonData.getString("data");
                 JSONObject json = new JSONObject(data);
                 Map<String, String> hashMap = new HashMap<String, String>();
@@ -74,7 +73,8 @@ public class LoginPresenterCompl implements ILoginPresenter, AsyncTaskCallBack {
                 }
                 hashMap.put("password",password);
                 iLoginModel.savePreference(hashMap);
-                iLoginView.goToPreLoadActivity();
+                iLoginView.toast(msg);
+                iLoginView.goToMainActivity();
             }
 
         } catch (JSONException e) {}

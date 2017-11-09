@@ -2,10 +2,14 @@ package hung.jiawa.presenter;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import hung.jiawa.AsyncTaskCallBack;
 import hung.jiawa.FragmentCallBack;
@@ -20,6 +24,8 @@ import hung.jiawa.view.IMainView;
 public class MainPresenterCompl implements IMainPresenter, AsyncTaskCallBack {
     public final String TAG = "JiaWa";
     public final String NAME = "MainActivity - ";
+    private static boolean isExit = false;
+    private long mExitTime = 0;
     IMainView iMainView;
     IMainModel iMainModel;
     Context context;
@@ -49,5 +55,15 @@ public class MainPresenterCompl implements IMainPresenter, AsyncTaskCallBack {
     @Override
     public void onError(String error) {
         iMainView.toast(error);
+    }
+
+    @Override
+    public void exit() {
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {
+            iMainView.toast("再按一次退出程序");
+            mExitTime = System.currentTimeMillis();
+        } else {
+            iMainView.finish();
+        }
     }
 }
