@@ -13,6 +13,7 @@ import javax.crypto.spec.SecretKeySpec;
 import hung.jiawa.AsyncTaskCallBack;
 import hung.jiawa.DBConnector;
 import hung.jiawa.PreferenceHelper;
+import hung.jiawa.view.IPersonView;
 
 import static hung.jiawa.PreferenceHelper.with;
 
@@ -53,9 +54,10 @@ public class PersonModelCompl implements IPersonModel {
     }
 
     @Override
-    public void logout() {
-        settings.save("email", "");
-        settings.save("password", "");
+    public void logout(IPersonView iPersonView) {
+        settings.remove("email");
+        settings.remove("password");
+        iPersonView.startLoginActivity();
     }
 
     @Override

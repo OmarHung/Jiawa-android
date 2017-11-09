@@ -41,12 +41,13 @@ import static hung.jiawa.PreferenceHelper.with;
  * Created by omar8 on 2017/5/22.
  */
 
-public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack, LocaionDetailAdapter.OnRecyclerViewItemClickListener {
+public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack, LocaionDetailAdapter.OnRecyclerViewItemClickListener{
     public final String TAG = "JiaWa";
     public final String NAME = "DetailActivity - ";
     private RecyclerView recyclerView;
     private LocaionDetailAdapter locaionDetailAdapter;
     private boolean isResponsed=false;
+    private int loadPosition = 0;
     //private int lastClickLikeResponsePos;
     PreferenceHelper settings;
     IDetailView iDetailView;
@@ -83,6 +84,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                     String detail = jsonData.getString("detail");
                     JSONObject spot_detail = new JSONObject(detail);
                     Map<String, Object> item = new HashMap<String, Object>();
+                    item.put("group", "normal");
                     item.put("aid", spot_detail.getString("id"));
                     item.put("title", spot_detail.getString("title"));
                     item.put("name", spot_detail.getString("name"));
@@ -100,6 +102,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                     item.put("like_total", spot_detail.getString("favorite_count"));
                     item.put("response", spot_detail.getString("response_count"));
                     item.put("ViewType",0);
+                    item.put("count", "0");
                     iDetailView.setToolBarTitle(spot_detail.getString("title"));
                     iDetailView.setAid(id);
                     locaionDetailAdapter.addItem(item);
@@ -115,6 +118,8 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                         JSONObject response_detail = new JSONObject(array.get(i).toString());
                         Map<String, Object> item = new HashMap<String, Object>();
                         item.put("ViewType", 1);
+                        item.put("group", "normal");
+                        item.put("floor", i+1);
                         item.put("mid", response_detail.getString("member_id"));
                         item.put("name", response_detail.getString("name"));
                         item.put("rid", response_detail.getString("id"));
@@ -123,7 +128,20 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                         item.put("like", response_detail.getString("member_favorite"));
                         item.put("like_total", response_detail.getString("favorite_count"));
                         item.put("img", response_detail.getString("img"));
+                        if(!response_detail.getString("count").equals("0")) {
+                            item.put("count", "0");
+                        }else {
+                            item.put("count", response_detail.getString("count"));
+                        }
                         locaionDetailAdapter.addItem(item);
+                        if(!response_detail.getString("count").equals("0")) {
+                            Map<String, Object> item2 = new HashMap<String, Object>();
+                            item2.put("ViewType", 1);
+                            item2.put("rid", response_detail.getString("id"));
+                            item2.put("group", "normal");
+                            item2.put("count", response_detail.getString("count"));
+                            locaionDetailAdapter.addItem(item2);
+                        }
                     }
                 }
             }else if(mode==13) {
@@ -144,29 +162,34 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                     iDetailView.toast(msg);
                     iDetailView.dismissResponseDialog();
                 }
-            }
-            /*
-            String status="", msg="";
-            JSONArray jsonArray = new JSONArray(result);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonData = jsonArray.getJSONObject(i);
-                String status = jsonData.getString("status");
-                String msg = jsonData.getString("msg");
-                if (status.equals("501")) {
+            }else if(mode==23) {
+                //查看回覆的回覆
+                if(status.equals("error")) {
                     iDetailView.toast(msg);
-                } else if (status.equals("201")) {
-                    String id = jsonData.getString("id");
-                    String title = jsonData.getString("title");
-                    String img = jsonData.getString("img");
-                    String v = jsonData.getString("v");
-                    String v1 = jsonData.getString("v1");
-                    String city_id = jsonData.getString("city_id");
-                    String type_id = jsonData.getString("type_id");
-                    iDetailView.showDetail(id, title, img, v, v1, city_id, type_id);
-                    iDetailView.showImage(img);
+                }else if(status.equals("ok")) {
+                    List<Map<String, Object>> Dataset = new ArrayList<Map<String, Object>>();
+                    String data = jsonData.getString("data");
+                    JSONArray array = new JSONArray(data);
+                    if(array.length()>0) {
+                        locaionDetailAdapter.removeItem(Integer.valueOf(loadPosition));
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject response_detail = new JSONObject(array.get(i).toString());
+                            Map<String, Object> item = new HashMap<String, Object>();
+                            item.put("group", "abnormal");
+                            item.put("mid", response_detail.getString("member_id"));
+                            item.put("name", response_detail.getString("name"));
+                            item.put("rrid", response_detail.getString("id"));
+                            item.put("time", response_detail.getString("date_add"));
+                            item.put("content", response_detail.getString("content"));
+                            item.put("like", response_detail.getString("member_favorite"));
+                            item.put("like_total", response_detail.getString("favorite_count"));
+                            item.put("img", response_detail.getString("img"));
+                            locaionDetailAdapter.addItemToPositionNotNotity(item, Integer.valueOf(loadPosition));
+                        }
+                        locaionDetailAdapter.notifyItemRangeInserted(loadPosition, array.length());
+                    }
                 }
             }
-            */
             if(mode==11 && isResponsed) {
                 isResponsed=false;
                 recyclerView.smoothScrollToPosition(locaionDetailAdapter.getItemCount()-1);
@@ -195,9 +218,13 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
         iDetailView.showResponseDialog("a","0",0);
     }
     @Override
-    public void onResponseResponseClick(String rid, int position) {
+    public void onResponseOneClick(String rid, int position) {
         Log.d(TAG, NAME+"onResponseResponseClick  : " + rid+"  position="+position);
         iDetailView.showResponseDialog("r", rid, position);
+    }
+
+    @Override
+    public void onResponseTwoClick(String rid, int position) {
     }
 
     @Override
@@ -231,8 +258,20 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     }
 
     @Override
+    public void onLikeTwoClick(String rrid, int position, String now) {
+
+    }
+
+    @Override
     public void onProfileClick(String mid) {
         Log.d(TAG, NAME+"onProfileClick  : " + mid);
+    }
+
+    @Override
+    public void onLoadResponseCkick(String rid, int position) {
+        Log.d(TAG, NAME+"onLoadResponseCkick  : " + rid+" position:"+position);
+        loadPosition = position;
+        iDetailModel.getResponseTwo(rid);
     }
 
     public void onResume() {

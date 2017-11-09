@@ -5,27 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-    <LinearLayout
-        android:id="@+id/bottom_line"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/iron"
-        android:orientation="horizontal">
-    </LinearLayout>
     <RelativeLayout
-        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/tv_floor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="8dp"
-            android:text="1樓"
-            android:textSize="12sp"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="68dp">
         <LinearLayout
             android:id="@+id/linear_floor"
             android:layout_marginLeft="16dp"

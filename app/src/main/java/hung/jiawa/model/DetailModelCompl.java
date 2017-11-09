@@ -41,6 +41,14 @@ public class DetailModelCompl implements IDetailModel {
     }
 
     @Override
+    public void getResponseTwo(String id) {
+        //23
+        DBConnector mDBConnector = new DBConnector(context);
+        mDBConnector.setCallBack(callBack);
+        mDBConnector.executeGetResponse2(mid, id);
+    }
+
+    @Override
     public void getProfile(String id) {
         //12
         DBConnector mDBConnector = new DBConnector(context);
@@ -67,7 +75,7 @@ public class DetailModelCompl implements IDetailModel {
             //22
             DBConnector mDBConnector = new DBConnector(context);
             mDBConnector.setCallBack(callBack);
-            mDBConnector.executePostResponseResponse(mid, content, id);
+            mDBConnector.executePostResponse2(mid, content, id);
         }
     }
 
