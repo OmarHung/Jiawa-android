@@ -11,7 +11,7 @@ public interface IPersonModel {
     String getName();
     String getProfileImage();
     String getEmail();
-    void logout(IPersonView iPersonView);
+    void logout();
     void setName(String name);
     void setProfileImage(String img);
     void uploadProfileImage(String img);

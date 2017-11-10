@@ -54,10 +54,8 @@ public class PersonModelCompl implements IPersonModel {
     }
 
     @Override
-    public void logout(IPersonView iPersonView) {
-        settings.remove("email");
-        settings.remove("password");
-        iPersonView.startLoginActivity();
+    public void logout() {
+        settings.removeAll();
     }
 
     @Override

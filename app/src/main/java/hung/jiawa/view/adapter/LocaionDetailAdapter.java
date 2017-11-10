@@ -42,7 +42,6 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     private Context mContext;
     private List<Map<String, Object>> myDataset = new ArrayList<Map<String, Object>>();
     private boolean isMapReady=false, isDataReady=false;
-
     public LocaionDetailAdapter(Context mContext) {
         this.mContext = mContext;
     }
@@ -151,12 +150,11 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 ((LocationViewHolder) holder).tv_all_response.setText("尚未有留言");
             }
         }else if(holder instanceof ResopnseViewHolder){
-            if(myDataset.get(position).get("floor").toString().equals("1")) ((ResopnseViewHolder) holder).bottom_line.setVisibility(View.GONE);
+            if(myDataset.get(position).get("first").toString().equals("1")) ((ResopnseViewHolder) holder).bottom_line.setVisibility(View.GONE);
             if(myDataset.get(position).get("like").toString().equals("1"))
                 ((ResopnseViewHolder) holder).btn_response_like.setImageResource(R.mipmap.ic_favorit_fill);
             else
                 ((ResopnseViewHolder) holder).btn_response_like.setImageResource(R.mipmap.ic_favorit);
-            ((ResopnseViewHolder) holder).tv_floor.setText(myDataset.get(position).get("floor").toString()+"樓");
             ((ResopnseViewHolder) holder).tv_name.setText(myDataset.get(position).get("name").toString());
             ((ResopnseViewHolder) holder).tv_time.setText(myDataset.get(position).get("time").toString());
             ((ResopnseViewHolder) holder).tv_content.setText(myDataset.get(position).get("content").toString());
@@ -254,14 +252,13 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public class ResopnseViewHolder extends RecyclerView.ViewHolder {
-        private TextView tv_floor, tv_content, tv_time, btn_response, tv_number_of_like, tv_name;
+        private TextView tv_content, tv_time, btn_response, tv_number_of_like, tv_name;
         private ImageView btn_response_like;
         private LinearLayout bottom_line;
         private SimpleDraweeView profile_img;
         ResopnseViewHolder(View view) {
             super(view);
             bottom_line = (LinearLayout) view.findViewById(R.id.bottom_line);
-            tv_floor = (TextView) view.findViewById(R.id.tv_floor);
             tv_name = (TextView) view.findViewById(R.id.tv_name);
             tv_content = (TextView) view.findViewById(R.id.tv_content);
             btn_response = (TextView) view.findViewById(R.id.btn_response);
@@ -364,6 +361,14 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     //添加一个item
     public void addItem(Map<String, Object> item) {
         myDataset.add(item);
+        notifyDataSetChanged();
+    }
+    //留言計數+1
+    public void addResponseCount() {
+        int newCount = Integer.valueOf(myDataset.get(0).get("response").toString())+1;
+        Map<String, Object> item = myDataset.get(0);
+        item.put("response",newCount);
+        myDataset.set(0,item);
         notifyDataSetChanged();
     }
     //添加一个item

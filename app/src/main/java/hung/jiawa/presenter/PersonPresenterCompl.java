@@ -76,7 +76,8 @@ public class PersonPresenterCompl implements IPersonPresenter, AsyncTaskCallBack
 
     @Override
     public void logout() {
-        iPersonModel.logout(iPersonView);
+        iPersonModel.logout();
+        iPersonView.startLoginActivity();
     }
 
     @Override

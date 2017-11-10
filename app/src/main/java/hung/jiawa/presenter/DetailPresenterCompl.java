@@ -47,6 +47,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     private RecyclerView recyclerView;
     private LocaionDetailAdapter locaionDetailAdapter;
     private boolean isResponsed=false;
+    private boolean isResponsed2=false;
     private int loadPosition = 0;
     //private int lastClickLikeResponsePos;
     PreferenceHelper settings;
@@ -63,6 +64,12 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
         settings = with(context);
         mid = settings.getString("id","");
         initRecyclerView();
+
+        //載入文章
+        this.iDetailView.showLoadingDialog();
+        locaionDetailAdapter.clearData();
+        iDetailModel.getDetail(this.id);
+        iDetailModel.getProfile(mid);
     }
 
     @Override
@@ -74,6 +81,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
             String status = jsonData.getString("status");
             String msg = jsonData.getString("msg");
             if(mode==6) {
+                //文章內容
                 if(status.equals("error")) {
                     iDetailView.toast(msg);
                 }else if(status.equals("ok")) {
@@ -109,6 +117,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                     iDetailModel.getResponse(id);
                 }
             }else if(mode==11) {
+                //留言列表
                 if(status.equals("error")) {
                     iDetailView.toast(msg);
                 }else if(status.equals("ok")) {
@@ -117,9 +126,13 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                     for(int i=0; i<array.length(); i++) {
                         JSONObject response_detail = new JSONObject(array.get(i).toString());
                         Map<String, Object> item = new HashMap<String, Object>();
+                        if(i==0) {
+                            item.put("first", 1);
+                        }else {
+                            item.put("first", 0);
+                        }
                         item.put("ViewType", 1);
                         item.put("group", "normal");
-                        item.put("floor", i+1);
                         item.put("mid", response_detail.getString("member_id"));
                         item.put("name", response_detail.getString("name"));
                         item.put("rid", response_detail.getString("id"));
@@ -136,6 +149,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                         locaionDetailAdapter.addItem(item);
                         if(!response_detail.getString("count").equals("0")) {
                             Map<String, Object> item2 = new HashMap<String, Object>();
+                            item2.put("first", 0);
                             item2.put("ViewType", 1);
                             item2.put("rid", response_detail.getString("id"));
                             item2.put("group", "normal");
@@ -150,6 +164,28 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                     iDetailView.toast(msg);
                 }else if(status.equals("ok")) {
                     isResponsed = true;
+                    String detail = jsonData.getString("detail");
+                    JSONObject response_detail = new JSONObject(detail);
+                    Map<String, Object> item = new HashMap<String, Object>();
+                    if(locaionDetailAdapter.getItemCount()==0) {
+                        item.put("first", 1);
+                    }else {
+                        item.put("first", 0);
+                    }
+                    item.put("ViewType", 1);
+                    item.put("group", "normal");
+                    item.put("mid", response_detail.getString("member_id"));
+                    item.put("name", response_detail.getString("name"));
+                    item.put("rid", response_detail.getString("id"));
+                    item.put("time", response_detail.getString("date_add"));
+                    item.put("content", response_detail.getString("content"));
+                    item.put("like", response_detail.getString("member_favorite"));
+                    item.put("like_total", response_detail.getString("favorite_count"));
+                    item.put("img", response_detail.getString("img"));
+                    item.put("count", "0");
+                    locaionDetailAdapter.addItem(item);
+                    //文章留言數+1
+                    locaionDetailAdapter.addResponseCount();
                     iDetailView.toast(msg);
                     iDetailView.dismissResponseDialog();
                 }
@@ -158,7 +194,7 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                 if(status.equals("error")) {
                     iDetailView.toast(msg);
                 }else if(status.equals("ok")) {
-                    isResponsed = true;
+                    isResponsed2 = true;
                     iDetailView.toast(msg);
                     iDetailView.dismissResponseDialog();
                 }
@@ -189,9 +225,23 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                         locaionDetailAdapter.notifyItemRangeInserted(loadPosition, array.length());
                     }
                 }
+            }else if(mode==24) {
+                //發表回覆
+                if(status.equals("error")) {
+                    iDetailView.toast(msg);
+                }else if(status.equals("ok")) {
+                    isResponsed = true;
+                    iDetailView.toast(msg);
+                    iDetailView.dismissResponseDialog();
+                }
             }
-            if(mode==11 && isResponsed) {
+            if(mode==13 && isResponsed) {
+                Log.d(TAG, NAME+"isResponsed");
                 isResponsed=false;
+                recyclerView.smoothScrollToPosition(locaionDetailAdapter.getItemCount()-1);
+            }
+            if(mode==22 && isResponsed2) {
+                isResponsed2=false;
                 recyclerView.smoothScrollToPosition(locaionDetailAdapter.getItemCount()-1);
             }
         } catch (JSONException e) {}
@@ -276,10 +326,6 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
 
     public void onResume() {
         Log.d(TAG, NAME+"onResume");
-        iDetailView.showLoadingDialog();
-        locaionDetailAdapter.clearData();
-        iDetailModel.getDetail(id);
-        iDetailModel.getProfile(mid);
     }
 
     @Override
