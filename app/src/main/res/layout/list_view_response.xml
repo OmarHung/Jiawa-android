@@ -96,13 +96,15 @@
                     android:layout_alignParentRight="true"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
-
-                    <ImageView
+                    <com.varunest.sparkbutton.SparkButton
                         android:id="@+id/btn_response_like"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:src="@mipmap/ic_favorit" />
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        app:sparkbutton_activeImage="@drawable/ic_heart_on"
+                        app:sparkbutton_inActiveImage="@drawable/ic_heart_off"
+                        app:sparkbutton_iconSize="24dp"
+                        app:sparkbutton_primaryColor="@color/heart_primary_color"
+                        app:sparkbutton_secondaryColor="@color/heart_secondary_color" />
 
                     <TextView
                         android:id="@+id/tv_number_of_like"

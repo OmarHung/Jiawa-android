@@ -23,8 +23,11 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.stfalcon.frescoimageviewer.ImageViewer;
+import com.varunest.sparkbutton.SparkButton;
+import com.varunest.sparkbutton.SparkEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,12 +39,13 @@ import hung.jiawa.R;
 
 public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public final String TAG = "JiaWa";
-    public final String NAME = "ImageAdapter - ";
+    public final String NAME = "LocaionDetailAdapter - ";
     private static final int HINT_TYPE = 2;
     private static final int RESPONSE_RESPONSE_TYPE = 3;
     private Context mContext;
     private List<Map<String, Object>> myDataset = new ArrayList<Map<String, Object>>();
-    private boolean isMapReady=false, isDataReady=false;
+    //private Map<Integer, TextView> TextviewMap = new HashMap<Integer, TextView>();
+    //private List<Map<String, TextView>> myTextviewArray = new ArrayList<Map<String, TextView>>();
     public LocaionDetailAdapter(Context mContext) {
         this.mContext = mContext;
     }
@@ -122,13 +126,13 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
             });
             if(myDataset.get(position).get("like").toString().equals("1"))
-                ((LocationViewHolder) holder).btn_article_like.setImageResource(R.mipmap.ic_favorit_fill);
+                ((LocationViewHolder) holder).btn_article_like.setChecked(true);
             else
-                ((LocationViewHolder) holder).btn_article_like.setImageResource(R.mipmap.ic_favorit);
+                ((LocationViewHolder) holder).btn_article_like.setChecked(false);
             if(myDataset.get(position).get("keep").toString().equals("1"))
-                ((LocationViewHolder) holder).btn_keep.setImageResource(R.mipmap.ic_keep_fill);
+                ((LocationViewHolder) holder).btn_keep.setChecked(true);
             else
-                ((LocationViewHolder) holder).btn_keep.setImageResource(R.mipmap.ic_keep);
+                ((LocationViewHolder) holder).btn_keep.setChecked(false);
             ((LocationViewHolder) holder).tv_name.setText(myDataset.get(position).get("name").toString());
             ((LocationViewHolder) holder).tv_time.setText(myDataset.get(position).get("time").toString());
             ((LocationViewHolder) holder).tv_forum.setText(myDataset.get(position).get("forum").toString());
@@ -149,12 +153,18 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             }else {
                 ((LocationViewHolder) holder).tv_all_response.setText("尚未有留言");
             }
+            //TextviewMap.put(position,((LocationViewHolder) holder).tv_total_like);
+            //myTextviewArray.set(position,item);
         }else if(holder instanceof ResopnseViewHolder){
-            if(myDataset.get(position).get("first").toString().equals("1")) ((ResopnseViewHolder) holder).bottom_line.setVisibility(View.GONE);
+            Log.d(TAG, NAME+"onBindViewHolder ResopnseViewHolder");
+            if(myDataset.get(position).get("first").toString().equals("1")) {
+                Log.d(TAG,NAME+"first");
+                ((ResopnseViewHolder) holder).bottom_line.setVisibility(View.GONE);
+            }
             if(myDataset.get(position).get("like").toString().equals("1"))
-                ((ResopnseViewHolder) holder).btn_response_like.setImageResource(R.mipmap.ic_favorit_fill);
+                ((ResopnseViewHolder) holder).btn_response_like.setChecked(true);
             else
-                ((ResopnseViewHolder) holder).btn_response_like.setImageResource(R.mipmap.ic_favorit);
+                ((ResopnseViewHolder) holder).btn_response_like.setChecked(false);
             ((ResopnseViewHolder) holder).tv_name.setText(myDataset.get(position).get("name").toString());
             ((ResopnseViewHolder) holder).tv_time.setText(myDataset.get(position).get("time").toString());
             ((ResopnseViewHolder) holder).tv_content.setText(myDataset.get(position).get("content").toString());
@@ -162,17 +172,19 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             ((ResopnseViewHolder) holder).tv_number_of_like.setText(myDataset.get(position).get("like_total").toString());
             if(!myDataset.get(position).get("img").toString().equals(""))
                 ((ResopnseViewHolder) holder).profile_img.setImageURI(myDataset.get(position).get("img").toString());
+            //TextviewMap.put(position,((ResopnseViewHolder) holder).tv_number_of_like);
         }else if(holder instanceof ResponseViewHolder){
             if(myDataset.get(position).get("like").toString().equals("1"))
-                ((ResponseViewHolder) holder).btn_response_like.setImageResource(R.mipmap.ic_favorit_fill);
+                ((ResponseViewHolder) holder).btn_response_like.setChecked(true);
             else
-                ((ResponseViewHolder) holder).btn_response_like.setImageResource(R.mipmap.ic_favorit);
+                ((ResponseViewHolder) holder).btn_response_like.setChecked(false);
             ((ResponseViewHolder) holder).tv_name.setText(myDataset.get(position).get("name").toString());
             ((ResponseViewHolder) holder).tv_time.setText(myDataset.get(position).get("time").toString());
             ((ResponseViewHolder) holder).tv_content.setText(myDataset.get(position).get("content").toString());
             ((ResponseViewHolder) holder).tv_number_of_like.setText(myDataset.get(position).get("like_total").toString());
             if(!myDataset.get(position).get("img").toString().equals(""))
                 ((ResponseViewHolder) holder).profile_img.setImageURI(myDataset.get(position).get("img").toString());
+            //TextviewMap.put(position,((ResponseViewHolder) holder).tv_number_of_like);
         }else if(holder instanceof HintViewHolder){
             ((HintViewHolder) holder).btn_response.setText("查看"+myDataset.get(position).get("count").toString()+"則回覆");
         }
@@ -192,7 +204,7 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         private SimpleDraweeView profile_img;
         private RecyclerView img_list;
         private MapFragment mapFragment;
-        private ImageView btn_article_like, btn_keep;
+        private SparkButton btn_article_like, btn_keep;
         //private EditText edt_content;
         LocationViewHolder(View view) {
             super(view);
@@ -200,8 +212,8 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             //detailView = (LinearLayout) view.findViewById(R.id.detailView);
             FragmentManager manager = ((Activity) mContext).getFragmentManager();
             mapFragment = (MapFragment) manager.findFragmentById(R.id.mainMap);
-            btn_article_like = (ImageView) view.findViewById(R.id.btn_article_like);
-            btn_keep = (ImageView) view.findViewById(R.id.btn_keep);
+            btn_article_like = (SparkButton) view.findViewById(R.id.btn_article_like);
+            btn_keep = (SparkButton) view.findViewById(R.id.btn_keep);
             tv_title = (TextView) view.findViewById(R.id.tv_title);
             tv_content = (TextView) view.findViewById(R.id.tv_content);
             tv_city = (TextView) view.findViewById(R.id.tv_city);
@@ -218,23 +230,58 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             img_list.setNestedScrollingEnabled(false);
             profile_img = (SimpleDraweeView) view.findViewById(R.id.profile_img);
 
-            btn_article_like.setOnClickListener(new View.OnClickListener() {
+            btn_article_like.setEventListener(new SparkEventListener(){
                 @Override
-                public void onClick(View v) {
-                    mOnItemClickListener.onLikeArticleClick(myDataset.get(0).get("aid").toString(), myDataset.get(0).get("like").toString());
+                public void onEvent(ImageView button, boolean buttonState) {
+                    mOnItemClickListener.onLikeArticleClick(myDataset.get(getAdapterPosition()).get("aid").toString(), myDataset.get(getAdapterPosition()).get("like").toString());
+                    //TextView textView = TextviewMap.get(getAdapterPosition());
+                    //int ori_count = Integer.valueOf(textView.getText().toString());
+                    if(buttonState) {
+                        setArticleLike(getAdapterPosition());
+                        //textView.setText(String.valueOf(ori_count+1));
+                    }else {
+                        setArticleDisLike(getAdapterPosition());
+                        //if(ori_count>0) textView.setText(String.valueOf(ori_count-1));
+                    }
+                }
+
+                @Override
+                public void onEventAnimationEnd(ImageView button, boolean buttonState) {
+
+                }
+
+                @Override
+                public void onEventAnimationStart(ImageView button, boolean buttonState) {
+
                 }
             });
-            btn_keep.setOnClickListener(new View.OnClickListener() {
+
+            btn_keep.setEventListener(new SparkEventListener(){
                 @Override
-                public void onClick(View v) {
-                    mOnItemClickListener.onKeepArticleClick(myDataset.get(0).get("aid").toString(), myDataset.get(0).get("keep").toString());
+                public void onEvent(ImageView button, boolean buttonState) {
+                    mOnItemClickListener.onKeepArticleClick(myDataset.get(getAdapterPosition()).get("aid").toString(), myDataset.get(getAdapterPosition()).get("keep").toString());
+                    if(buttonState) {
+                        setArticleKeep(getAdapterPosition());
+                    }else {
+                        setArticleDisKeep(getAdapterPosition());
+                    }
+                }
+
+                @Override
+                public void onEventAnimationEnd(ImageView button, boolean buttonState) {
+
+                }
+
+                @Override
+                public void onEventAnimationStart(ImageView button, boolean buttonState) {
+
                 }
             });
             //btn_response.setOnClickListener(this);
             btn_response.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.onResponseArticleClick(myDataset.get(0).get("aid").toString());
+                    mOnItemClickListener.onResponseArticleClick(myDataset.get(getAdapterPosition()).get("aid").toString());
                 }
             });
             uriImageAdapter = new UriImageAdapter(mContext);
@@ -253,36 +300,57 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public class ResopnseViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_content, tv_time, btn_response, tv_number_of_like, tv_name;
-        private ImageView btn_response_like;
+        private SparkButton btn_response_like;
         private LinearLayout bottom_line;
         private SimpleDraweeView profile_img;
         ResopnseViewHolder(View view) {
             super(view);
+            Log.d(TAG,NAME+"ResopnseViewHolder");
             bottom_line = (LinearLayout) view.findViewById(R.id.bottom_line);
             tv_name = (TextView) view.findViewById(R.id.tv_name);
             tv_content = (TextView) view.findViewById(R.id.tv_content);
             btn_response = (TextView) view.findViewById(R.id.btn_response);
             tv_time = (TextView) view.findViewById(R.id.tv_time);
             tv_number_of_like = (TextView) view.findViewById(R.id.tv_number_of_like);
-            btn_response_like = (ImageView) view.findViewById(R.id.btn_response_like);
+            btn_response_like = (SparkButton) view.findViewById(R.id.btn_response_like);
             profile_img = (SimpleDraweeView) view.findViewById(R.id.profile_img);
 
             btn_response.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.onResponseOneClick(myDataset.get(getPosition()).get("rid").toString(), getPosition());
+                    mOnItemClickListener.onResponseOneClick(myDataset.get(getAdapterPosition()).get("rid").toString(), getAdapterPosition());
                 }
             });
-            btn_response_like.setOnClickListener(new View.OnClickListener() {
+            btn_response_like.setEventListener(new SparkEventListener(){
                 @Override
-                public void onClick(View v) {
-                    mOnItemClickListener.onLikeResponseClick(myDataset.get(getPosition()).get("rid").toString(), getPosition(), myDataset.get(getPosition()).get("like").toString());
+                public void onEvent(ImageView button, boolean buttonState) {
+                    mOnItemClickListener.onLikeResponseClick(myDataset.get(getAdapterPosition()).get("rid").toString(), getAdapterPosition(), myDataset.get(getAdapterPosition()).get("like").toString());
+                    Log.d(TAG,NAME+"setEventListener :"+buttonState);
+                    //TextView textView = TextviewMap.get(getAdapterPosition());
+                    //int ori_count = Integer.valueOf(textView.getText().toString());
+                    if(buttonState) {
+                        setResponseLike(getAdapterPosition());
+                        //textView.setText(String.valueOf(ori_count+1));
+                    }else {
+                        setResponseDisLike(getAdapterPosition());
+                        //if(ori_count>0) textView.setText(String.valueOf(ori_count-1));
+                    }
+                }
+
+                @Override
+                public void onEventAnimationEnd(ImageView button, boolean buttonState) {
+
+                }
+
+                @Override
+                public void onEventAnimationStart(ImageView button, boolean buttonState) {
+
                 }
             });
             profile_img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.onProfileClick(myDataset.get(getPosition()).get("mid").toString());
+                    mOnItemClickListener.onProfileClick(myDataset.get(getAdapterPosition()).get("mid").toString());
                 }
             });
         }
@@ -290,7 +358,7 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public class ResponseViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_content, tv_time, btn_response, tv_number_of_like, tv_name;
-        private ImageView btn_response_like;
+        private SparkButton btn_response_like;
         private SimpleDraweeView profile_img;
         public ResponseViewHolder(View view) {
             super(view);
@@ -301,23 +369,40 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             btn_response.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.onResponseTwoClick(myDataset.get(getPosition()).get("rrid").toString(), getPosition());
+                    mOnItemClickListener.onResponseTwoClick(myDataset.get(getAdapterPosition()).get("rrid").toString(), getAdapterPosition());
                 }
             });
             tv_time = (TextView) view.findViewById(R.id.tv_time);
             tv_number_of_like = (TextView) view.findViewById(R.id.tv_number_of_like);
-            btn_response_like = (ImageView) view.findViewById(R.id.btn_response_like);
-            btn_response_like.setOnClickListener(new View.OnClickListener() {
+            btn_response_like = (SparkButton) view.findViewById(R.id.btn_response_like);
+            btn_response_like.setEventListener(new SparkEventListener(){
                 @Override
-                public void onClick(View v) {
-                    mOnItemClickListener.onLikeTwoClick(myDataset.get(getPosition()).get("rrid").toString(), getPosition(), myDataset.get(getPosition()).get("like").toString());
+                public void onEvent(ImageView button, boolean buttonState) {
+                    mOnItemClickListener.onLikeTwoClick(myDataset.get(getAdapterPosition()).get("rrid").toString(), getAdapterPosition(), myDataset.get(getAdapterPosition()).get("like").toString());
+                    //TextView textView = TextviewMap.get(getAdapterPosition());
+                    //int ori_count = Integer.valueOf(textView.getText().toString());
+                    if(buttonState) {
+                        //textView.setText(String.valueOf(ori_count+1));
+                    }else {
+                        //if(ori_count>0) textView.setText(String.valueOf(ori_count-1));
+                    }
+                }
+
+                @Override
+                public void onEventAnimationEnd(ImageView button, boolean buttonState) {
+
+                }
+
+                @Override
+                public void onEventAnimationStart(ImageView button, boolean buttonState) {
+
                 }
             });
             profile_img = (SimpleDraweeView) view.findViewById(R.id.profile_img);
             profile_img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.onProfileClick(myDataset.get(getPosition()).get("mid").toString());
+                    mOnItemClickListener.onProfileClick(myDataset.get(getAdapterPosition()).get("mid").toString());
                 }
             });
         }
@@ -331,9 +416,9 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             btn_response.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.onLoadResponseCkick(myDataset.get(getPosition()).get("rid").toString(), getPosition());
-                    //notifyItemRangeRemoved(getPosition(), 1); //移除hint
-                    //notifyItemRangeInserted(getPosition(), Integer.valueOf(myDataset.get(getPosition()).get("count").toString()));
+                    mOnItemClickListener.onLoadResponseCkick(myDataset.get(getAdapterPosition()).get("rid").toString(), getAdapterPosition());
+                    //notifyItemRangeRemoved(getAdapterPosition(), 1); //移除hint
+                    //notifyItemRangeInserted(getAdapterPosition(), Integer.valueOf(myDataset.get(getAdapterPosition()).get("count").toString()));
                 }
             });
         }
@@ -379,20 +464,20 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         myDataset.clear();
         notifyDataSetChanged();
     }
-    public void setArticleLike() {
-        Map<String, Object> item = myDataset.get(0);
+    public void setArticleLike(int position) {
+        Map<String, Object> item = myDataset.get(position);
         item.put("like", 1);
         int like_total = Integer.valueOf(item.get("like_total").toString());
         item.put("like_total", like_total+1);
-        myDataset.set(0, item);
+        myDataset.set(position, item);
         notifyDataSetChanged();
     }
-    public void setArticleDisLike() {
-        Map<String, Object> item = myDataset.get(0);
+    public void setArticleDisLike(int position) {
+        Map<String, Object> item = myDataset.get(position);
         item.put("like", 0);
         int like_total = Integer.valueOf(item.get("like_total").toString());
         item.put("like_total", like_total-1);
-        myDataset.set(0, item);
+        myDataset.set(position, item);
         notifyDataSetChanged();
     }
 
@@ -414,16 +499,16 @@ public class LocaionDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         notifyDataSetChanged();
     }
 
-    public void setArticleKeep() {
-        Map<String, Object> item = myDataset.get(0);
+    public void setArticleKeep(int position) {
+        Map<String, Object> item = myDataset.get(position);
         item.put("keep", 1);
-        myDataset.set(0, item);
+        myDataset.set(position, item);
         notifyDataSetChanged();
     }
-    public void setArticleDisKeep() {
-        Map<String, Object> item = myDataset.get(0);
+    public void setArticleDisKeep(int position) {
+        Map<String, Object> item = myDataset.get(position);
         item.put("keep", 0);
-        myDataset.set(0, item);
+        myDataset.set(position, item);
         notifyDataSetChanged();
     }
 }

@@ -280,19 +280,19 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     @Override
     public void onLikeArticleClick(String aid, String now) {
         Log.d(TAG, NAME+"onLikeArticleClick  : " + aid);
-        if(now.equals("1"))
-            locaionDetailAdapter.setArticleDisLike();
-        else
-            locaionDetailAdapter.setArticleLike();
+        //if(now.equals("1"))
+        //    locaionDetailAdapter.setArticleDisLike();
+        //else
+        //    locaionDetailAdapter.setArticleLike();
         iDetailModel.checkArticleLike(aid);
     }
 
     @Override
     public void onKeepArticleClick(String aid, String now) {
-        if(now.equals("1"))
-            locaionDetailAdapter.setArticleDisKeep();
-        else
-            locaionDetailAdapter.setArticleKeep();
+        //if(now.equals("1"))
+        //    locaionDetailAdapter.setArticleDisKeep();
+        //else
+        //    locaionDetailAdapter.setArticleKeep();
         iDetailModel.checkArticleKeep(aid);
     }
 
@@ -300,10 +300,10 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     public void onLikeResponseClick(String rid, int position, String now) {
         Log.d(TAG, NAME+"onLikeResponseClick  : " + rid+"  position="+position);
         //lastClickLikeResponsePos=position;
-        if(now.equals("1"))
-            locaionDetailAdapter.setResponseDisLike(position);
-        else
-            locaionDetailAdapter.setResponseLike(position);
+        //if(now.equals("1"))
+        //    locaionDetailAdapter.setResponseDisLike(position);
+        //else
+        //    locaionDetailAdapter.setResponseLike(position);
         iDetailModel.checkResponseLike(rid);
     }
 
