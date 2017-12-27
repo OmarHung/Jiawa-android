@@ -324,33 +324,6 @@ public class DBConnector {
         DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
     }
 
-    //取得文章回覆的回覆
-    public void executeGetResponse2(final String mid, final String id) {
-        String url =website+"response_api/responses2_list";
-        // Formulate the request and handle the response.
-        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        mAsyncTaskCallBack.onResult(MODE_GET_RESPONSE2, response);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // TODO Auto-generated method stub
-                ErrorList(error);
-            }
-        }) {
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<String, String>();
-                map.put("mid", mid);
-                map.put("id", id);
-                return map;
-            }
-        };
-        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
-    }
-
     //發表夾點
     public void executePostLocation(final String mid, final String title, final String content, final String latlng, final String city, final String type, final String number_of_machine, final String img) {
         String url =website+"article_api/spot_insert";
@@ -408,34 +381,6 @@ public class DBConnector {
                 map.put("mid", mid);
                 map.put("content", content);
                 map.put("aid", aid);
-                return map;
-            }
-        };
-        DBConnector.getInstance(mCtx).addToRequestQueue(mStringRequest);
-    }
-
-    //發表回覆
-    public void executePostResponse2(final String mid, final String content, final String rid) {
-        String url =website+"response_api/response2_insert";
-        // Formulate the request and handle the response.
-        StringRequest mStringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        mAsyncTaskCallBack.onResult(MODE_POST_RESPONSE_RESPONSE, response);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // TODO Auto-generated method stub
-                ErrorList(error);
-            }
-        }) {
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<String, String>();
-                map.put("mid", mid);
-                map.put("content", content);
-                map.put("rid", rid);
                 return map;
             }
         };
