@@ -2,24 +2,15 @@ package hung.jiawa.presenter;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.stfalcon.frescoimageviewer.ImageViewer;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +23,6 @@ import hung.jiawa.model.DetailModelCompl;
 import hung.jiawa.model.IDetailModel;
 import hung.jiawa.view.IDetailView;
 import hung.jiawa.view.adapter.LocaionDetailAdapter;
-import hung.jiawa.view.adapter.ResponseAdapter;
-import hung.jiawa.view.adapter.UriImageAdapter;
 
 import static hung.jiawa.PreferenceHelper.with;
 
@@ -47,9 +36,6 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     private RecyclerView recyclerView;
     private LocaionDetailAdapter locaionDetailAdapter;
     private boolean isResponsed=false;
-    private boolean isResponsed2=false;
-    private int loadPosition = 0;
-    //private int lastClickLikeResponsePos;
     PreferenceHelper settings;
     IDetailView iDetailView;
     IDetailModel iDetailModel;
@@ -138,24 +124,8 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                         item.put("rid", response_detail.getString("id"));
                         item.put("time", response_detail.getString("date_add"));
                         item.put("content", response_detail.getString("content"));
-                        item.put("like", response_detail.getString("member_favorite"));
-                        item.put("like_total", response_detail.getString("favorite_count"));
                         item.put("img", response_detail.getString("img"));
-                        if(!response_detail.getString("count").equals("0")) {
-                            item.put("count", "0");
-                        }else {
-                            item.put("count", response_detail.getString("count"));
-                        }
                         locaionDetailAdapter.addItem(item);
-                        if(!response_detail.getString("count").equals("0")) {
-                            Map<String, Object> item2 = new HashMap<String, Object>();
-                            item2.put("first", 0);
-                            item2.put("ViewType", 1);
-                            item2.put("rid", response_detail.getString("id"));
-                            item2.put("group", "normal");
-                            item2.put("count", response_detail.getString("count"));
-                            locaionDetailAdapter.addItem(item2);
-                        }
                     }
                 }
             }else if(mode==13) {
@@ -179,51 +149,12 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
                     item.put("rid", response_detail.getString("id"));
                     item.put("time", response_detail.getString("date_add"));
                     item.put("content", response_detail.getString("content"));
-                    item.put("like", response_detail.getString("member_favorite"));
-                    item.put("like_total", response_detail.getString("favorite_count"));
                     item.put("img", response_detail.getString("img"));
-                    item.put("count", "0");
                     locaionDetailAdapter.addItem(item);
                     //文章留言數+1
                     locaionDetailAdapter.addResponseCount();
                     iDetailView.toast(msg);
                     iDetailView.dismissResponseDialog();
-                }
-            }else if(mode==22) {
-                //發表回覆
-                if(status.equals("error")) {
-                    iDetailView.toast(msg);
-                }else if(status.equals("ok")) {
-                    isResponsed2 = true;
-                    iDetailView.toast(msg);
-                    iDetailView.dismissResponseDialog();
-                }
-            }else if(mode==23) {
-                //查看回覆的回覆
-                if(status.equals("error")) {
-                    iDetailView.toast(msg);
-                }else if(status.equals("ok")) {
-                    List<Map<String, Object>> Dataset = new ArrayList<Map<String, Object>>();
-                    String data = jsonData.getString("data");
-                    JSONArray array = new JSONArray(data);
-                    if(array.length()>0) {
-                        locaionDetailAdapter.removeItem(Integer.valueOf(loadPosition));
-                        for (int i = 0; i < array.length(); i++) {
-                            JSONObject response_detail = new JSONObject(array.get(i).toString());
-                            Map<String, Object> item = new HashMap<String, Object>();
-                            item.put("group", "abnormal");
-                            item.put("mid", response_detail.getString("member_id"));
-                            item.put("name", response_detail.getString("name"));
-                            item.put("rrid", response_detail.getString("id"));
-                            item.put("time", response_detail.getString("date_add"));
-                            item.put("content", response_detail.getString("content"));
-                            item.put("like", response_detail.getString("member_favorite"));
-                            item.put("like_total", response_detail.getString("favorite_count"));
-                            item.put("img", response_detail.getString("img"));
-                            locaionDetailAdapter.addItemToPositionNotNotity(item, Integer.valueOf(loadPosition));
-                        }
-                        locaionDetailAdapter.notifyItemRangeInserted(loadPosition, array.length());
-                    }
                 }
             }else if(mode==24) {
                 //發表回覆
@@ -238,10 +169,6 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
             if(mode==13 && isResponsed) {
                 Log.d(TAG, NAME+"isResponsed");
                 isResponsed=false;
-                recyclerView.smoothScrollToPosition(locaionDetailAdapter.getItemCount()-1);
-            }
-            if(mode==22 && isResponsed2) {
-                isResponsed2=false;
                 recyclerView.smoothScrollToPosition(locaionDetailAdapter.getItemCount()-1);
             }
         } catch (JSONException e) {}
@@ -263,66 +190,33 @@ public class DetailPresenterCompl implements IDetailPresenter, AsyncTaskCallBack
     }
 
     @Override
-    public void onResponseArticleClick(String aid) {
+    public void onCommentClick(String aid) {
         Log.d(TAG, NAME+"onResponseArticleClick  : " + aid);
         iDetailView.showResponseDialog("a","0",0);
     }
     @Override
-    public void onResponseOneClick(String rid, int position) {
+    public void onResponseClick(String rid, int position) {
         Log.d(TAG, NAME+"onResponseResponseClick  : " + rid+"  position="+position);
         iDetailView.showResponseDialog("r", rid, position);
     }
 
     @Override
-    public void onResponseTwoClick(String rid, int position) {
-    }
-
-    @Override
     public void onLikeArticleClick(String aid, String now) {
         Log.d(TAG, NAME+"onLikeArticleClick  : " + aid);
-        //if(now.equals("1"))
-        //    locaionDetailAdapter.setArticleDisLike();
-        //else
-        //    locaionDetailAdapter.setArticleLike();
         iDetailModel.checkArticleLike(aid);
     }
 
     @Override
     public void onKeepArticleClick(String aid, String now) {
-        //if(now.equals("1"))
-        //    locaionDetailAdapter.setArticleDisKeep();
-        //else
-        //    locaionDetailAdapter.setArticleKeep();
         iDetailModel.checkArticleKeep(aid);
     }
 
-    @Override
-    public void onLikeResponseClick(String rid, int position, String now) {
-        Log.d(TAG, NAME+"onLikeResponseClick  : " + rid+"  position="+position);
-        //lastClickLikeResponsePos=position;
-        //if(now.equals("1"))
-        //    locaionDetailAdapter.setResponseDisLike(position);
-        //else
-        //    locaionDetailAdapter.setResponseLike(position);
-        iDetailModel.checkResponseLike(rid);
-    }
-
-    @Override
-    public void onLikeTwoClick(String rrid, int position, String now) {
-
-    }
 
     @Override
     public void onProfileClick(String mid) {
         Log.d(TAG, NAME+"onProfileClick  : " + mid);
     }
 
-    @Override
-    public void onLoadResponseCkick(String rid, int position) {
-        Log.d(TAG, NAME+"onLoadResponseCkick  : " + rid+" position:"+position);
-        loadPosition = position;
-        iDetailModel.getResponseTwo(rid);
-    }
 
     public void onResume() {
         Log.d(TAG, NAME+"onResume");

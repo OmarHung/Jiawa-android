@@ -14,8 +14,4 @@ public interface IDetailView {
     void showResponseDialog(final String type, final String rid, int forFloor);
     void dismissLoadingDialog();
     void dismissResponseDialog();
-    void setArticleLike();
-    void setResponseLike(String rid);
-    void setArticleDisLike();
-    void setResponseDisLike(String rid);
 }

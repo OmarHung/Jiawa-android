@@ -25,8 +25,8 @@ import hung.jiawa.view.IPreLoadView;
 
 public class PreLoadActivity extends AppCompatActivity implements IPreLoadView {
     /**
-         * 確認版本、連線測試、預先載入廣告、server狀態
-         */
+     * 確認版本、連線測試、預先載入廣告、server狀態
+     */
     private LoadingDialog mLoadingDialog = null;
     IPreLoadPresenter preLoadPresenter;
     @Override

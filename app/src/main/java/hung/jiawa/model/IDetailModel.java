@@ -7,12 +7,9 @@ package hung.jiawa.model;
 public interface IDetailModel {
     void getDetail(String id);
     void getResponse(String id);
-    void getResponseTwo(String id);
     void getProfile(String id);
-    //void setProfileToPre(String name, String email, String img);
     void postResponse(String type, String aid, String content);
     void checkArticleLike(String aid);
     void checkArticleKeep(String aid);
-    void checkResponseLike(String rid);
     String getProfileImage();
 }

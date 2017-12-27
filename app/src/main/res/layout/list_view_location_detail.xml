@@ -124,13 +124,11 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp">
 
-            <com.varunest.sparkbutton.SparkButton
+            <ImageView
                 android:id="@+id/btn_keep"
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                app:sparkbutton_activeImage="@drawable/ic_star_on"
-                app:sparkbutton_inActiveImage="@drawable/ic_star_off"
-                app:sparkbutton_iconSize="24dp" />
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_star_off"/>
 
             <LinearLayout
                 android:id="@+id/linear_response_and_favorit"
@@ -140,17 +138,11 @@
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
-
-                <com.varunest.sparkbutton.SparkButton
+                <ImageView
                     android:id="@+id/btn_article_like"
-                    android:layout_width="34dp"
-                    android:layout_height="34dp"
-                    app:sparkbutton_activeImage="@drawable/ic_heart_on"
-                    app:sparkbutton_inActiveImage="@drawable/ic_heart_off"
-                    app:sparkbutton_iconSize="24dp"
-                    app:sparkbutton_primaryColor="@color/heart_primary_color"
-                    app:sparkbutton_secondaryColor="@color/heart_secondary_color" />
-
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/push_off"/>
                 <TextView
                     android:id="@+id/tv_total_like"
                     android:layout_width="wrap_content"

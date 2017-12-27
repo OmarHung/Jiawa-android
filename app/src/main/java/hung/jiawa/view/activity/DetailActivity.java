@@ -39,7 +39,7 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
         setContentView(R.layout.activity_detail);
 
         Bundle bundle = getIntent().getExtras();
-        aid     = bundle.getString("aid");
+        aid = bundle.getString("aid");
 
         recyclerView= (RecyclerView) findViewById(R.id.recyclerView);
         btn_more    = (ImageButton) findViewById(R.id.btn_more);
@@ -133,26 +133,6 @@ public class DetailActivity extends AppCompatActivity implements IDetailView, Vi
         if(alertDialog!=null && alertDialog.isShowing()) alertDialog.dismiss();
         strContent="";
         detailPresenter.onResume();
-    }
-
-    @Override
-    public void setArticleLike() {
-
-    }
-
-    @Override
-    public void setResponseLike(String rid) {
-
-    }
-
-    @Override
-    public void setArticleDisLike() {
-
-    }
-
-    @Override
-    public void setResponseDisLike(String rid) {
-
     }
 
     @Override
